@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trattoria Production (PoC v0.3)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Trattoria Production (PoC v0.3)</h2>
+
+<label>Fecha</label><br>
+<input type="date" id="fecha"><br><br>
+
+<label>Producto</label><br>
+<select id="producto"></select><br><br>
+
+<label>Cantidad</label><br>
+<input type="number" id="cantidad"><br><br>
+
+<button id="guardar">Guardar</button>
+
+<hr>
+
+<h3>Últimos registros</h3>
+
+<table border="1">
+
+<thead>
+
+<tr>
+    <th>Fecha</th>
+    <th>Producto</th>
+    <th>Cantidad</th>
+    <th>Acción</th>
+</tr>
+
+</thead>
+
+<tbody id="tablaRegistros">
+
+</tbody>
+
+</table>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
