@@ -1,4 +1,4 @@
-# User Experience (UX)
+# Product Backlog
 
 **Project:** EPSM Manager
 
@@ -6,7 +6,7 @@
 
 **Version:** 1.0
 
-**Status:** Approved
+**Status:** Active
 
 **Last Update:** 2026-07-02
 
@@ -14,224 +14,280 @@
 
 # 1. Purpose
 
-This document defines the User Experience (UX) principles of EPSM Manager.
+This document contains all proposed features, improvements and future ideas for EPSM Manager.
 
-The objective is to create an application that minimizes operator effort while maximizing data quality.
+The backlog is the only official place where new functionality may be proposed before entering development.
 
-The system should feel natural, intuitive and fast.
-
----
-
-# 2. UX Philosophy
-
-EPSM Manager is an operational tool.
-
-Operators should focus on making pizza, not on using software.
-
-The application must adapt to the operator.
-
-The operator should never adapt to the application.
+Being included in the backlog does **not** mean the feature has been approved.
 
 ---
 
-# 3. Primary Objective
+# 2. Backlog Philosophy
 
-The production registration process should require the minimum possible interaction.
+The backlog exists to preserve ideas without increasing project scope.
 
-The platform should reduce manual work, not create additional work.
+New ideas should never be implemented immediately.
 
----
-
-# 4. UX Principles
-
-Every screen should follow these principles:
-
-- Simple
-- Fast
-- Predictable
-- Consistent
-- Responsive
-- Error-resistant
+Every proposal must first be documented, discussed, prioritized and formally approved.
 
 ---
 
-# 5. Progressive Disclosure
+# 3. Prioritization Levels
 
-Only display information that is required at the current step.
+The following priorities are used throughout the project.
 
-Advanced options should appear only when necessary.
+## P0 — Critical
 
-Example:
+Required for production.
 
-Selecting "Special Recipe" reveals flour and water inputs.
-
-Selecting "Standard Recipe" hides them.
+Development cannot continue without these items.
 
 ---
 
-# 6. Minimize Manual Typing
+## P1 — High Priority
 
-Manual typing should be avoided whenever possible.
+Strong business value.
 
-Prefer:
-
-- Dropdowns
-- Selectors
-- Toggles
-- Buttons
-- Automatic calculations
-
-Typing should only be required when the information cannot be inferred.
+Expected for the next major release.
 
 ---
 
-# 7. The System Already Knows
+## P2 — Medium Priority
 
-The application should never ask the operator for information that already exists.
+Useful improvements.
 
-Examples:
-
-- Product grammage
-- Standard recipe values
-- Expected production
-- Waste calculations
-- Recipe configuration
-
-These values are managed by the system.
+Implemented when appropriate.
 
 ---
 
-# 8. Validation
+## P3 — Low Priority
 
-Errors should be prevented rather than corrected.
+Future enhancements.
 
-Whenever possible:
-
-- Validate while typing.
-- Display clear messages.
-- Prevent invalid values.
-
-Never allow inconsistent business data.
+No implementation date defined.
 
 ---
 
-# 9. Editing
+## P4 — Ideas
 
-Production records may be edited.
+Concepts under evaluation.
 
-The editing process should be simple.
-
-Every modification should request:
-
-- Operator responsible
-- Optional reason
-
-Business traceability must always be preserved.
+No commitment to implementation.
 
 ---
 
-# 10. Speed
+# 4. Current Approved Roadmap
 
-Production registration should be completed as quickly as possible.
+Current development follows the official Roadmap document.
 
-The interface should minimize:
-
-- Clicks
-- Typing
-- Navigation
-- Waiting time
+Only roadmap items may enter development.
 
 ---
 
-# 11. Consistency
+# 5. Backlog Items
 
-Buttons, colors, layouts and workflows should behave consistently across the entire platform.
+## P1
 
-Users should never have to guess what happens next.
+### BK-001
 
----
+Multi-product Dough Batch support.
 
-# 12. Mobile Ready
+Status
 
-Although the first version targets desktop browsers, the interface should remain compatible with tablets and future mobile devices.
-
-Responsive design is mandatory.
+Approved.
 
 ---
 
-# 13. Accessibility
+### BK-002
 
-The interface should be easy to read.
+Remaining dough registration.
 
-Recommendations:
+Status
 
-- Large controls
-- Clear labels
-- High contrast
-- Simple language
+Approved.
 
 ---
 
-# 14. User Feedback
+### BK-003
 
-Every important action should provide immediate feedback.
+Support Standard and Special recipes.
 
-Examples:
+Status
 
-- Record saved successfully.
-- Record updated.
-- Validation error.
-- Connection lost.
-
-Users should never wonder if an action succeeded.
+Approved.
 
 ---
 
-# 15. Error Recovery
+### BK-004
 
-Mistakes are expected.
+Shift registration.
 
-The platform should make recovery simple.
+Status
 
-Examples:
-
-- Edit existing records.
-- Confirmation dialogs for destructive actions.
-- Clear validation messages.
+Approved.
 
 ---
 
-# 16. Business Focus
+### BK-005
 
-The interface exists to support production.
+Multiple operators per Dough Batch.
 
-Business goals always take priority over visual complexity.
+Status
 
-The objective is operational efficiency.
+Approved.
 
 ---
 
-# 17. Future Evolution
+## P2
 
-Future UX improvements may include:
+### BK-006
 
-- Dark mode
-- Barcode support
-- Touch optimization
-- Voice assistance
+Operator performance dashboard.
+
+---
+
+### BK-007
+
+Automatic bonus calculation.
+
+---
+
+### BK-008
+
+Production KPI dashboard.
+
+---
+
+### BK-009
+
+Historical production analysis.
+
+---
+
+## P3
+
+### BK-010
+
+Inventory module.
+
+Current status:
+
+Postponed.
+
+Reason:
+
+Business process still under evaluation.
+
+---
+
+### BK-011
+
+Remaining dough inventory.
+
+Current status:
+
+Research.
+
+---
+
+### BK-012
+
+Recipe management module.
+
+---
+
+### BK-013
+
+Cost analysis.
+
+---
+
+### BK-014
+
+Purchasing support.
+
+---
+
+## P4
+
+Ideas currently under discussion.
+
+- AI Assistant
+- Mobile application
+- Barcode reader
+- Label printing
+- Voice input
+- Automatic notifications
 - Offline mode
-- Keyboard shortcuts
-
-These improvements should preserve the existing workflow.
+- Predictive production
+- Machine integration
 
 ---
 
-# 18. UX Success Criteria
+# 6. Feature Lifecycle
 
-The platform succeeds when:
+Every feature follows the same lifecycle.
 
-- Operators require minimal training.
-- Data quality improves.
-- Production registration becomes faster.
-- Errors decrease.
-- The application feels natural to use.
+Idea
+
+↓
+
+Backlog
+
+↓
+
+Analysis
+
+↓
+
+Approval
+
+↓
+
+Roadmap
+
+↓
+
+Sprint
+
+↓
+
+Development
+
+↓
+
+Testing
+
+↓
+
+Production
+
+---
+
+# 7. Acceptance Policy
+
+A backlog item may only enter development when:
+
+- Business value is clear.
+- Functional analysis has been completed.
+- Technical feasibility has been validated.
+- Impact on the existing architecture is understood.
+- Explicit approval has been given.
+
+---
+
+# 8. Scope Control
+
+Features outside the backlog should never be implemented.
+
+This policy prevents uncontrolled project growth and preserves development focus.
+
+---
+
+# 9. Continuous Improvement
+
+The backlog is expected to evolve continuously.
+
+New ideas are encouraged.
+
+Implementation remains controlled.
