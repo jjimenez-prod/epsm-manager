@@ -106,6 +106,25 @@ CREATE TABLE products (
 );
 
 -- ==========================================================
+-- REFERENCE RANGES
+-- ==========================================================
+
+CREATE TABLE reference_ranges (
+
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    grammage_g INTEGER NOT NULL UNIQUE
+        CHECK (grammage_g > 0),
+
+    min_units INTEGER NOT NULL
+        CHECK (min_units >= 0),
+
+    max_units INTEGER NOT NULL
+        CHECK (max_units >= min_units)
+
+);
+
+-- ==========================================================
 -- SETTINGS
 -- ==========================================================
 

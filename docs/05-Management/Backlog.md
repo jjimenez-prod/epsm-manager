@@ -291,3 +291,16 @@ The backlog is expected to evolve continuously.
 New ideas are encouraged.
 
 Implementation remains controlled.
+
+# 10. Continuous Improvement
+
+Implementar validación silenciosa utilizando reference_ranges.
+
+Estado:
+Pending
+
+Prioridad:
+Media
+
+Dependencias:
+Formulario conectado a Supabase.
