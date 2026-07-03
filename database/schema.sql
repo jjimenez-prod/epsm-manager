@@ -8,25 +8,6 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- ==========================================================
--- USERS
--- ==========================================================
-
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-
-    full_name TEXT NOT NULL UNIQUE,
-
-    role TEXT NOT NULL
-        CHECK (role IN ('ADMIN','OPERATOR')),
-
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- ==========================================================
 -- OPERATORS
 -- ==========================================================
 
@@ -35,6 +16,9 @@ CREATE TABLE operators (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     full_name TEXT NOT NULL UNIQUE,
+
+    role TEXT NOT NULL
+        CHECK (role IN ('ADMIN','OPERATOR')),
 
     active BOOLEAN NOT NULL DEFAULT TRUE,
 
@@ -180,10 +164,10 @@ CREATE TABLE dough_batches (
         CHECK (status IN ('ACTIVE','CANCELLED')),
 
     created_by UUID
-        REFERENCES users(id),
+        REFERENCES operators(id),
 
     updated_by UUID
-        REFERENCES users(id),
+        REFERENCES operators(id),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
@@ -231,10 +215,10 @@ CREATE TABLE production_items (
     notes TEXT,
 
     created_by UUID
-        REFERENCES users(id),
+        REFERENCES operators(id),
 
     updated_by UUID
-        REFERENCES users(id),
+        REFERENCES operators(id),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
@@ -261,7 +245,7 @@ CREATE TABLE audit_log (
         CHECK (action IN ('INSERT','UPDATE','CANCEL')),
 
     modified_by UUID
-        REFERENCES users(id),
+        REFERENCES operators(id),
 
     modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
