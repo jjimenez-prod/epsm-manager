@@ -1,11 +1,10 @@
-async function getOperators() {
+async function getProducts() {
 
     const { data, error } = await window.supabaseClient
-        .from("operators")
-        .select("id, full_name")
+        .from("products")
+        .select("id, name, grammage_g")
         .eq("active", true)
-        .eq("role", "OPERATOR")
-        .order("full_name");
+        .order("legacy_id");
 
     if (error) {
         console.error(error);
