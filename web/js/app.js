@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     setOperatorsCatalog(catalogs.operators);
     setProductsCatalog(catalogs.products);
+    setRecipesCatalog(catalogs.recipes);
 
     // =====================
     // BOTONES

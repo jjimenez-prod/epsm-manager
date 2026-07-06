@@ -89,13 +89,11 @@ The system calculates the total dough weight automatically.
 
 # 5. Dough Weight
 
-Every dough batch has an initial weight.
+Standard recipe default weight is defined by business configuration.
 
-The weight is required for production analysis.
+The system stores the actual initial weight for every dough batch.
 
-Although the standard recipe is expected to produce approximately 19 kg, the actual weight should always be stored.
-
-The system must never assume fixed values.
+Business parameters may change over time without requiring software modifications.
 
 ---
 
@@ -252,3 +250,89 @@ Future business rules may include:
 
 
 These rules will only be implemented after formal approval.
+
+# 17. Expected Production Formula
+
+Expected production represents the theoretical number of units that can be produced from one dough batch.
+
+The calculation is performed automatically by the system.
+
+Inputs:
+
+- Initial dough weight
+- Product target weight
+
+The result is expressed as theoretical units.
+
+Operators never calculate this value.
+
+The calculation method is configurable and may evolve without changing operational procedures.
+
+# 18. Production Tolerance
+
+Expected production always includes an acceptable operational tolerance.
+
+Tolerance is defined by business rules.
+
+Each product may define:
+
+- Target quantity
+- Lower tolerance
+- Upper tolerance
+
+The system automatically determines whether production is:
+
+- Below target
+- Within tolerance
+- Above target
+
+Operators never evaluate production manually.
+
+# 19. Production Status
+
+Every production result receives a business status.
+
+Possible values include:
+
+- Below Expected
+- Within Target
+- Above Expected
+
+Status is calculated automatically using production tolerance.
+
+Production status is used by dashboards and KPI reporting.
+
+# 20. KPI Philosophy
+
+Operational data is recorded only once.
+
+Every KPI is generated automatically by the platform.
+
+KPIs must never require additional manual input.
+
+The same operational data may generate multiple analytical indicators.
+
+Business rules always prioritize operational simplicity over manual calculations.
+
+# 21. Excel Compatibility
+
+EPSM Manager replaces the historical production spreadsheet.
+
+Core production indicators must remain compatible with the existing operational methodology.
+
+Whenever possible, new analytical capabilities should extend the historical model instead of replacing it.
+
+Backward compatibility is considered a business requirement.
+
+# 22. Business Rule Configuration
+
+Business parameters should be configurable whenever possible.
+
+Examples include:
+
+- Recipe weights
+- Production tolerances
+- Waste thresholds
+- Default dough weights
+
+Business rule changes should not require software modifications.

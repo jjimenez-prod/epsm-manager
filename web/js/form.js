@@ -174,67 +174,6 @@ function collectFormData() {
     };
 
 }
-function initializeRecipeBehaviour() {
-
-    const recipe = document.getElementById("recipe");
-
-    recipe.addEventListener("change", updateRecipeBehaviour);
-
-    document
-        .getElementById("flour")
-        .addEventListener("input", calculateSpecialDough);
-
-    document
-        .getElementById("water")
-        .addEventListener("input", calculateSpecialDough);
-
-    updateRecipeBehaviour();
-
-}
-
-function updateRecipeBehaviour() {
-
-    const recipe = document.getElementById("recipe");
-
-    const specialDiv = document.getElementById("specialRecipe");
-
-    const initialWeight = document.getElementById("initialWeight");
-
-    const selectedText =
-        recipe.options[recipe.selectedIndex]?.text;
-
-    if (selectedText === "Masa Especial") {
-
-        specialDiv.style.display = "block";
-
-        initialWeight.readOnly = true;
-
-        calculateSpecialDough();
-
-    } else {
-
-        specialDiv.style.display = "none";
-
-        initialWeight.readOnly = false;
-
-    }
-
-}
-
-function calculateSpecialDough() {
-
-    const flour =
-        Number(document.getElementById("flour").value) || 0;
-
-    const water =
-        Number(document.getElementById("water").value) || 0;
-
-    const otherIngredients = flour * 0.4583333333;
-
-    document.getElementById("initialWeight").value =
-        Math.round(flour + water + otherIngredients);
-
-}
 let operatorsCatalog = [];
 
 function setOperatorsCatalog(operators){

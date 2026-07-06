@@ -46,6 +46,10 @@ The objective is to digitalize the operational process.
 
 Every feature must contribute to reducing manual work and increasing traceability.
 
+Every operational data collected by EPSM Manager must contribute to one or more business indicators.
+
+Data without analytical value should not be collected.
+
 ---
 
 # 5. Single Source of Truth
@@ -103,7 +107,9 @@ Paid services should only be introduced when justified by business growth.
 Business decisions should always be supported by reliable operational data.
 
 Whenever possible, calculations must be generated automatically.
+Every dashboard, KPI and report must answer a real business question.
 
+If the answer does not support a business decision, the feature should not be implemented.
 ---
 
 # 12. Traceability

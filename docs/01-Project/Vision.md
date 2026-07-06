@@ -36,6 +36,8 @@ The platform will gradually replace manual operational processes and eventually 
 
 The long-term objective is not to digitalize forms, but to digitalize the business process.
 
+EPSM Manager preserves the operational knowledge of the historical Excel while extending it through richer production data and business intelligence
+
 ---
 
 # 4. Project Scope
