@@ -2,50 +2,232 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>Trattoria Production (PoC v0.3)</title>
-    <link rel="stylesheet" href="style.css">
+
+    <title>EPSM Manager (v1.0.0-alpha)</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
 
-<h2>Trattoria Production (PoC v0.3)</h2>
+<h2>Registro de Producción</h2>
+
+<!-- ========================= -->
+<!-- INFORMACIÓN GENERAL -->
+<!-- ========================= -->
 
 <label>Fecha</label><br>
-<input type="date" id="fecha"><br><br>
 
-<label>Producto</label><br>
-<select id="producto"></select><br><br>
+<input type="date" id="productionDate">
 
-<label>Cantidad</label><br>
-<input type="number" id="cantidad"><br><br>
+<br><br>
 
-<button id="guardar">Guardar</button>
+<label>Turno</label><br>
+
+<select id="shift"></select>
+
+<br><br>
+
+<!-- ========================= -->
+<!-- OPERADORES -->
+<!-- ========================= -->
+
+<h3>Operadores</h3>
+
+<table border="1">
+
+    <thead>
+
+        <tr>
+
+            <th>Operador</th>
+
+            <th></th>
+
+        </tr>
+
+    </thead>
+
+    <tbody id="operatorTable">
+
+    </tbody>
+
+</table>
+
+<br>
+
+<button id="addOperator">
+
+    Agregar Operador
+
+</button>
+
+<br><br>
+
+<!-- ========================= -->
+<!-- RECETA -->
+<!-- ========================= -->
+
+<label>Tipo de Masa</label><br>
+
+<select id="recipe"></select>
+
+<br><br>
+
+<div id="specialRecipe" style="display:none;">
+
+    <label>Harina (g)</label><br>
+
+    <input type="number" id="flour">
+
+    <br><br>
+
+    <label>Agua (g)</label><br>
+
+    <input type="number" id="water">
+
+    <br><br>
+
+</div>
+
+<!-- ========================= -->
+<!-- PESOS -->
+<!-- ========================= -->
+
+<label>Peso Inicial (g)</label><br>
+
+<input
+    type="number"
+    id="initialWeight"
+    readonly>
+
+<br><br>
+
+<label>Masa Sobrante Agregada (g)</label><br>
+
+<input
+    type="number"
+    id="leftoverAdded"
+    value="0">
+
+<br><br>
+
+<!-- ========================= -->
+<!-- OBSERVACIONES -->
+<!-- ========================= -->
+
+<label>Observaciones</label><br>
+
+<textarea
+    id="notes"
+    rows="3">
+
+</textarea>
+
+<br><br>
 
 <hr>
+
+<!-- ========================= -->
+<!-- PRODUCCIÓN -->
+<!-- ========================= -->
+
+<h3>Producción</h3>
+
+<table border="1">
+
+    <thead>
+
+        <tr>
+
+            <th>Producto</th>
+
+            <th>Cantidad</th>
+
+            <th></th>
+
+        </tr>
+
+    </thead>
+
+    <tbody id="productionTable">
+
+    </tbody>
+
+</table>
+
+<br>
+
+<button id="addProduct">
+
+    Agregar Producto
+
+</button>
+
+<br><br>
+
+<button id="saveButton">
+
+    Guardar Producción
+
+</button>
+
+<hr>
+
+<!-- ========================= -->
+<!-- ÚLTIMOS REGISTROS -->
+<!-- ========================= -->
 
 <h3>Últimos registros</h3>
 
 <table border="1">
 
-<thead>
+    <thead>
 
-<tr>
-    <th>Fecha</th>
-    <th>Producto</th>
-    <th>Cantidad</th>
-    <th>Acción</th>
-</tr>
+        <tr>
 
-</thead>
+            <th>Fecha</th>
+            <th>Turno</th>
+            <th>Operadores</th>
+            <th>Productos</th>
+            <th></th>
 
-<tbody id="tablaRegistros">
+        </tr>
 
-</tbody>
+    </thead>
+
+    <tbody id="tablaRegistros">
+
+    </tbody>
 
 </table>
 
-<script type="module" src="app.js"></script>
+<!-- ========================= -->
+<!-- SCRIPTS -->
+<!-- ========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="config/supabase.js"></script>
+
+<script src="services/operator.js"></script>
+<script src="services/product.js"></script>
+<script src="services/shift.js"></script>
+<script src="services/recipe.js"></script>
+<script src="services/production.js"></script>
+<script src="services/history.js"></script>
+<script src="services/edit.js"></script>
+
+<script src="js/catalogs.js"></script>
+<script src="js/recipeBehaviour.js"></script>
+<script src="js/form.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/errors.js"></script>
+<script src="js/app.js"></script>
 
 </body>
+
 </html>
