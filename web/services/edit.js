@@ -81,6 +81,10 @@ async function getBatch(batchId) {
 
         initialWeight: batch.initial_weight_g,
 
+        flour: batch.flour_g,
+
+        water: batch.water_g,
+        
         leftoverAdded: batch.leftover_added_g,
         
         otherIngredients: batch.other_ingredients_g,
