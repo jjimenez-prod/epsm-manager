@@ -1,0 +1,115 @@
+/* =====================================================
+   CARDS
+===================================================== */
+
+.card{
+
+    background:var(--color-surface);
+
+    border:1px solid var(--color-border);
+
+    border-radius:18px;
+
+    box-shadow:var(--shadow-card);
+
+    overflow:hidden;
+
+    transition:all .20s ease;
+
+}
+
+.card:hover{
+
+    box-shadow:var(--shadow-hover);
+
+}
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px 26px 16px;
+
+}
+
+.card-header h2{
+
+    font-size:26px;
+
+    font-weight:700;
+
+    color:var(--color-primary);
+
+    letter-spacing:.3px;
+
+}
+
+.card-body{
+
+    padding:0 26px 26px;
+
+}
+
+.card-header i,
+
+.section-header i{
+
+    color:var(--color-primary);
+
+    margin-right:10px;
+
+    font-size:20px;
+
+}
+
+/* ======================================
+   SECTION HEADER
+====================================== */
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px 26px 18px;
+
+}
+
+.section-header h2{
+
+    font-size:26px;
+
+    color:var(--color-primary);
+
+}
+
+/* ======================================
+   HISTORY
+====================================== */
+
+.history-card{
+
+    margin-top:24px;
+
+}
+
+/* ======================================
+   DIVIDERS
+====================================== */
+
+.card hr{
+
+    border:none;
+
+    border-top:1px solid var(--color-border);
+
+    margin:20px 0;
+
+}

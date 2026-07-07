@@ -19,6 +19,8 @@ async function saveProduction(formData) {
 
                 leftover_added_g: formData.leftoverAdded,
 
+                other_ingredients_g: formData.otherIngredients,
+                
                 notes: formData.notes
 
             }])

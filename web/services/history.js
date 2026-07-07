@@ -9,11 +9,13 @@ async function getRecentBatches(limit = 10) {
 
             .from("dough_batches")
 
-            .select(`
-                id,
-                production_date,
-                initial_weight_g,
-                shift:shifts(name)
+           .select(`
+            id,
+            production_date,
+            created_at,
+            initial_weight_g,
+            shift:shifts(name),
+            recipe:recipes(display_name)
             `)
 
             .order("production_date", { ascending: false })
@@ -82,17 +84,14 @@ async function getRecentBatches(limit = 10) {
         return {
 
             id: batch.id,
-
             productionDate: batch.production_date,
-
+            hour: batch.created_at,
             shift: batch.shift?.name ?? "",
-
+            recipe: batch.recipe?.display_name ?? "",
             initialWeight: batch.initial_weight_g,
-
             operators,
-
             totalProducts
-
+            
         };
 
     });

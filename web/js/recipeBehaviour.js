@@ -46,6 +46,12 @@ function initializeRecipeBehaviour() {
             "input",
             calculateRecipeWeight
         );
+    document
+        .getElementById("otherIngredients")
+        .addEventListener(
+            "input",
+            calculateRecipeWeight
+    );
 
     updateRecipeBehaviour();
 
@@ -104,10 +110,14 @@ function calculateRecipeWeight() {
 
     const water =
         Number(document.getElementById("water").value) || 0;
+        
+    const otherIngredients =
+        Number(document.getElementById("otherIngredients").value) || 0;
 
     document.getElementById("initialWeight").value =
         flour +
         water +
+        otherIngredients +
         (recipe.fixed_extra_weight_g ?? 0);
 
 }

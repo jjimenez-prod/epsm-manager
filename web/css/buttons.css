@@ -1,0 +1,99 @@
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+button{
+
+    border:none;
+    cursor:pointer;
+    transition:.2s;
+    font-family:var(--font-family);
+
+}
+
+/* Botón principal */
+
+#saveButton{
+
+    width:100%;
+    height:58px;
+
+    background:var(--color-secondary);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    border-radius:12px;
+
+    margin-top:22px;
+
+    box-shadow:0 6px 16px rgba(47,90,54,.25);
+
+}
+
+#saveButton:hover{
+
+    background:var(--color-secondary-dark);
+
+    transform:translateY(-2px);
+
+}
+
+/* Botones secundarios */
+
+#addOperator,
+#addProduct{
+
+    background:var(--color-primary);
+
+    color:white;
+
+    height:42px;
+
+    padding:0 18px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+}
+
+#addOperator:hover,
+#addProduct:hover{
+
+    background:var(--color-primary-dark);
+
+}
+
+/* Eliminar */
+
+.table button{
+
+    width:38px;
+
+    height:38px;
+
+    background:#d84a4a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.table button:hover{
+
+    background:#b91c1c;
+
+}

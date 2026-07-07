@@ -5,221 +5,557 @@
 
     <meta charset="UTF-8">
 
-    <title>EPSM Manager (v1.0.0-alpha)</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>EPSM Manager</title>
+
+    <!-- CSS -->
 
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<h2>Registro de Producción</h2>
+<div class="page">
 
-<!-- ========================= -->
-<!-- INFORMACIÓN GENERAL -->
-<!-- ========================= -->
+    <!-- ================================================= -->
+    <!-- HEADER                                             -->
+    <!-- ================================================= -->
 
-<label>Fecha</label><br>
+    <header class="page-header">
 
-<input type="date" id="productionDate">
+        <div class="logo">
 
-<br><br>
+            <img
+                src="../assets/images/logo.svg"
+                alt="È Pronto! Si Mangia">
 
-<label>Turno</label><br>
+        </div>
 
-<select id="shift"></select>
+        <div class="title">
 
-<br><br>
+            <h1>EPSM Manager</h1>
 
-<!-- ========================= -->
-<!-- OPERADORES -->
-<!-- ========================= -->
+            <p class="subtitle">
 
-<h3>Operadores</h3>
+                Registro de Producción
 
-<table border="1">
+            </p>
 
-    <thead>
+            <div class="title-divider">
 
-        <tr>
+                <span></span>
 
-            <th>Operador</th>
+            </div>
 
-            <th></th>
+        </div>
 
-        </tr>
+    </header>
 
-    </thead>
+    <!-- ================================================= -->
+    <!-- MAIN LAYOUT                                        -->
+    <!-- ================================================= -->
 
-    <tbody id="operatorTable">
+    <main class="main-layout">
 
-    </tbody>
+        <!-- ============================================= -->
+        <!-- LEFT PANEL                                     -->
+        <!-- ============================================= -->
 
-</table>
+        <aside class="left-panel">
 
-<br>
+            <!-- ========================================= -->
+            <!-- INFORMACIÓN GENERAL                        -->
+            <!-- ========================================= -->
 
-<button id="addOperator">
+            <section class="card">
 
-    Agregar Operador
+                <div class="card-header">
 
-</button>
+                    <h2>
 
-<br><br>
+                        <i class="fa-solid fa-calendar-days"></i>
 
-<!-- ========================= -->
-<!-- RECETA -->
-<!-- ========================= -->
+                        Información General
 
-<label>Tipo de Masa</label><br>
+                    </h2>
 
-<select id="recipe"></select>
+                </div>
 
-<br><br>
+                <div class="card-body">
 
-<div id="specialRecipe" style="display:none;">
+                    <div class="form-group">
 
-    <label>Harina (g)</label><br>
+                        <label class="required">
 
-    <input type="number" id="flour">
+                            Fecha
 
-    <br><br>
+                        </label>
 
-    <label>Agua (g)</label><br>
+                        <input
+                            type="date"
+                            id="productionDate">
 
-    <input type="number" id="water">
+                    </div>
 
-    <br><br>
+                    <div class="form-group">
+
+                        <label class="required">
+
+                            Turno
+
+                        </label>
+
+                        <select id="shift">
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ========================================= -->
+            <!-- OPERADORES                                 -->
+            <!-- ========================================= -->
+
+            <section class="card">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        <i class="fa-solid fa-users"></i>
+
+                        Operadores
+
+                    </h2>
+
+                    <button
+                        type="button"
+                        id="addOperator">
+
+                        + Operador
+
+                    </button>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-container">
+
+                        <table class="table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+
+                                        Operador
+
+                                    </th>
+
+                                    <th width="60">
+
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="operatorTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+                        <!-- ========================================= -->
+            <!-- MASA                                       -->
+            <!-- ========================================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        <i class="fa-solid fa-wheat-awn"></i>
+
+                        Masa
+
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+
+                        <label class="required">
+
+                            Tipo de Masa
+
+                        </label>
+
+                        <select id="recipe">
+
+                        </select>
+
+                    </div>
+
+                    <div id="specialRecipe">
+
+                        <div class="form-group">
+
+                            <label class="required">
+
+                                Harina (g)
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="flour"
+                                min="0"
+                                value="0">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="required">
+
+                                Agua (g)
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="water"
+                                min="0"
+                                value="0">
+
+                        </div>
+
+                        <div class="form-group">
+                            
+                            <label class="required">
+                                
+                                Otros Ingredientes (g)
+                                
+                            </label>
+                            <input
+                            type="number"
+                            id="otherIngredients"
+                            min="0"
+                            value="0">
+                            
+                        </div>
+                            
+
+                    </div>
+
+                    <div
+                        id="initialWeightContainer"
+                        class="form-group">
+
+                        <label>
+
+                            Peso Inicial (g)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="initialWeight"
+                            readonly>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Masa Sobrante Agregada (g)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="leftoverAdded"
+                            min="0"
+                            value="0">
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ========================================= -->
+            <!-- OBSERVACIONES                              -->
+            <!-- ========================================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        <i class="fa-solid fa-note-sticky"></i>
+
+                        Observaciones
+
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+
+                        <textarea id="notes" placeholder="Observaciones adicionales..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </aside>
+
+        <!-- ============================================= -->
+        <!-- RIGHT PANEL                                   -->
+        <!-- ============================================= -->
+
+        <section class="right-panel">
+
+            <!-- ========================================= -->
+            <!-- PRODUCCIÓN                                 -->
+            <!-- ========================================= -->
+
+            <section class="card">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        <i class="fa-solid fa-bread-slice"></i>
+
+                        Producción
+
+                    </h2>
+
+                    <button
+                        type="button"
+                        id="addProduct">
+
+                        + Producto
+
+                    </button>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-container">
+
+                        <table class="table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+
+                                        Producto
+
+                                    </th>
+
+                                    <th width="140">
+
+                                        Cantidad
+
+                                    </th>
+
+                                    <th width="70">
+
+                                        Acción
+
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="productionTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                                        <button
+                        type="button"
+                        id="saveButton">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Guardar Producción
+
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- ========================================= -->
+            <!-- HISTORIAL                                 -->
+            <!-- ========================================= -->
+
+            <section class="card history-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                        Últimos Registros
+
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-container">
+
+                        <table class="table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th width="120">
+
+                                        Fecha
+
+                                    </th>
+
+                                    <th width="90">
+
+                                        Hora
+
+                                    </th>
+
+                                    <th width="100">
+
+                                        Turno
+
+                                    </th>
+
+                                    <th>
+
+                                        Operadores
+
+                                    </th>
+
+                                    <th width="150">
+
+                                        Receta
+
+                                    </th>
+
+                                    <th width="110">
+
+                                        Productos
+
+                                    </th>
+
+                                    <th width="90">
+
+                                        Acción
+
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="tablaRegistros">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+    <!-- ========================================= -->
+    <!-- FOOTER                                    -->
+    <!-- ========================================= -->
+
+    <footer>
+
+        <small>
+
+            © 2026 È Pronto! Si Mangia • EPSM Manager v1.0.0
+
+        </small>
+
+    </footer>
 
 </div>
 
-<!-- ========================= -->
-<!-- PESOS -->
-<!-- ========================= -->
-
-<label>Peso Inicial (g)</label><br>
-
-<input
-    type="number"
-    id="initialWeight"
-    readonly>
-
-<br><br>
-
-<label>Masa Sobrante Agregada (g)</label><br>
-
-<input
-    type="number"
-    id="leftoverAdded"
-    value="0">
-
-<br><br>
-
-<!-- ========================= -->
-<!-- OBSERVACIONES -->
-<!-- ========================= -->
-
-<label>Observaciones</label><br>
-
-<textarea
-    id="notes"
-    rows="3">
-
-</textarea>
-
-<br><br>
-
-<hr>
-
-<!-- ========================= -->
-<!-- PRODUCCIÓN -->
-<!-- ========================= -->
-
-<h3>Producción</h3>
-
-<table border="1">
-
-    <thead>
-
-        <tr>
-
-            <th>Producto</th>
-
-            <th>Cantidad</th>
-
-            <th></th>
-
-        </tr>
-
-    </thead>
-
-    <tbody id="productionTable">
-
-    </tbody>
-
-</table>
-
-<br>
-
-<button id="addProduct">
-
-    Agregar Producto
-
-</button>
-
-<br><br>
-
-<button id="saveButton">
-
-    Guardar Producción
-
-</button>
-
-<hr>
-
-<!-- ========================= -->
-<!-- ÚLTIMOS REGISTROS -->
-<!-- ========================= -->
-
-<h3>Últimos registros</h3>
-
-<table border="1">
-
-    <thead>
-
-        <tr>
-
-            <th>Fecha</th>
-            <th>Turno</th>
-            <th>Operadores</th>
-            <th>Productos</th>
-            <th></th>
-
-        </tr>
-
-    </thead>
-
-    <tbody id="tablaRegistros">
-
-    </tbody>
-
-</table>
-
-<!-- ========================= -->
-<!-- SCRIPTS -->
-<!-- ========================= -->
+<!-- ========================================= -->
+<!-- SUPABASE                                  -->
+<!-- ========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="config/supabase.js"></script>
 
+<!-- ========================================= -->
+<!-- SERVICES                                  -->
+<!-- ========================================= -->
+
 <script src="services/operator.js"></script>
 <script src="services/product.js"></script>
-<script src="services/shift.js"></script>
 <script src="services/recipe.js"></script>
-<script src="services/production.js"></script>
+<script src="services/shift.js"></script>
 <script src="services/history.js"></script>
+<script src="services/settings.js"></script>
 <script src="services/edit.js"></script>
+<script src="services/production.js"></script>
+
+<!-- ========================================= -->
+<!-- BUSINESS                                  -->
+<!-- ========================================= -->
 
 <script src="js/catalogs.js"></script>
 <script src="js/recipeBehaviour.js"></script>
