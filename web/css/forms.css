@@ -103,3 +103,23 @@ input[readonly]{
     font-weight:600;
 
 }
+
+/* =====================================================
+   iOS / WebKit
+===================================================== */
+
+input[type="date"]{
+
+    -webkit-appearance:none;
+
+    appearance:none;
+
+    height:48px;
+
+    min-height:48px;
+
+    padding:0 14px;
+
+    line-height:48px;
+
+}
