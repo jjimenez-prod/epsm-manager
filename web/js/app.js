@@ -5,6 +5,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("EPSM Manager iniciado");
 
     // =====================
+    // CONFIGURACIÓN
+    // =====================
+
+    await loadSettings();
+    console.log(window.appSettings);
+
+    // =====================
     // CARGAR CATÁLOGOS
     // =====================
 

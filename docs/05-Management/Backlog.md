@@ -2,305 +2,168 @@
 
 **Project:** EPSM Manager
 
-**Client:** È Pronto Si Mangia
-
 **Version:** 1.0
 
-**Status:** Active
+**Status:** Living Document
 
-**Last Update:** 2026-07-02
-
----
-
-# 1. Purpose
-
-This document contains all proposed features, improvements and future ideas for EPSM Manager.
-
-The backlog is the only official place where new functionality may be proposed before entering development.
-
-Being included in the backlog does **not** mean the feature has been approved.
+**Last Update:** 2026-07-06
 
 ---
 
-# 2. Backlog Philosophy
+# Purpose
 
-The backlog exists to preserve ideas without increasing project scope.
+This document contains future improvements identified during the project.
 
-New ideas should never be implemented immediately.
+Items included in this backlog have recognized business value but are intentionally postponed to keep the current release focused.
 
-Every proposal must first be documented, discussed, prioritized and formally approved.
-
----
-
-# 3. Prioritization Levels
-
-The following priorities are used throughout the project.
-
-## P0 — Critical
-
-Required for production.
-
-Development cannot continue without these items.
+Backlog items should not interrupt the current sprint.
 
 ---
 
-## P1 — High Priority
+# V1.0 - Production Module
 
-Strong business value.
+## Goal
 
-Expected for the next major release.
+Replace the current Excel process with a reliable production registration system.
 
----
+### Remaining Tasks
 
-## P2 — Medium Priority
-
-Useful improvements.
-
-Implemented when appropriate.
-
----
-
-## P3 — Low Priority
-
-Future enhancements.
-
-No implementation date defined.
+- Tablet UX improvements
+- Keyboard navigation
+- Searchable catalogs
+- Production history improvements
+- Dashboard V1
+- Production validation
 
 ---
 
-## P4 — Ideas
+# V1.1 - Security & Audit
 
-Concepts under evaluation.
+## Authentication
 
-No commitment to implementation.
+Status: Future Ready
 
----
-
-# 4. Current Approved Roadmap
-
-Current development follows the official Roadmap document.
-
-Only roadmap items may enter development.
+- User Login
+- Password Authentication
+- User Profiles
+- Roles
+- Session Management
 
 ---
 
-# 5. Backlog Items
+## Roles
 
-## P1
+Status: Future Ready
 
-### BK-001
-
-Multi-product Dough Batch support.
-
-Status
-
-Approved.
+- Administrator
+- Supervisor
+- Operator
+- Viewer
 
 ---
 
-### BK-002
+## Audit Trail
 
-Remaining dough registration.
+Status: Future Ready
 
-Status
+Store:
 
-Approved.
+- created_at
+- created_by
+- updated_at
+- updated_by
+- version
 
----
+Future Activity Log:
 
-### BK-003
-
-Support Standard and Special recipes.
-
-Status
-
-Approved.
-
----
-
-### BK-004
-
-Shift registration.
-
-Status
-
-Approved.
+- Entity
+- Action
+- Field Changed
+- Previous Value
+- New Value
+- Timestamp
+- User
 
 ---
 
-### BK-005
+# V1.2 - Business Intelligence
 
-Multiple operators per Dough Batch.
+Status: Planned
 
-Status
+## Business Calculation Engine
 
-Approved.
-
----
-
-## P2
-
-### BK-006
-
-Operator performance dashboard.
+- Production Engine
+- Waste Engine
+- Performance Engine
+- Trend Engine
+- Insight Engine
 
 ---
 
-### BK-007
+## KPI Dashboard
 
-Automatic bonus calculation.
-
----
-
-### BK-008
-
-Production KPI dashboard.
-
----
-
-### BK-009
-
-Historical production analysis.
+- Production Overview
+- Operator Performance
+- Recipe Performance
+- Shift Performance
+- Production Evolution
+- Improvement Opportunities
 
 ---
 
-## P3
+# V1.3 - Operational Intelligence
 
-### BK-010
+Status: Future Ready
 
-Inventory module.
-
-Current status:
-
-Postponed.
-
-Reason:
-
-Business process still under evaluation.
+- Team Performance
+- Automatic Recommendations
+- Operational Alerts
+- KPI Targets
+- Historical Comparisons
 
 ---
 
-### BK-011
+# V2.0
 
-Remaining dough inventory.
+Status: Vision
 
-Current status:
+Possible future modules.
 
-Research.
-
----
-
-### BK-012
-
-Recipe management module.
-
----
-
-### BK-013
-
-Cost analysis.
+- Cost Analysis
+- Inventory
+- Forecasting
+- AI Assisted Insights
+- Mobile Version
+- Notifications
+- Reports
+- Data Export
 
 ---
 
-### BK-014
+# Parking Lot
 
-Purchasing support.
+Ideas that should not be forgotten.
 
----
-
-## P4
-
-Ideas currently under discussion.
-
-- AI Assistant
-- Mobile application
-- Barcode reader
-- Label printing
-- Voice input
-- Automatic notifications
-- Offline mode
-- Predictive production
-- Machine integration
+- Activity Log Viewer
+- Change Reason
+- Dark Mode
+- Dashboard Customization
+- Advanced Filters
+- Export to Excel
+- PDF Reports
+- Multi-language Support
 
 ---
 
-# 6. Feature Lifecycle
+# Backlog Rules
 
-Every feature follows the same lifecycle.
+Items should only enter the backlog if they:
 
-Idea
+- Provide measurable business value.
+- Support the product vision.
+- Do not compromise the KISS philosophy.
+- Are compatible with the current architecture.
 
-↓
+Items should never be implemented directly from the backlog.
 
-Backlog
-
-↓
-
-Analysis
-
-↓
-
-Approval
-
-↓
-
-Roadmap
-
-↓
-
-Sprint
-
-↓
-
-Development
-
-↓
-
-Testing
-
-↓
-
-Production
-
----
-
-# 7. Acceptance Policy
-
-A backlog item may only enter development when:
-
-- Business value is clear.
-- Functional analysis has been completed.
-- Technical feasibility has been validated.
-- Impact on the existing architecture is understood.
-- Explicit approval has been given.
-
----
-
-# 8. Scope Control
-
-Features outside the backlog should never be implemented.
-
-This policy prevents uncontrolled project growth and preserves development focus.
-
----
-
-# 9. Continuous Improvement
-
-The backlog is expected to evolve continuously.
-
-New ideas are encouraged.
-
-Implementation remains controlled.
-
-# 10. Continuous Improvement
-
-Implementar validación silenciosa utilizando reference_ranges.
-
-Estado:
-Pending
-
-Prioridad:
-Media
-
-Dependencias:
-Formulario conectado a Supabase.
+Every backlog item must be prioritized before entering a sprint.

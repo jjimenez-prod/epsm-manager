@@ -69,7 +69,8 @@ function addProductionRow(){
 
     const button = document.createElement("button");
 
-    button.textContent = "🗑";
+    button.innerHTML =
+        '<i class="fa-solid fa-trash-can"></i>';
 
     button.onclick = () => {
 
@@ -164,7 +165,10 @@ function collectFormData() {
             Number(document.getElementById("initialWeight").value),
 
         leftoverAdded:
-            Number(document.getElementById("leftoverAdded").value),
+        Number(document.getElementById("leftoverAdded").value),
+        
+        otherIngredients:
+        Number(document.getElementById("otherIngredients").value),
 
         notes:
             document.getElementById("notes").value,
@@ -221,7 +225,8 @@ function addOperatorRow(){
     const button =
         document.createElement("button");
 
-    button.textContent = "🗑";
+    button.innerHTML =
+        '<i class="fa-solid fa-trash-can"></i>';
 
     button.onclick = () => {
 
@@ -269,6 +274,8 @@ function resetForm() {
     document.getElementById("initialWeight").value = "";
 
     document.getElementById("leftoverAdded").value = 0;
+    
+    document.getElementById("otherIngredients").value = 0;
 
     document.getElementById("notes").value = "";
 
@@ -315,12 +322,35 @@ function renderRecentBatches(batches) {
         // =====================
         // FECHA
         // =====================
-
+        
         const tdDate =
-            document.createElement("td");
-
+        document.createElement("td");
+        
+        const [year, month, day] =
+        batch.productionDate.split("-");
+        
         tdDate.textContent =
-            batch.productionDate;
+        `${day}/${month}/${year}`;
+
+        // =====================
+        // HORA
+        // =====================
+
+        const tdHour =
+            document.createElement("td");
+            
+            tdHour.textContent =
+            batch.hour
+            ? new Date(batch.hour).toLocaleTimeString(
+                window.appSettings.system.locale,
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                    timeZone: window.appSettings.system.timezone
+                }
+            )
+            : "";
 
         // =====================
         // TURNO
@@ -343,6 +373,16 @@ function renderRecentBatches(batches) {
             batch.operators.join(", ");
 
         // =====================
+        // RECETA
+        // =====================
+
+        const tdRecipe =
+            document.createElement("td");
+
+        tdRecipe.textContent =
+            batch.recipe ?? "";
+
+        // =====================
         // PRODUCTOS
         // =====================
 
@@ -362,7 +402,8 @@ function renderRecentBatches(batches) {
         const button =
             document.createElement("button");
 
-        button.textContent = "✏️";
+        button.innerHTML =
+            '<i class="fa-solid fa-pen-to-square"></i>';
 
         button.onclick = () => {
 
@@ -372,9 +413,15 @@ function renderRecentBatches(batches) {
 
         tdEdit.appendChild(button);
 
+        // =====================
+        // ORDEN DE COLUMNAS
+        // =====================
+
         tr.appendChild(tdDate);
+        tr.appendChild(tdHour);
         tr.appendChild(tdShift);
         tr.appendChild(tdOperators);
+        tr.appendChild(tdRecipe);
         tr.appendChild(tdProducts);
         tr.appendChild(tdEdit);
 
@@ -403,6 +450,9 @@ function fillForm(batch) {
 
     document.getElementById("leftoverAdded").value =
         batch.leftoverAdded;
+
+    document.getElementById("otherIngredients").value =
+    batch.otherIngredients;
 
     document.getElementById("notes").value =
         batch.notes ?? "";

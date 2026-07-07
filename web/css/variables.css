@@ -1,0 +1,52 @@
+/* ==========================================
+   EPSM Manager Design System
+========================================== */
+
+:root{
+
+    /* Brand */
+
+    --color-primary:#C61E1E;
+    --color-primary-dark:#A51818;
+
+    --color-secondary:#2F5A36;
+    --color-secondary-dark:#214227;
+
+    /* Background */
+
+    --color-background:#F8F5EF;
+    --color-surface:#FFFFFF;
+
+    /* Tables */
+
+    --color-table-header:#F6F0DE;
+
+    /* Borders */
+
+    --color-border:#E6DCC7;
+
+    /* Text */
+
+    --color-text:#2F2F2F;
+    --color-text-light:#666666;
+
+    /* Effects */
+
+    --shadow-card:
+        0 6px 18px rgba(0,0,0,.08);
+
+    --shadow-hover:
+        0 8px 22px rgba(0,0,0,.12);
+
+    --radius:12px;
+
+    --transition:.20s ease;
+
+    /* Fonts */
+
+    --font-family:
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
+}

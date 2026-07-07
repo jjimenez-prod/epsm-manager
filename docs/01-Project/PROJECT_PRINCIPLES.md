@@ -190,3 +190,9 @@ Short-term shortcuts that compromise maintainability are discouraged.
 Every design decision should remain valid for several years.
 
 The platform should grow by extending existing foundations instead of replacing them.
+
+EPSM Manager should be designed to support future business growth without requiring major architectural changes.
+
+Features should only be implemented when they provide business value.
+
+However, the underlying architecture should remain prepared for foreseeable future requirements.
