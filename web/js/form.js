@@ -116,13 +116,18 @@ function collectFormData() {
         const quantityInput =
             row.querySelector("input");
 
-        products.push({
+    const product =
+    productsCatalog.find(
+        p => p.id === productSelect.value
+    );
+    
+    products.push({
+        productId: productSelect.value,
+        quantity: Number(quantityInput.value),
+        productGrammage:
+        product.grammage_g
+    });
 
-            productId: productSelect.value,
-
-            quantity: Number(quantityInput.value)
-
-        });
 
     });
 
@@ -164,11 +169,17 @@ function collectFormData() {
         initialWeight:
             Number(document.getElementById("initialWeight").value),
 
+        flour:
+            Number(document.getElementById("flour").value),
+            
+        water:
+            Number(document.getElementById("water").value),
+
         leftoverAdded:
-        Number(document.getElementById("leftoverAdded").value),
+            Number(document.getElementById("leftoverAdded").value),
         
         otherIngredients:
-        Number(document.getElementById("otherIngredients").value),
+            Number(document.getElementById("otherIngredients").value),
 
         notes:
             document.getElementById("notes").value,
@@ -272,6 +283,10 @@ function resetForm() {
     document.getElementById("recipe").selectedIndex = -1;
 
     document.getElementById("initialWeight").value = "";
+
+    document.getElementById("flour").value = "";
+    
+    document.getElementById("water").value = "";
 
     document.getElementById("leftoverAdded").value = 0;
     
@@ -447,6 +462,12 @@ function fillForm(batch) {
 
     document.getElementById("initialWeight").value =
         batch.initialWeight;
+        
+    document.getElementById("flour").value =
+        batch.flour;
+    
+    document.getElementById("water").value =
+        batch.water;
 
     document.getElementById("leftoverAdded").value =
         batch.leftoverAdded;

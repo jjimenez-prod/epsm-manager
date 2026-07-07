@@ -192,6 +192,12 @@ footer{
 
     }
 
+    .logo img{
+        width:320px;
+        
+    }
+        
+
 }
 
 /* =====================================================
@@ -202,33 +208,39 @@ footer{
 
     .page-header{
 
-        grid-template-columns:1fr;
-        gap:25px;
+        display:flex;
+        flex-direction:column;
+
+        justify-content:center;
+        align-items:center;
+
+        gap:20px;
+
+        min-height:auto;
+
         text-align:center;
 
     }
 
     .logo{
 
-        justify-content:center;
+        position:static;
+
+        transform:none;
 
     }
 
     .logo img{
 
-        max-width:320px;
-
-    }
-
-    .main-layout{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .title-divider{
-
         width:280px;
+        max-width:80vw;
+        height:auto;
+
+    }
+
+    .title{
+
+        width:100%;
 
     }
 
@@ -241,6 +253,18 @@ footer{
     .subtitle{
 
         font-size:24px;
+
+    }
+
+    .title-divider{
+
+        width:280px;
+
+    }
+
+    .main-layout{
+
+        grid-template-columns:1fr;
 
     }
 

@@ -16,15 +16,19 @@ async function saveProduction(formData) {
                 recipe_id: formData.recipeId,
 
                 initial_weight_g: formData.initialWeight,
-
+                
+                flour_g: formData.flour,
+                
+                water_g: formData.water,
+                
                 leftover_added_g: formData.leftoverAdded,
-
+                
                 other_ingredients_g: formData.otherIngredients,
                 
                 notes: formData.notes
 
             }])
-            .select()
+                .select()
             .single();
 
     if (batchError)
@@ -60,7 +64,9 @@ async function saveProduction(formData) {
 
         product_id: product.productId,
 
-        quantity: product.quantity
+        quantity: product.quantity,
+        
+        product_grammage_g: product.productGrammage,
 
     }));
 
@@ -95,7 +101,13 @@ async function updateProduction(batchId, formData) {
 
                 initial_weight_g: formData.initialWeight,
 
+                flour_g: formData.flour,
+
+                water_g: formData.water,
+                
                 leftover_added_g: formData.leftoverAdded,
+
+                other_ingredients_g: formData.otherIngredients,
 
                 notes: formData.notes
 
@@ -161,7 +173,9 @@ async function updateProduction(batchId, formData) {
 
         product_id: product.productId,
 
-        quantity: product.quantity
+        quantity: product.quantity,
+
+        product_grammage_g: product.productGrammage,
 
     }));
 
