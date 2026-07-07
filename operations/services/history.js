@@ -13,12 +13,13 @@ async function getRecentBatches(limit = 10) {
             id,
             production_date,
             created_at,
+            updated_at,
             initial_weight_g,
             shift:shifts(name),
             recipe:recipes(display_name)
             `)
 
-            .order("production_date", { ascending: false })
+            .order("updated_at", { ascending: false })
 
             .limit(limit);
 
@@ -85,7 +86,9 @@ async function getRecentBatches(limit = 10) {
 
             id: batch.id,
             productionDate: batch.production_date,
-            hour: batch.created_at,
+            createdAt: batch.created_at,
+            updatedAt: batch.updated_at,
+            hour: batch.updated_at,
             shift: batch.shift?.name ?? "",
             recipe: batch.recipe?.display_name ?? "",
             initialWeight: batch.initial_weight_g,
