@@ -97,6 +97,7 @@ function addProductionRow(){
     tbody.appendChild(tr);
 
 }
+
 function collectFormData() {
 
     // =====================
@@ -106,7 +107,7 @@ function collectFormData() {
     const productRows =
         document.querySelectorAll("#productionTable tr");
 
-    const products = [];
+    const production_items = [];
 
     productRows.forEach(row => {
 
@@ -116,18 +117,13 @@ function collectFormData() {
         const quantityInput =
             row.querySelector("input");
 
-    const product =
-    productsCatalog.find(
-        p => p.id === productSelect.value
-    );
-    
-    products.push({
-        productId: productSelect.value,
-        quantity: Number(quantityInput.value),
-        productGrammage:
-        product.grammage_g
-    });
+        production_items.push({
 
+            product_id: productSelect.value,
+
+            quantity: Number(quantityInput.value)
+
+        });
 
     });
 
@@ -145,46 +141,75 @@ function collectFormData() {
         const select =
             row.querySelector("select");
 
-        operators.push(select.value);
+        operators.push({
+
+            operator_id: select.value
+
+        });
 
     });
 
     // =====================
-    // FORMULARIO
+    // RECETA
+    // =====================
+
+    const recipeSelect =
+        document.getElementById("recipe");
+
+    const recipeType =
+        recipeSelect.options[
+            recipeSelect.selectedIndex
+        ]?.dataset.type;
+
+    const recipe = {
+
+        recipe_id: recipeSelect.value,
+
+        leftover_added_g:
+            Number(document.getElementById("leftoverAdded").value),
+
+        leftover_remaining_g: 0
+
+    };
+
+    if (recipeType === "STANDARD") {
+
+        recipe.standard_dough_count =
+            Number(document.getElementById("standardDoughCount").value);
+
+    } else {
+
+        recipe.flour_g =
+            Number(document.getElementById("flour").value);
+
+        recipe.water_g =
+            Number(document.getElementById("water").value);
+
+        recipe.other_ingredients_g =
+            Number(document.getElementById("otherIngredients").value);
+
+    }
+
+    // =====================
+    // PAYLOAD
     // =====================
 
     return {
 
-        productionDate:
+        production_date:
             document.getElementById("productionDate").value,
 
-        shiftId:
+        shift_id:
             document.getElementById("shift").value,
+
+        recipe,
 
         operators,
 
-        recipeId:
-            document.getElementById("recipe").value,
-
-        initialWeight:
-            Number(document.getElementById("initialWeight").value),
-
-        flour:
-            Number(document.getElementById("flour").value),
-            
-        water:
-            Number(document.getElementById("water").value),
-
-        leftoverAdded:
-            Number(document.getElementById("leftoverAdded").value),
-        
-        otherIngredients:
-            Number(document.getElementById("otherIngredients").value),
+        production_items,
 
         notes:
-            document.getElementById("notes").value,
-
-        products
+            document.getElementById("notes").value
 
     };
 
@@ -281,6 +306,7 @@ function resetForm() {
     document.getElementById("shift").selectedIndex = -1;
 
     document.getElementById("recipe").selectedIndex = -1;
+    document.getElementById("standardDoughCount").value = 1;
 
     document.getElementById("initialWeight").value = "";
 
@@ -294,10 +320,8 @@ function resetForm() {
 
     document.getElementById("notes").value = "";
 
-    document.getElementById("flour").value = "";
-
-    document.getElementById("water").value = "";
-
+    document.getElementById("standardRecipe").style.display = "none";
+    
     document.getElementById("specialRecipe").style.display = "none";
 
     // =====================
@@ -393,9 +417,10 @@ function renderRecentBatches(batches) {
 
         const tdRecipe =
             document.createElement("td");
-
+            
         tdRecipe.textContent =
-            batch.recipe ?? "";
+            batch.manufacturedProducts ?? "";
+
 
         // =====================
         // PRODUCTOS
@@ -458,22 +483,31 @@ function fillForm(batch) {
         batch.shiftId;
 
     document.getElementById("recipe").value =
-        batch.recipeId;
+        batch.recipe.recipe_id;
 
     document.getElementById("initialWeight").value =
         batch.initialWeight;
         
-    document.getElementById("flour").value =
-        batch.flour;
-    
-    document.getElementById("water").value =
-        batch.water;
+if (batch.recipe.standard_dough_count !== undefined) {
 
-    document.getElementById("leftoverAdded").value =
-        batch.leftoverAdded;
+    document.getElementById("standardDoughCount").value =
+        batch.recipe.standard_dough_count;
+
+} else {
+
+    document.getElementById("flour").value =
+        batch.recipe.flour_g ?? "";
+
+    document.getElementById("water").value =
+        batch.recipe.water_g ?? "";
 
     document.getElementById("otherIngredients").value =
-    batch.otherIngredients;
+        batch.recipe.other_ingredients_g ?? "";
+
+}
+
+document.getElementById("leftoverAdded").value =
+    batch.recipe.leftover_added_g ?? 0;
 
     document.getElementById("notes").value =
         batch.notes ?? "";
@@ -512,7 +546,7 @@ function fillForm(batch) {
 
     productionTable.innerHTML = "";
 
-    batch.products.forEach(product => {
+    batch.production_items.forEach(product => {
 
         addProductionRow();
 
@@ -525,7 +559,7 @@ function fillForm(batch) {
         const quantity =
             lastRow.querySelector("input");
 
-        select.value = product.productId;
+        select.value = product.product_id;
 
         quantity.value = product.quantity;
 

@@ -123,3 +123,42 @@ input[type="date"]{
     line-height:48px;
 
 }
+
+/* =========================================
+   RECIPE LAYOUT
+========================================= */
+
+#standardRecipe {
+
+    display: none;
+
+}
+
+#specialRecipe {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 16px;
+
+}
+
+.recipe-summary-row {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+
+}
+#specialRecipe {
+
+    display: grid;
+
+    grid-template-columns: 0.85fr 0.85fr 1.3fr;
+
+    gap: 16px;
+
+}

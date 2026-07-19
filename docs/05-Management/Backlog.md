@@ -2,156 +2,282 @@
 
 **Project:** EPSM Manager
 
-**Version:** 1.0
+**Current Stable Version:** v1.0.0
+
+**Current Sprint:** v1.0.1
 
 **Status:** Living Document
 
-**Last Update:** 2026-07-06
+**Last Update:** 2026-07-09
 
 ---
 
-# Purpose
+# Vision
 
-This document contains future improvements identified during the project.
+EPSM Manager is a lightweight Manufacturing Execution System (MES) specialized in pizza dough production.
 
-Items included in this backlog have recognized business value but are intentionally postponed to keep the current release focused.
+The system registers **Production Events**, centralizes operational information and provides reliable data for operational analysis and future KPIs.
 
-Backlog items should not interrupt the current sprint.
+The project follows a KISS philosophy, prioritizing maintainability, scalability and a single source of truth.
 
 ---
 
-# V1.0 - Production Module
+# Current Sprint - v1.0.1
 
 ## Goal
 
-Replace the current Excel process with a reliable production registration system.
+Stabilize the first production release before adding new functional modules.
 
-### Remaining Tasks
+### Functional Improvements
 
-- Tablet UX improvements
-- Keyboard navigation
-- Searchable catalogs
-- Production history improvements
-- Dashboard V1
-- Production validation
+- [x] Rename Happy/Fanta product.
+- [x] Alphabetical product catalog.
+- [x] Increase history from 10 to 20 records.
+- [ ] Improve Products visualization in History.
+- [ ] Review History UX.
+
+### Database
+
+- [x] Remove obsolete tables.
+- [ ] Synchronize schema.sql.
+- [x] Protect catalog tables using RLS.
+- [ ] Review operational table permissions.
+
+### Security
+
+Status: In Progress
+
+- [x] Enable RLS on catalog tables.
+- [ ] Secure operational tables.
+- [ ] Auth Ready architecture.
 
 ---
 
-# V1.1 - Security & Audit
+# Technical Backlog
+
+Architecture improvements that do not directly affect end users.
+
+---
+
+## BT-001 - Production RPC
+
+Priority: High
+
+Replace direct CRUD operations with PostgreSQL RPC functions.
+
+Current
+
+Frontend
+
+↓
+
+Insert / Update / Delete
+
+↓
+
+Tables
+
+Future
+
+Frontend
+
+↓
+
+RPC
+
+↓
+
+Database
+
+Functions
+
+- save_production()
+- update_production()
+
+Benefits
+
+- Smaller attack surface.
+- Centralized business logic.
+- Simpler RLS.
+- Auth Ready.
+- Easier maintenance.
+
+Status
+
+Pending
+
+---
+
+## BT-002 - Database Versioning
+
+Priority: High
+
+Introduce database migrations.
+
+database/
+
+    schema.sql
+
+    migrations/
+
+        001_initial.sql
+
+        002_cleanup.sql
+
+        003_rls.sql
+
+        ...
+
+Status
+
+Pending
+
+---
+
+## BT-003 - Schema Synchronization
+
+Priority: Medium
+
+Keep schema.sql synchronized with the real database after every structural modification.
+
+Status
+
+In Progress
+
+---
+
+# v1.1.0 - Production Module Evolution
+
+## Goal
+
+Transform the application into a modular production system.
+
+### Production Module
+
+- Separate Form and History.
+- Navigation between modules.
+- Cleaner interface.
+- Better UX.
+
+### Production Model
+
+Officially adopt the concept of
+
+Production Event
+
+instead of
+
+Dough Batch
+
+One event may contain multiple dough mixes.
+
+Future-ready for production scaling.
+
+---
+
+# v1.2.0 - Analytics
+
+## Dashboard
+
+- Daily Production
+- Shift Performance
+- Product Distribution
+- Dough Consumption
+- Waste Indicators
+- Production Trends
+
+---
+
+## KPIs
+
+- Production Events
+- Products Produced
+- Dough Produced
+- Flour Consumption
+- Water Consumption
+- Waste Percentage
+- Operator Productivity
+
+---
+
+# v1.3.0 - Identity & Security
 
 ## Authentication
 
-Status: Future Ready
-
 - User Login
-- Password Authentication
-- User Profiles
-- Roles
 - Session Management
+- Password Recovery
 
 ---
 
 ## Roles
 
-Status: Future Ready
-
 - Administrator
 - Supervisor
 - Operator
-- Viewer
 
 ---
 
-## Audit Trail
+## Audit
 
-Status: Future Ready
-
-Store:
-
-- created_at
 - created_by
-- updated_at
 - updated_by
-- version
-
-Future Activity Log:
-
-- Entity
-- Action
-- Field Changed
-- Previous Value
-- New Value
-- Timestamp
-- User
+- Activity Log
+- Change History
+- Record Versioning
 
 ---
 
-# V1.2 - Business Intelligence
+# v2.0
 
-Status: Planned
+Future operational modules.
 
-## Business Calculation Engine
+## Production
 
-- Production Engine
-- Waste Engine
-- Performance Engine
-- Trend Engine
-- Insight Engine
+- Multi-site Production
+- Production Planning
 
----
+## Business
 
-## KPI Dashboard
-
-- Production Overview
-- Operator Performance
-- Recipe Performance
-- Shift Performance
-- Production Evolution
-- Improvement Opportunities
-
----
-
-# V1.3 - Operational Intelligence
-
-Status: Future Ready
-
-- Team Performance
-- Automatic Recommendations
-- Operational Alerts
-- KPI Targets
-- Historical Comparisons
-
----
-
-# V2.0
-
-Status: Vision
-
-Possible future modules.
-
-- Cost Analysis
 - Inventory
+- Cost Analysis
+- Purchasing
+
+## Intelligence
+
 - Forecasting
-- AI Assisted Insights
-- Mobile Version
-- Notifications
-- Reports
-- Data Export
+- AI Assisted Recommendations
+- Operational Alerts
 
 ---
 
 # Parking Lot
 
-Ideas that should not be forgotten.
+Ideas intentionally postponed.
 
-- Activity Log Viewer
-- Change Reason
 - Dark Mode
-- Dashboard Customization
-- Advanced Filters
-- Export to Excel
+- Excel Export
 - PDF Reports
-- Multi-language Support
+- Advanced Filters
+- Dashboard Customization
+- Mobile Version
+- Push Notifications
+- Multi-language
+
+---
+
+# Development Principles
+
+The project follows the following principles:
+
+- KISS First.
+- One Source of Truth.
+- Database First.
+- Auth Ready.
+- Event Driven Model.
+- No duplicated business logic.
+- Security by Default.
+- Feature before Optimization.
 
 ---
 
@@ -160,10 +286,11 @@ Ideas that should not be forgotten.
 Items should only enter the backlog if they:
 
 - Provide measurable business value.
-- Support the product vision.
-- Do not compromise the KISS philosophy.
+- Improve maintainability.
+- Support the long-term product vision.
+- Respect the KISS philosophy.
 - Are compatible with the current architecture.
 
-Items should never be implemented directly from the backlog.
+Items are never implemented directly from the backlog.
 
-Every backlog item must be prioritized before entering a sprint.
+Every item must first be prioritized and assigned to a sprint.

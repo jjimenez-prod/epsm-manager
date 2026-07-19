@@ -135,16 +135,6 @@ body{
 
 .main-layout{
 
-    display:grid;
-    grid-template-columns:minmax(360px,520px) 1fr;
-    gap:28px;
-    align-items:start;
-
-}
-
-.left-panel,
-.right-panel{
-
     display:flex;
     flex-direction:column;
     gap:24px;
@@ -267,5 +257,113 @@ footer{
         grid-template-columns:1fr;
 
     }
+
+}
+/* =====================================================
+   FORM LAYOUT V1.0.1
+===================================================== */
+
+.full-width{
+
+    width:100%;
+    margin-bottom:24px;
+
+}
+
+.info-grid{
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+
+}
+
+.form-layout{
+
+    display:grid;
+    grid-template-columns:1fr 1.5fr;
+    gap:24px;
+    margin-bottom:24px;
+
+}
+
+.compact-header{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+
+}
+
+.header-title{
+
+    display:flex;
+    align-items:center;
+
+}
+
+.header-fields{
+
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-left:auto;
+    flex-wrap:wrap;
+
+}
+
+.inline-field{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+}
+
+.inline-field label{
+
+    white-space:nowrap;
+
+}
+
+.left-column,
+.right-column{
+
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+
+}
+
+.right-column > .card{
+
+    flex:1;
+    display:flex;
+    flex-direction:column;
+
+}
+
+.right-column > .card .card-body{
+
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+
+}
+
+.right-column > .card .table-container{
+
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+
+}
+
+.right-column > .card .table-container .table{
+
+    display:table;
+    width:100%;
 
 }

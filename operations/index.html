@@ -65,93 +65,103 @@
     <!-- MAIN LAYOUT                                        -->
     <!-- ================================================= -->
 
-    <main class="main-layout">
+<main class="main-layout">
 
-        <!-- ============================================= -->
-        <!-- LEFT PANEL                                     -->
-        <!-- ============================================= -->
+    <!-- ========================================= -->
+    <!-- INFORMACIÓN GENERAL -->
+    <!-- ========================================= -->
 
-        <aside class="left-panel">
+<section class="card full-width">
+
+    <div class="card-header compact-header">
+
+        <div class="header-title">
+
+            <h2>
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                Información General
+
+            </h2>
+
+        </div>
+
+        <div class="header-fields">
+
+            <div class="inline-field">
+
+                <label class="required">
+
+                    Fecha
+
+                </label>
+
+                <input
+                    type="date"
+                    id="productionDate">
+
+            </div>
+
+            <div class="inline-field">
+
+                <label class="required">
+
+                    Turno
+
+                </label>
+
+                <select id="shift">
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+    <div class="form-layout">
+
+        <div class="left-column">
 
             <!-- ========================================= -->
-            <!-- INFORMACIÓN GENERAL                        -->
+            <!-- OPERADORES -->
             <!-- ========================================= -->
 
-            <section class="card">
+            <section class="card card-dynamic operators-card">
 
                 <div class="card-header">
 
-                    <h2>
+                    <div class="card-title">
 
-                        <i class="fa-solid fa-calendar-days"></i>
+                        <h2>
 
-                        Información General
+                            <i class="fa-solid fa-users"></i>
 
-                    </h2>
+                            Operadores
 
-                </div>
-
-                <div class="card-body">
-
-                    <div class="form-group">
-
-                        <label class="required">
-
-                            Fecha
-
-                        </label>
-
-                        <input
-                            type="date"
-                            id="productionDate">
+                        </h2>
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="card-toolbar">
 
-                        <label class="required">
+                        <button
+                            type="button"
+                            id="addOperator">
 
-                            Turno
+                            + Operador
 
-                        </label>
-
-                        <select id="shift">
-
-                        </select>
+                        </button>
 
                     </div>
 
                 </div>
 
-            </section>
-
-            <!-- ========================================= -->
-            <!-- OPERADORES                                 -->
-            <!-- ========================================= -->
-
-            <section class="card">
-
-                <div class="section-header">
-
-                    <h2>
-
-                        <i class="fa-solid fa-users"></i>
-
-                        Operadores
-
-                    </h2>
-
-                    <button
-                        type="button"
-                        id="addOperator">
-
-                        + Operador
-
-                    </button>
-
-                </div>
-
-                <div class="card-body">
+                <div class="card-content">
 
                     <div class="table-container">
 
@@ -161,15 +171,9 @@
 
                                 <tr>
 
-                                    <th>
+                                    <th>Operador</th>
 
-                                        Operador
-
-                                    </th>
-
-                                    <th width="60">
-
-                                    </th>
+                                    <th width="60"></th>
 
                                 </tr>
 
@@ -186,8 +190,10 @@
                 </div>
 
             </section>
-                        <!-- ========================================= -->
-            <!-- MASA                                       -->
+
+
+            <!-- ========================================= -->
+            <!-- MASA -->
             <!-- ========================================= -->
 
             <section class="card">
@@ -204,113 +210,138 @@
 
                 </div>
 
-                <div class="card-body">
+<div class="card-body">
 
-                    <div class="form-group">
+    <!-- ========================================= -->
+    <!-- FILA 1 -->
+    <!-- ========================================= -->
 
-                        <label class="required">
+    <div class="form-group">
 
-                            Tipo de Masa
+        <label class="required">
+            Tipo de Masa
+        </label>
 
-                        </label>
+        <select id="recipe"></select>
 
-                        <select id="recipe">
+    </div>
 
-                        </select>
+    <!-- ========================================= -->
+    <!-- FILA 2 - STANDARD -->
+    <!-- ========================================= -->
 
-                    </div>
+    <div id="standardRecipe">
 
-                    <div id="specialRecipe">
+        <div class="form-group">
 
-                        <div class="form-group">
+            <label class="required">
+                Cantidad
+            </label>
 
-                            <label class="required">
+            <input
+                type="number"
+                id="standardDoughCount"
+                min="1"
+                value="1"
+                required>
 
-                                Harina (g)
+        </div>
 
-                            </label>
+    </div>
 
-                            <input
-                                type="number"
-                                id="flour"
-                                min="0"
-                                placeholder="0">
+    <!-- ========================================= -->
+    <!-- FILA 2 - SPECIAL -->
+    <!-- ========================================= -->
 
-                        </div>
+    <div id="specialRecipe">
 
-                        <div class="form-group">
+        <div class="form-group">
 
-                            <label class="required">
+            <label class="required">
+                Harina (g)
+            </label>
 
-                                Agua (L)
+            <input
+                type="number"
+                id="flour"
+                min="0"
+                placeholder="0">
 
-                            </label>
+        </div>
 
-                            <input
-                                type="number"
-                                id="water"
-                                min="0"
-                                placeholder="0">
+        <div class="form-group">
 
-                        </div>
+            <label class="required">
+                Agua (L)
+            </label>
 
-                        <div class="form-group">
-                            
-                            <label class="required">
-                                
-                                Otros Ingredientes (g)
-                                
-                            </label>
-                            <input
-                            type="number"
-                            id="otherIngredients"
-                            min="0"
-                            placeholder="0">
-                            
-                        </div>
-                            
+            <input
+                type="number"
+                id="water"
+                min="0"
+                placeholder="0">
 
-                    </div>
+        </div>
 
-                    <div
-                        id="initialWeightContainer"
-                        class="form-group">
+        <div class="form-group">
 
-                        <label>
+            <label class="required">
+                Otros Ingredientes (g)
+            </label>
 
-                            Peso Inicial (g)
+            <input
+                type="number"
+                id="otherIngredients"
+                min="0"
+                placeholder="0">
 
-                        </label>
+        </div>
 
-                        <input
-                            type="number"
-                            id="initialWeight"
-                            readonly>
+    </div>
 
-                    </div>
+    <!-- ========================================= -->
+    <!-- FILA 3 -->
+    <!-- ========================================= -->
 
-                    <div class="form-group">
+    <div class="recipe-summary-row">
 
-                        <label>
+        <div
+            id="initialWeightContainer"
+            class="form-group">
 
-                            Masa Sobrante Agregada (g)
+            <label>
+                Peso Inicial (g)
+            </label>
 
-                        </label>
+            <input
+                type="number"
+                id="initialWeight"
+                readonly>
 
-                        <input
-                            type="number"
-                            id="leftoverAdded"
-                            min="0"
-                            placeholder="0">
+        </div>
 
-                    </div>
+        <div class="form-group">
 
-                </div>
+            <label>
+                Masa Sobrante Agregada (g)
+            </label>
+
+            <input
+                type="number"
+                id="leftoverAdded"
+                min="0"
+                placeholder="0">
+
+        </div>
+
+    </div>
+
+</div>
 
             </section>
-
-            <!-- ========================================= -->
-            <!-- OBSERVACIONES                              -->
+            
+         <!-- ========================================= -->
+            <!-- OBSERVACIONES -->
             <!-- ========================================= -->
 
             <section class="card">
@@ -331,49 +362,54 @@
 
                     <div class="form-group">
 
-                        <textarea id="notes" placeholder="Observaciones adicionales..."></textarea>
+                        <textarea
+                            id="notes"
+                            placeholder="Observaciones adicionales..."></textarea>
 
                     </div>
 
                 </div>
 
             </section>
+          
+        </div>
 
-        </aside>
-
-        <!-- ============================================= -->
-        <!-- RIGHT PANEL                                   -->
-        <!-- ============================================= -->
-
-        <section class="right-panel">
-
-            <!-- ========================================= -->
-            <!-- PRODUCCIÓN                                 -->
+        <div class="right-column">
+           <!-- ========================================= -->
+            <!-- PRODUCCIÓN -->
             <!-- ========================================= -->
 
-            <section class="card">
+            <section class="card card-dynamic production-card">
 
-                <div class="section-header">
+                <div class="card-header">
 
-                    <h2>
+                    <div class="card-title">
 
-                        <i class="fa-solid fa-bread-slice"></i>
+                        <h2>
 
-                        Producción
+                            <i class="fa-solid fa-bread-slice"></i>
 
-                    </h2>
+                            Producción
 
-                    <button
-                        type="button"
-                        id="addProduct">
+                        </h2>
 
-                        + Producto
+                    </div>
 
-                    </button>
+                    <div class="card-toolbar">
+
+                        <button
+                            type="button"
+                            id="addProduct">
+
+                            + Producto
+
+                        </button>
+
+                    </div>
 
                 </div>
 
-                <div class="card-body">
+                <div class="card-content">
 
                     <div class="table-container">
 
@@ -383,23 +419,11 @@
 
                                 <tr>
 
-                                    <th>
+                                    <th>Producto</th>
 
-                                        Producto
+                                    <th width="140">Cantidad</th>
 
-                                    </th>
-
-                                    <th width="140">
-
-                                        Cantidad
-
-                                    </th>
-
-                                    <th width="70">
-
-                                        Acción
-
-                                    </th>
+                                    <th width="70">Acción</th>
 
                                 </tr>
 
@@ -412,7 +436,12 @@
                         </table>
 
                     </div>
-                                        <button
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button
                         type="button"
                         id="saveButton">
 
@@ -426,95 +455,69 @@
 
             </section>
 
-            <!-- ========================================= -->
-            <!-- HISTORIAL                                 -->
-            <!-- ========================================= -->
 
-            <section class="card history-card">
+        </div>
 
-                <div class="card-header">
+    </div>
 
-                    <h2>
+</main>
+ <!-- ========================================= -->
+<!-- HISTORIAL                                 -->
+<!-- ========================================= -->
 
-                        <i class="fa-solid fa-clock-rotate-left"></i>
+<section class="card history-card">
 
-                        Últimos Registros
+    <div class="card-header">
 
-                    </h2>
+        <h2>
 
-                </div>
+            <i class="fa-solid fa-clock-rotate-left"></i>
 
-                <div class="card-body">
+            Últimos Registros
 
-                    <div class="table-container">
+        </h2>
 
-                        <table class="table">
+    </div>
 
-                            <thead>
+    <div class="card-body">
 
-                                <tr>
+        <div class="table-container">
 
-                                    <th width="120">
+            <table class="table">
 
-                                        Fecha
+                <thead>
 
-                                    </th>
+                    <tr>
 
-                                    <th width="90">
+                        <th width="120">Fecha</th>
 
-                                        Última actividad
+                        <th width="90">Última actividad</th>
 
-                                    </th>
+                        <th width="100">Turno</th>
 
-                                    <th width="100">
+                        <th>Operadores</th>
 
-                                        Turno
+                        <th width="150">Productos Fabricados</th>
 
-                                    </th>
+                        <th width="110">Productos</th>
 
-                                    <th>
+                        <th width="90">Acción</th>
 
-                                        Operadores
+                    </tr>
 
-                                    </th>
+                </thead>
 
-                                    <th width="150">
+                <tbody id="tablaRegistros">
 
-                                        Receta
+                </tbody>
 
-                                    </th>
+            </table>
 
-                                    <th width="110">
+        </div>
 
-                                        Productos
+    </div>
 
-                                    </th>
-
-                                    <th width="90">
-
-                                        Acción
-
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody id="tablaRegistros">
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </section>
-
-    </main>
+</section>
 
     <!-- ========================================= -->
     <!-- FOOTER                                    -->

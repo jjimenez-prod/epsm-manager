@@ -37,20 +37,20 @@ function initializeRecipeBehaviour() {
         .getElementById("flour")
         .addEventListener(
             "input",
-            calculateRecipeWeight
+            calculateInitialWeight
         );
 
     document
         .getElementById("water")
         .addEventListener(
             "input",
-            calculateRecipeWeight
+            calculateInitialWeight
         );
     document
         .getElementById("otherIngredients")
         .addEventListener(
             "input",
-            calculateRecipeWeight
+            calculateInitialWeight
     );
 
     updateRecipeBehaviour();
@@ -69,29 +69,34 @@ function updateRecipeBehaviour() {
 
     const specialDiv =
         document.getElementById("specialRecipe");
+    
+        const standardDiv =
+        document.getElementById("standardRecipe");
 
     const initialWeight =
         document.getElementById("initialWeight");
 
-    if (recipe.auto_calculate) {
+if (recipe.auto_calculate) {
 
-        specialDiv.style.display = "block";
+    standardDiv.style.display = "none";
+    specialDiv.style.display = "grid";
 
-        initialWeight.readOnly = true;
+    initialWeight.readOnly = true;
 
-        calculateRecipeWeight();
+    calculateInitialWeight();
 
-    }
-    else {
+}
+else {
 
-        specialDiv.style.display = "none";
+    standardDiv.style.display = "block";
+    specialDiv.style.display = "none";
 
-        initialWeight.readOnly = true;
+    initialWeight.readOnly = true;
 
-        initialWeight.value =
-            recipe.default_initial_weight_g ?? "";
+    initialWeight.value =
+        recipe.default_initial_weight_g ?? "";
 
-    }
+}
 
 }
 
@@ -99,7 +104,7 @@ function updateRecipeBehaviour() {
 // CALCULATIONS
 // =====================
 
-function calculateRecipeWeight() {
+function calculateInitialWeight() {
 
     const recipe = getSelectedRecipe();
 

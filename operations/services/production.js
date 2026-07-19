@@ -1,84 +1,29 @@
-async function saveProduction(formData) {
+async function saveProduction(payload) {
 
-    // =====================
-    // CREAR LOTE
-    // =====================
+    const { data, error } =
+        await window.supabaseClient.rpc(
 
-    const { data: batch, error: batchError } =
-        await window.supabaseClient
-            .from("dough_batches")
-            .insert([{
+            "create_production_batch",
 
-                production_date: formData.productionDate,
+            {
+                payload
+            }
 
-                shift_id: formData.shiftId,
+        );
 
-                recipe_id: formData.recipeId,
+    if (error) {
 
-                initial_weight_g: formData.initialWeight,
-                
-                flour_g: formData.flour,
-                
-                water_g: formData.water,
-                
-                leftover_added_g: formData.leftoverAdded,
-                
-                other_ingredients_g: formData.otherIngredients,
-                
-                notes: formData.notes
+        throw error;
 
-            }])
-                .select()
-            .single();
+    }
 
-    if (batchError)
-        throw batchError;
+    if (!data.success) {
 
-    // =====================
-    // OPERADORES
-    // =====================
+        throw data;
 
-    const operators = formData.operators.map(operatorId => ({
+    }
 
-        batch_id: batch.id,
-
-        operator_id: operatorId
-
-    }));
-
-    const { error: operatorsError } =
-        await window.supabaseClient
-            .from("batch_operators")
-            .insert(operators);
-
-    if (operatorsError)
-        throw operatorsError;
-
-    // =====================
-    // PRODUCTOS
-    // =====================
-
-    const items = formData.products.map(product => ({
-
-        batch_id: batch.id,
-
-        product_id: product.productId,
-
-        quantity: product.quantity,
-        
-        product_grammage_g: product.productGrammage,
-
-    }));
-
-    const { error: itemsError } =
-        await window.supabaseClient
-            .from("production_items")
-            .insert(items);
-
-    if (itemsError)
-        throw itemsError;
-
-    return batch.id;
+    return data.batch_id;
 
 }
 

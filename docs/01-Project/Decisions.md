@@ -356,3 +356,29 @@ Examples:
 - Notifications
 
 ---
+
+# ADR-016
+
+Use RPC instead of frontend inserts.
+
+Reason
+
+- Atomic transactions
+- Single source of truth
+- Better security
+
+Status
+
+Accepted
+
+# ADR-017
+
+Production Snapshot
+
+Accepted
+
+# ADR-018
+
+Recipe Versioning
+
+Accepted
