@@ -418,9 +418,8 @@ function renderRecentBatches(batches) {
         const tdRecipe =
             document.createElement("td");
             
-        tdRecipe.textContent =
-            batch.manufacturedProducts ?? "";
-
+        tdRecipe.innerHTML =
+        batch.manufacturedProducts ?? "";
 
         // =====================
         // PRODUCTOS

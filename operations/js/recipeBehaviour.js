@@ -70,7 +70,7 @@ function updateRecipeBehaviour() {
     const specialDiv =
         document.getElementById("specialRecipe");
     
-        const standardDiv =
+    const standardDiv =
         document.getElementById("standardRecipe");
 
     const initialWeight =

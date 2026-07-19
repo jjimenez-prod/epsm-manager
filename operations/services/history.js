@@ -1,4 +1,4 @@
-async function getRecentBatches(limit = 20) {
+async function getRecentBatches(limit = 30) {
 
     // =====================
     // LOTES
@@ -84,10 +84,13 @@ async function getRecentBatches(limit = 20) {
             .reduce((sum, item) => sum + item.quantity, 0);
         const manufacturedProducts = productionItems
             .filter(item => item.batch_id === batch.id)
-            .map(item =>
-                `${item.product.name} ×${item.quantity}`
-            )
-            .join(", ");
+            .map(item => `
+        <div class="history-product">
+            <span class="history-quantity">×${item.quantity}</span>
+             <span>${item.product.name}</span>
+            </div>
+    `)
+    .join("");
         
         return {
 

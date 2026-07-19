@@ -61,3 +61,91 @@
     overflow:hidden;
 
 }
+/* =========================================
+
+   HISTORY SCROLL
+
+========================================= */
+
+.history-card .table-container{
+
+    max-height: 700px;
+
+    overflow-y: auto;
+
+}
+.history-card thead th{
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 10;
+
+    background: #F5EFE0;
+
+}
+.history-card td {
+
+    vertical-align: top;
+
+}
+
+.history-card td:nth-child(5) {
+
+    white-space: normal;
+
+    line-height: 1.4;
+
+}
+/* =========================================
+   HISTORY PRODUCTS
+========================================= */
+
+.history-product {
+
+    display: flex;
+
+    justify-content: flex-start;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 6px;
+
+}
+
+.history-product:last-child {
+
+    margin-bottom: 0;
+
+}
+
+.history-quantity {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 46px;
+
+    padding: 2px 8px;
+
+    border-radius: 999px;
+
+    background: #F5EFE0;
+
+    border: 1px solid var(--color-border);
+
+    color: var(--color-secondary);
+
+    font-weight: 700;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+
+}
