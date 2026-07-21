@@ -162,4 +162,11 @@ window.editBatch = async function (batchId) {
         .getElementById("saveButton")
         .textContent = "Actualizar Producción";
 
+document
+    .getElementById("generalInformation")
+    .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
 };

@@ -6,6 +6,9 @@ function getFriendlyError(error) {
     const message =
         error?.message ?? "";
 
+    const field =
+        error?.details?.field ?? "";
+
     // =====================
     // Business Errors
     // =====================
@@ -39,8 +42,48 @@ function getFriendlyError(error) {
         case "BATCH_NOT_FOUND":
             return "La producción que intentas editar ya no existe.";
 
+        // =====================
+        // Payload Validation
+        // =====================
+
         case "INVALID_PAYLOAD":
-            return message;
+
+            switch (field) {
+
+                case "production_date":
+                    return "Debe seleccionar una fecha de producción.";
+
+                case "shift_id":
+                    return "Debe seleccionar un turno.";
+
+                case "recipe.recipe_id":
+                    return "Debe seleccionar un tipo de masa.";
+
+                case "recipe.standard_dough_count":
+                    return "Debe indicar la cantidad de masas estándar.";
+
+                case "recipe.flour_g":
+                    return "Debe ingresar la cantidad de harina.";
+
+                case "recipe.water_g":
+                    return "Debe ingresar la cantidad de agua.";
+
+                case "recipe.other_ingredients_g":
+                    return "Debe ingresar la cantidad de otros ingredientes.";
+
+                case "recipe.leftover_added_g":
+                    return "Debe ingresar la masa sobrante agregada.";
+
+                case "operators":
+                    return "Debe seleccionar al menos un operador.";
+
+                case "production_items":
+                    return "Debe agregar al menos un producto.";
+
+                default:
+                    return "El formulario contiene datos incompletos o inválidos.";
+
+            }
 
         default:
             break;
@@ -57,9 +100,27 @@ function getFriendlyError(error) {
 
     }
 
+    if (message.includes("uq_batch_operator")) {
+
+        return "El mismo operador no puede agregarse dos veces en una producción.";
+
+    }
+
     if (message.includes("foreign key")) {
 
         return "Existe un dato inválido en el formulario.";
+
+    }
+
+    if (message.includes("duplicate key")) {
+
+        return "Ya existe un registro con esos datos.";
+
+    }
+
+    if (message.includes("not-null")) {
+
+        return "Faltan datos obligatorios en el formulario.";
 
     }
 
