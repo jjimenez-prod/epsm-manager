@@ -40,7 +40,7 @@ body{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:24px;
+    gap:20px;
     padding:14px 0 16px;
     margin-bottom:24px;
     border-bottom:1px solid var(--color-border);
@@ -51,14 +51,29 @@ body{
 
 .logo{
 
+    display:flex;
+    align-items:center;
     position:static;
     transform:none;
     flex-shrink:0;
 
 }
+
+.logo::after{
+
+    content:"";
+    width:2px;
+    height:64px;
+    margin-left:8px;
+    border-radius:999px;
+    background:rgba(47,90,54,.28);
+    flex-shrink:0;
+
+}
+
 .logo img{
 
-    width:180px;
+    width:210px;
     height:auto;
     display:block;
 
@@ -82,7 +97,7 @@ body{
     color:var(--color-secondary);
     font-weight:700;
     letter-spacing:-1px;
-    margin-bottom:2px;
+    margin-bottom:10px;
     line-height:1.1;
 
 }
@@ -99,8 +114,8 @@ body{
 .header-meta{
 
     display:flex;
-    align-items:center;
-    gap:16px;
+    align-items:flex-start;
+    gap:20px;
     flex-shrink:0;
     margin-left:auto;
 
@@ -110,6 +125,21 @@ body{
 .header-meta select{
 
     min-width:140px;
+
+}
+
+.page-header .inline-field{
+
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+    min-width:140px;
+
+}
+
+.page-header .inline-field label{
+
+    margin-bottom:0;
 
 }
 
@@ -167,7 +197,7 @@ footer{
 
 
     .logo img{
-        width:320px;
+        width:180px;
         
     }
         

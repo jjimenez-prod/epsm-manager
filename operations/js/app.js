@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =====================
 
     await loadSettings();
+
     console.log(window.appSettings);
     console.log(window.appSettings.system);
 
@@ -72,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     alert("Producción registrada correctamente.");
 
                 }
+
                 else {
 
                     await updateProduction(
@@ -94,21 +96,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // =====================
 
                 resetForm();
+
                 initializeEmptyForm();
 
                 // =====================
                 // ACTUALIZAR HISTORIAL
                 // =====================
 
-                const recent =
-                    await getRecentBatches();
-
-                renderRecentBatches(recent);
+                await refreshHistory();
 
             }
-            catch (error) {
 
-                console.error(error);
+            catch (error) {
 
                 alert(getFriendlyError(error));
 
@@ -124,11 +123,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     addProductionRow();
 
-// =====================
-// INITIALIZE FORM
-// =====================
+    // =====================
+    // INITIALIZE FORM
+    // =====================
 
-initializeEmptyForm();
+    initializeEmptyForm();
 
     // =====================
     // COMPORTAMIENTO FORMULARIO
@@ -140,11 +139,41 @@ initializeEmptyForm();
     // HISTORIAL
     // =====================
 
-    const recent = await getRecentBatches();
+    await refreshHistory();
 
-    renderRecentBatches(recent);
+    // =====================
+    // AUTO REFRESH HISTORY
+    // =====================
+
+    setInterval(refreshHistory, 30000);
 
 });
+
+// =====================
+// REFRESH HISTORY
+// =====================
+
+async function refreshHistory() {
+
+    try {
+
+        const recent =
+            await getRecentBatches();
+
+        renderRecentBatches(recent);
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "History refresh failed:",
+            error
+        );
+
+    }
+
+}
 
 // =====================
 // EDITAR
@@ -152,21 +181,27 @@ initializeEmptyForm();
 
 window.editBatch = async function (batchId) {
 
-    const batch = await getBatch(batchId);
+    const batch =
+        await getBatch(batchId);
 
-    editingBatchId = batch.id;
+    editingBatchId =
+        batch.id;
 
     fillForm(batch);
 
     document
         .getElementById("saveButton")
-        .textContent = "Actualizar Producción";
+        .textContent =
+        "Actualizar Producción";
 
-document
-    .getElementById("generalInformation")
-    .scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+    document
+        .querySelector(".page-header")
+        ?.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "start"
+
+        });
 
 };
