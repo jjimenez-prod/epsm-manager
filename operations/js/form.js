@@ -347,6 +347,36 @@ function resetForm() {
     addProductionRow();
 
 }
+function formatDateTime(dateTime) {
+
+    const date = new Date(dateTime);
+
+    const formattedDate = date.toLocaleDateString(
+        window.appSettings.system.locale,
+        {
+            timeZone: window.appSettings.system.timezone
+        }
+    );
+
+    const formattedTime = date.toLocaleTimeString(
+        window.appSettings.system.locale,
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: window.appSettings.system.timezone
+        }
+    );
+
+    return `
+    <div>${formattedDate}</div>
+    <div class="history-time">
+    <i class="fa-regular fa-clock"></i>
+    ${formattedTime}
+    </div>
+`;
+
+}
 function renderRecentBatches(batches) {
 
     const tbody =
@@ -362,14 +392,13 @@ function renderRecentBatches(batches) {
         // FECHA
         // =====================
         
-        const tdDate =
-        document.createElement("td");
-        
-        const [year, month, day] =
-        batch.productionDate.split("-");
-        
-        tdDate.textContent =
-        `${day}/${month}/${year}`;
+    const tdDate =
+
+    document.createElement("td");
+
+    tdDate.innerHTML =
+
+    formatDateTime(batch.createdAt);
 
         // =====================
         // HORA
@@ -378,18 +407,11 @@ function renderRecentBatches(batches) {
         const tdHour =
             document.createElement("td");
             
-            tdHour.textContent =
-            batch.hour
-            ? new Date(batch.hour).toLocaleTimeString(
-                window.appSettings.system.locale,
-                {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                    timeZone: window.appSettings.system.timezone
-                }
-            )
-            : "";
+          tdHour.innerHTML =
+
+        batch.updatedAt
+        ? formatDateTime(batch.updatedAt)
+        : "";
 
         // =====================
         // TURNO
