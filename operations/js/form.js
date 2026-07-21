@@ -327,11 +327,11 @@ function resetForm() {
     // CAMPOS
     // =====================
 
-    document.getElementById("shift").selectedIndex = -1;
+    document.getElementById("shift").selectedIndex = 0;
 
-    document.getElementById("recipe").selectedIndex = -1;
+    document.getElementById("recipe").selectedIndex = 0;
     
-    document.getElementById("standardDoughCount").value = 1;
+    document.getElementById("standardDoughCount").value = "";
 
     document.getElementById("initialWeight").value = "";
 
@@ -615,4 +615,21 @@ document.getElementById("leftoverAdded").value =
     isLoadingForm = false;
 
     calculateInitialWeight();
+}
+// =====================
+
+// INITIALIZE FORM
+
+// =====================
+
+function initializeEmptyForm() {
+
+    document.getElementById("shift").selectedIndex = 0;
+
+    document.getElementById("recipe").selectedIndex = 0;
+
+    updateRecipeBehaviour();
+
+    calculateInitialWeight();
+
 }

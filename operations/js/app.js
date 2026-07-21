@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // =====================
 
                 resetForm();
+                initializeEmptyForm();
 
                 // =====================
                 // ACTUALIZAR HISTORIAL
@@ -122,6 +123,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     addOperatorRow();
 
     addProductionRow();
+
+// =====================
+// INITIALIZE FORM
+// =====================
+
+initializeEmptyForm();
 
     // =====================
     // COMPORTAMIENTO FORMULARIO
