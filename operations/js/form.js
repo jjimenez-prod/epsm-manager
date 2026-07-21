@@ -1,5 +1,17 @@
 let productsCatalog = [];
 
+// =====================
+
+// FORM STATE
+
+// =====================
+
+let isLoadingForm = false;
+
+// =====================
+// GENERIC SELECT
+// =====================
+
 function fillSelect(selectId, data, valueField, textField) {
 
     const select = document.getElementById(selectId);
@@ -13,7 +25,19 @@ function fillSelect(selectId, data, valueField, textField) {
         const option = document.createElement("option");
 
         option.value = item[valueField];
+
         option.textContent = item[textField];
+
+        // =====================
+        // OPTIONAL METADATA
+        // =====================
+
+        if (item.recipe_type) {
+
+            option.dataset.type =
+                item.recipe_type;
+
+        }
 
         select.appendChild(option);
 
@@ -97,6 +121,7 @@ function addProductionRow(){
     tbody.appendChild(tr);
 
 }
+
 function collectFormData() {
 
     // =====================
@@ -106,7 +131,7 @@ function collectFormData() {
     const productRows =
         document.querySelectorAll("#productionTable tr");
 
-    const products = [];
+    const production_items = [];
 
     productRows.forEach(row => {
 
@@ -116,18 +141,13 @@ function collectFormData() {
         const quantityInput =
             row.querySelector("input");
 
-    const product =
-    productsCatalog.find(
-        p => p.id === productSelect.value
-    );
-    
-    products.push({
-        productId: productSelect.value,
-        quantity: Number(quantityInput.value),
-        productGrammage:
-        product.grammage_g
-    });
+        production_items.push({
 
+            product_id: productSelect.value,
+
+            quantity: Number(quantityInput.value)
+
+        });
 
     });
 
@@ -145,46 +165,75 @@ function collectFormData() {
         const select =
             row.querySelector("select");
 
-        operators.push(select.value);
+        operators.push({
+
+            operator_id: select.value
+
+        });
 
     });
 
     // =====================
-    // FORMULARIO
+    // RECETA
+    // =====================
+
+    const recipeSelect =
+        document.getElementById("recipe");
+
+    const recipeType =
+        recipeSelect.options[
+            recipeSelect.selectedIndex
+        ]?.dataset.type;
+
+    const recipe = {
+
+        recipe_id: recipeSelect.value,
+
+        leftover_added_g:
+            Number(document.getElementById("leftoverAdded").value),
+
+        leftover_remaining_g: 0
+
+    };
+
+    if (recipeType === "STANDARD") {
+
+        recipe.standard_dough_count =
+            Number(document.getElementById("standardDoughCount").value);
+
+    } else {
+
+        recipe.flour_g =
+            Number(document.getElementById("flour").value);
+
+        recipe.water_g =
+            Number(document.getElementById("water").value);
+
+        recipe.other_ingredients_g =
+            Number(document.getElementById("otherIngredients").value);
+
+    }
+
+    // =====================
+    // PAYLOAD
     // =====================
 
     return {
 
-        productionDate:
+        production_date:
             document.getElementById("productionDate").value,
 
-        shiftId:
+        shift_id:
             document.getElementById("shift").value,
+
+        recipe,
 
         operators,
 
-        recipeId:
-            document.getElementById("recipe").value,
-
-        initialWeight:
-            Number(document.getElementById("initialWeight").value),
-
-        flour:
-            Number(document.getElementById("flour").value),
-            
-        water:
-            Number(document.getElementById("water").value),
-
-        leftoverAdded:
-            Number(document.getElementById("leftoverAdded").value),
-        
-        otherIngredients:
-            Number(document.getElementById("otherIngredients").value),
+        production_items,
 
         notes:
-            document.getElementById("notes").value,
-
-        products
+            document.getElementById("notes").value
 
     };
 
@@ -278,9 +327,11 @@ function resetForm() {
     // CAMPOS
     // =====================
 
-    document.getElementById("shift").selectedIndex = -1;
+    document.getElementById("shift").selectedIndex = 0;
 
-    document.getElementById("recipe").selectedIndex = -1;
+    document.getElementById("recipe").selectedIndex = 0;
+    
+    document.getElementById("standardDoughCount").value = "";
 
     document.getElementById("initialWeight").value = "";
 
@@ -294,10 +345,8 @@ function resetForm() {
 
     document.getElementById("notes").value = "";
 
-    document.getElementById("flour").value = "";
-
-    document.getElementById("water").value = "";
-
+    document.getElementById("standardRecipe").style.display = "none";
+    
     document.getElementById("specialRecipe").style.display = "none";
 
     // =====================
@@ -323,6 +372,36 @@ function resetForm() {
     addProductionRow();
 
 }
+function formatDateTime(dateTime) {
+
+    const date = new Date(dateTime);
+
+    const formattedDate = date.toLocaleDateString(
+        window.appSettings.system.locale,
+        {
+            timeZone: window.appSettings.system.timezone
+        }
+    );
+
+    const formattedTime = date.toLocaleTimeString(
+        window.appSettings.system.locale,
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: window.appSettings.system.timezone
+        }
+    );
+
+    return `
+    <div>${formattedDate}</div>
+    <div class="history-time">
+    <i class="fa-regular fa-clock"></i>
+    ${formattedTime}
+    </div>
+`;
+
+}
 function renderRecentBatches(batches) {
 
     const tbody =
@@ -338,14 +417,13 @@ function renderRecentBatches(batches) {
         // FECHA
         // =====================
         
-        const tdDate =
-        document.createElement("td");
-        
-        const [year, month, day] =
-        batch.productionDate.split("-");
-        
-        tdDate.textContent =
-        `${day}/${month}/${year}`;
+    const tdDate =
+
+    document.createElement("td");
+
+    tdDate.innerHTML =
+
+    formatDateTime(batch.createdAt);
 
         // =====================
         // HORA
@@ -354,18 +432,11 @@ function renderRecentBatches(batches) {
         const tdHour =
             document.createElement("td");
             
-            tdHour.textContent =
-            batch.hour
-            ? new Date(batch.hour).toLocaleTimeString(
-                window.appSettings.system.locale,
-                {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                    timeZone: window.appSettings.system.timezone
-                }
-            )
-            : "";
+          tdHour.innerHTML =
+
+        batch.updatedAt
+        ? formatDateTime(batch.updatedAt)
+        : "";
 
         // =====================
         // TURNO
@@ -393,9 +464,9 @@ function renderRecentBatches(batches) {
 
         const tdRecipe =
             document.createElement("td");
-
-        tdRecipe.textContent =
-            batch.recipe ?? "";
+            
+        tdRecipe.innerHTML =
+        batch.manufacturedProducts ?? "";
 
         // =====================
         // PRODUCTOS
@@ -447,6 +518,8 @@ function renderRecentBatches(batches) {
 }
 function fillForm(batch) {
 
+isLoadingForm = true;
+
     // =====================
     // DATOS GENERALES
     // =====================
@@ -458,22 +531,31 @@ function fillForm(batch) {
         batch.shiftId;
 
     document.getElementById("recipe").value =
-        batch.recipeId;
+        batch.recipe.recipe_id;
 
     document.getElementById("initialWeight").value =
         batch.initialWeight;
         
-    document.getElementById("flour").value =
-        batch.flour;
-    
-    document.getElementById("water").value =
-        batch.water;
+if (batch.recipe.recipe_type === "STANDARD") {
 
-    document.getElementById("leftoverAdded").value =
-        batch.leftoverAdded;
+    document.getElementById("standardDoughCount").value =
+        batch.recipe.standard_dough_count;
+
+} else {
+
+    document.getElementById("flour").value =
+        batch.recipe.flour_g ?? "";
+
+    document.getElementById("water").value =
+        batch.recipe.water_g ?? "";
 
     document.getElementById("otherIngredients").value =
-    batch.otherIngredients;
+        batch.recipe.other_ingredients_g ?? "";
+
+}
+
+document.getElementById("leftoverAdded").value =
+    batch.recipe.leftover_added_g ?? 0;
 
     document.getElementById("notes").value =
         batch.notes ?? "";
@@ -512,7 +594,7 @@ function fillForm(batch) {
 
     productionTable.innerHTML = "";
 
-    batch.products.forEach(product => {
+    batch.production_items.forEach(product => {
 
         addProductionRow();
 
@@ -525,10 +607,29 @@ function fillForm(batch) {
         const quantity =
             lastRow.querySelector("input");
 
-        select.value = product.productId;
+        select.value = product.product_id;
 
         quantity.value = product.quantity;
 
     });
+    isLoadingForm = false;
+
+    calculateInitialWeight();
+}
+// =====================
+
+// INITIALIZE FORM
+
+// =====================
+
+function initializeEmptyForm() {
+
+    document.getElementById("shift").selectedIndex = 0;
+
+    document.getElementById("recipe").selectedIndex = 0;
+
+    updateRecipeBehaviour();
+
+    calculateInitialWeight();
 
 }

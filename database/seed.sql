@@ -14,7 +14,8 @@ INSERT INTO shifts (name)
 VALUES
 ('Mañana'),
 ('Tarde'),
-('Noche');
+('Noche')
+ON CONFLICT (name) DO NOTHING;
 
 -- ==========================================================
 -- RECIPES
@@ -48,7 +49,8 @@ VALUES
     6500,
     500,
     19000
-);
+)
+ON CONFLICT (recipe_type, version) DO NOTHING;
 
 -- ==========================================================
 -- SETTINGS
@@ -83,7 +85,8 @@ VALUES
     'BALANCE',
     'TEXT',
     'Motor de cálculo activo'
-);
+)
+ON CONFLICT (key) DO NOTHING;
 
 -- ==========================================================
 -- OPERATORS
@@ -101,7 +104,8 @@ VALUES
 ('Karin','OPERATOR'),
 ('Ana','OPERATOR'),
 ('Nesly','OPERATOR'),
-('Polet','OPERATOR');
+('Polet','OPERATOR')
+ON CONFLICT (full_name) DO NOTHING;
 
 -- ==========================================================
 -- PRODUCTS
@@ -141,7 +145,8 @@ VALUES
 (24,'P024','MASA PALA RECT. 30x20cm',250),
 (25,'P025','FAMILIAR CON BORDE',400),
 (26,'P026','FOCACCIA REDONDA 30cm',500),
-(27,'P027','FOCACCIA 60x40cm',1200);
+(27,'P027','FOCACCIA 60x40cm',1200)
+ON CONFLICT (legacy_id) DO NOTHING;
 
 -- ==========================================================
 -- REFERENCE RANGES
@@ -166,6 +171,7 @@ VALUES
 (370,   51,  51),
 (500,   38,  38),
 (800,   23,  24),
-(1200,  15,  16);
+(1200,  15,  16)
+ON CONFLICT (grammage_g) DO NOTHING;
 
 COMMIT;

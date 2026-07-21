@@ -4,11 +4,11 @@
 
 **Client:** È Pronto Si Mangia
 
-**Version:** 1.0
+**Version:** 1.0.3
 
 **Status:** Approved
 
-**Last Update:** 2026-07-02
+**Last Update:** 2026-07-14
 
 ---
 
@@ -204,7 +204,109 @@ No manual deployments are allowed.
 
 ---
 
-# 8. Future Evolution
+# 8. Database Lifecycle
+
+Starting with **EPSM Manager v1.0.3**, the project adopts a migration-based database lifecycle using the Supabase CLI.
+
+This guarantees that every structural change to the database is:
+
+- Version controlled
+- Reproducible
+- Auditable
+- Traceable
+- Reviewed before deployment
+
+The database development workflow is:
+
+```text
+Git
+        │
+        ▼
+supabase migration new
+        │
+        ▼
+Implement SQL
+        │
+        ▼
+supabase db push
+        │
+        ▼
+Supabase Cloud
+        │
+        ▼
+Validation
+        │
+        ▼
+supabase db dump
+        │
+        ▼
+database/schema.sql
+```
+
+## Source of Truth
+
+The project distinguishes between two database artifacts.
+
+### Database Schema Snapshot
+
+```text
+database/schema.sql
+```
+
+Represents the latest published database schema.
+
+It is generated using:
+
+```bash
+supabase db dump --schema public -f database/schema.sql
+```
+
+It must never be edited manually.
+
+---
+
+### Database Migration History
+
+```text
+supabase/migrations/
+```
+
+Contains the complete history of every structural database change.
+
+Each migration:
+
+- represents a single functional responsibility;
+- is immutable once applied;
+- is version controlled through Git.
+
+Migration filenames follow the convention:
+
+```text
+YYYYMMDDHHMMSS_descriptive_name.sql
+```
+
+Example:
+
+```text
+20260714185726_support_recipe_versioning.sql
+```
+
+---
+
+## Architectural Rule
+
+Every structural database change must follow this workflow:
+
+1. Create a migration.
+2. Implement the SQL.
+3. Apply the migration using Supabase CLI.
+4. Validate the result.
+5. Update `database/schema.sql`.
+6. Commit both the migration and the updated schema.
+
+Direct modifications to the production schema without a corresponding migration are not allowed.
+
+# 9. Future Evolution
 
 The architecture has been designed to support future modules without redesigning the existing platform.
 
@@ -222,7 +324,7 @@ Possible future modules include:
 
 ---
 
-# 9. Design Decisions
+# 10. Design Decisions
 
 The architecture intentionally separates:
 
@@ -238,46 +340,113 @@ This separation guarantees scalability and maintainability.
 
 # 10. Architecture Goals
 
-The architecture must ensure:
+The EPSM Manager architecture has been designed to provide a robust, scalable and maintainable platform capable of evolving alongside the business without requiring architectural redesign.
 
-- High availability.
-- Low operational cost.
-- Easy maintenance.
-- Long-term scalability.
-- Secure access.
-- Reliable business data.
-- Technology independence.
+The architecture must guarantee:
+
+- Single Source of Truth for all operational data.
+- Cloud-first architecture using managed services whenever possible.
+- Secure by Design with least-privilege principles.
+- Version-controlled infrastructure and database evolution.
+- Modular components with clear separation of responsibilities.
+- Long-term maintainability through standardized development workflows.
+- Reproducible deployments across environments.
+- Auditability of structural database changes.
+- Business data integrity enforced at the database level whenever possible.
+- High availability and low operational cost.
+- Progressive evolution without breaking historical business data.
+- Technology independence, avoiding unnecessary vendor lock-in.
 
 ---
 
-# 11. Current Status
+## Success Criteria
 
-Current implementation:
+The architecture is considered successful when:
 
-✅ GitHub Pages
+- Every business event is stored only once.
+- Every database change is traceable through version-controlled migrations.
+- Every deployment is reproducible.
+- Business rules remain consistent regardless of the client application.
+- Historical information can never be lost due to future business changes.
+- New modules can be incorporated without redesigning the existing architecture.
+- The project remains maintainable as functionality and team size grow.y e
 
-✅ HTML/CSS/JavaScript
+# 12. Current Status
 
-✅ Supabase
+## Current Implementation
 
-✅ PostgreSQL
+### Platform
 
-✅ CRUD Operations
+- ✅ GitHub Pages
+- ✅ HTML / CSS / JavaScript
+- ✅ Supabase
+- ✅ PostgreSQL
 
-✅ Excel Integration
+### Architecture
 
-Future implementation:
+- ✅ Cloud-First Architecture
+- ✅ Single Source of Truth
+- ✅ Modular Frontend Architecture
+- ✅ Dynamic Card Pattern
+- ✅ Version-Controlled Database Migrations
+- ✅ Database Schema Snapshot Workflow
 
-⬜ Authentication
+### Database
 
-⬜ Role Management
+- ✅ Normalized Relational Model
+- ✅ Production Snapshot Architecture
+- ✅ Recipe Versioning Support
+- ✅ CRUD Operations
+- ✅ Audit Logging
+- ✅ Referential Integrity
+- ✅ Database Constraints (CHECK, FK, UNIQUE)
+- ✅ Generated Columns
 
-⬜ Web Dashboard
+### Development Workflow
 
-⬜ Inventory
+- ✅ Git Version Control
+- ✅ Supabase CLI
+- ✅ Docker Development Environment
+- ✅ Database Migration Workflow
+- ✅ Schema Synchronization (`database/schema.sql`)
 
-⬜ Reports
+### Business
 
-⬜ Business Intelligence
+- ✅ Production Registration
+- ✅ Recipe Management
+- ✅ Operator Management
+- ✅ Shift Management
+- ✅ Product Management
+- ✅ Excel Integration
 
-⬜ AI Support
+---
+
+## Planned Implementation
+
+### Security
+
+- ⬜ User Authentication
+- ⬜ Role-Based Access Control (RBAC)
+- ⬜ Row Level Security (RLS) Policies
+
+### Analytics
+
+- ⬜ Native Web Dashboard
+- ⬜ KPI Engine
+- ⬜ Historical Reporting
+- ⬜ Business Intelligence Module
+
+### Business Modules
+
+- ⬜ Inventory Management
+- ⬜ Purchasing
+- ⬜ Cost Analysis
+- ⬜ Bonus Calculation
+
+### Platform Evolution
+
+- ⬜ File Storage
+- ⬜ Notifications
+- ⬜ Mobile Application
+- ⬜ AI Assistant
+

@@ -15,7 +15,7 @@ function validateProduction(formData) {
     // FECHA
     // =====================
 
-    if (!formData.productionDate) {
+    if (!formData.production_date) {
 
         messages.push("Debe seleccionar una fecha.");
 
@@ -25,7 +25,7 @@ function validateProduction(formData) {
     // TURNO
     // =====================
 
-    if (!formData.shiftId) {
+    if (!formData.shift_id) {
 
         messages.push("Debe seleccionar un turno.");
 
@@ -43,7 +43,11 @@ function validateProduction(formData) {
 
     // Operadores duplicados
 
-    const uniqueOperators = new Set(formData.operators);
+    const uniqueOperators = new Set(
+
+    formData.operators.map(o => o.operator_id)
+
+);
 
     if (uniqueOperators.size !== formData.operators.length) {
 
@@ -55,19 +59,9 @@ function validateProduction(formData) {
     // RECETA
     // =====================
 
-    if (!formData.recipeId) {
+    if (!formData.recipe?.recipe_id) {
 
         messages.push("Debe seleccionar un tipo de masa.");
-
-    }
-
-    // =====================
-    // PESO
-    // =====================
-
-    if (formData.initialWeight <= 0) {
-
-        messages.push("El peso inicial debe ser mayor que cero.");
 
     }
 
@@ -75,15 +69,15 @@ function validateProduction(formData) {
     // PRODUCTOS
     // =====================
 
-    if (formData.products.length === 0) {
+    if (formData.production_items.length === 0) {
 
         messages.push("Debe agregar al menos un producto.");
 
     }
 
-    formData.products.forEach((product, index) => {
+    formData.production_items.forEach((product, index) => {
 
-        if (!product.productId) {
+        if (!product.product_id) {
 
             messages.push(
                 `Producto ${index + 1}: debe seleccionar un producto.`

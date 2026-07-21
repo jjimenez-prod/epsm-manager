@@ -10,6 +10,7 @@ async function getRecipes() {
             auto_calculate,
             fixed_extra_weight_g,
             default_initial_weight_g,
+            default_total_weight_g,
             show_initial_weight
         `)
         .eq("active", true);

@@ -1,4 +1,4 @@
-async function getRecentBatches(limit = 10) {
+async function getRecentBatches(limit = 30) {
 
     // =====================
     // LOTES
@@ -61,12 +61,13 @@ async function getRecentBatches(limit = 10) {
 
             .from("production_items")
 
-            .select(`
-                batch_id,
-                quantity
+          .select(`
+            batch_id,
+            quantity,
+            product:products(name)
             `)
-
-            .in("batch_id", batchIds);
+    
+    .in("batch_id", batchIds);
 
     // =====================
     // OBJETO FINAL
@@ -81,7 +82,16 @@ async function getRecentBatches(limit = 10) {
         const totalProducts = productionItems
             .filter(item => item.batch_id === batch.id)
             .reduce((sum, item) => sum + item.quantity, 0);
-
+        const manufacturedProducts = productionItems
+            .filter(item => item.batch_id === batch.id)
+            .map(item => `
+        <div class="history-product">
+            <span class="history-quantity">×${item.quantity}</span>
+             <span>${item.product.name}</span>
+            </div>
+    `)
+    .join("");
+        
         return {
 
             id: batch.id,
@@ -90,7 +100,7 @@ async function getRecentBatches(limit = 10) {
             updatedAt: batch.updated_at,
             hour: batch.updated_at,
             shift: batch.shift?.name ?? "",
-            recipe: batch.recipe?.display_name ?? "",
+            manufacturedProducts,
             initialWeight: batch.initial_weight_g,
             operators,
             totalProducts

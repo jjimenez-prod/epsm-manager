@@ -4,7 +4,7 @@ async function getProducts() {
         .from("products")
         .select("id, name, grammage_g")
         .eq("active", true)
-        .order("legacy_id");
+        .order("name");
 
     if (error) {
         console.error(error);
