@@ -37,17 +37,13 @@ body{
 
 .page-header{
 
-    position:relative;
-
     display:flex;
-
-    justify-content:center;
-
     align-items:center;
-
-    min-height:180px;
-
-    margin-bottom:40px;
+    justify-content:space-between;
+    gap:24px;
+    padding:14px 0 16px;
+    margin-bottom:24px;
+    border-bottom:1px solid var(--color-border);
 
 }
 
@@ -55,15 +51,14 @@ body{
 
 .logo{
 
-    position:absolute;
-    left:0;
-    top:50%;
-    transform:translateY(-50%);
+    position:static;
+    transform:none;
+    flex-shrink:0;
 
 }
 .logo img{
 
-    width:430px;
+    width:180px;
     height:auto;
     display:block;
 
@@ -71,61 +66,50 @@ body{
 
 /* ---------- Title ---------- */
 
-.title{
+.header-title-block{
 
-    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    flex:1;
+    min-width:0;
 
 }
 
-.title h1{
+.header-title-block h1{
 
-    font-size:64px;
+    font-size:34px;
     color:var(--color-secondary);
     font-weight:700;
     letter-spacing:-1px;
-    margin-bottom:6px;
+    margin-bottom:2px;
+    line-height:1.1;
 
 }
 
 .subtitle{
 
-    font-size:32px;
+    font-size:18px;
     color:var(--color-primary);
     font-weight:500;
-    margin-bottom:26px;
+    margin:0;
 
 }
 
-/* ---------- Decorative line ---------- */
+.header-meta{
 
-.title-divider{
-
-    width:420px;
-    margin:auto;
     display:flex;
     align-items:center;
-    justify-content:center;
-    gap:18px;
+    gap:16px;
+    flex-shrink:0;
+    margin-left:auto;
 
 }
 
-.title-divider::before,
-.title-divider::after{
+.header-meta input,
+.header-meta select{
 
-    content:"";
-    flex:1;
-    height:3px;
-    background:var(--color-secondary);
-    border-radius:50px;
-
-}
-
-.title-divider span{
-
-    width:12px;
-    height:12px;
-    border-radius:50%;
-    background:var(--color-primary);
+    min-width:140px;
 
 }
 
@@ -198,57 +182,44 @@ footer{
 
     .page-header{
 
-        display:flex;
-        flex-direction:column;
-
-        justify-content:center;
-        align-items:center;
-
-        gap:20px;
-
-        min-height:auto;
-
-        text-align:center;
-
-    }
-
-    .logo{
-
-        position:static;
-
-        transform:none;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        gap:16px;
+        padding:12px 0 14px;
 
     }
 
     .logo img{
 
-        width:280px;
+        width:140px;
         max-width:80vw;
         height:auto;
 
     }
 
-    .title{
+    .header-title-block{
 
         width:100%;
 
     }
 
-    .title h1{
+    .header-title-block h1{
 
-        font-size:42px;
+        font-size:28px;
 
     }
 
     .subtitle{
 
-        font-size:24px;
+        font-size:16px;
 
     }
 
-    .title-divider{
+    .header-meta{
 
-        width:280px;
+        width:100%;
+        margin-left:0;
+        flex-wrap:wrap;
 
     }
 
