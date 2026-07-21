@@ -46,12 +46,20 @@ function initializeRecipeBehaviour() {
             "input",
             calculateInitialWeight
         );
+
     document
         .getElementById("otherIngredients")
         .addEventListener(
             "input",
             calculateInitialWeight
-    );
+        );
+
+    document
+        .getElementById("standardDoughCount")
+        .addEventListener(
+            "input",
+            calculateInitialWeight
+        );
 
     updateRecipeBehaviour();
 
@@ -69,34 +77,45 @@ function updateRecipeBehaviour() {
 
     const specialDiv =
         document.getElementById("specialRecipe");
-    
+
     const standardDiv =
         document.getElementById("standardRecipe");
 
     const initialWeight =
         document.getElementById("initialWeight");
 
-if (recipe.auto_calculate) {
+    // ==========================================================================
+    // STEP 2
+    // Toggle Recipe Layout
+    // ==========================================================================
+    //
+    // STANDARD
+    //     • Shows dough count.
+    //
+    // SPECIAL
+    //     • Shows manual ingredient inputs.
+    //
+    // ==========================================================================
 
-    standardDiv.style.display = "none";
-    specialDiv.style.display = "grid";
+    if (recipe.recipe_type === "SPECIAL") {
 
-    initialWeight.readOnly = true;
+        standardDiv.style.display = "none";
+        specialDiv.style.display = "grid";
 
-    calculateInitialWeight();
+        initialWeight.readOnly = true;
 
-}
-else {
+        calculateInitialWeight();
 
-    standardDiv.style.display = "block";
-    specialDiv.style.display = "none";
+    } else {
 
-    initialWeight.readOnly = true;
+        standardDiv.style.display = "block";
+        specialDiv.style.display = "none";
 
-    initialWeight.value =
-        recipe.default_initial_weight_g ?? "";
+        initialWeight.readOnly = true;
 
-}
+        calculateInitialWeight();
+
+    }
 
 }
 
@@ -106,23 +125,54 @@ else {
 
 function calculateInitialWeight() {
 
+    if (isLoadingForm) {
+
+        return;
+
+    }
+
     const recipe = getSelectedRecipe();
 
     if (!recipe) return;
+
+    const initialWeight =
+        document.getElementById("initialWeight");
+
+    // =====================================================
+    // STANDARD
+    // =====================================================
+
+    if (recipe.recipe_type === "STANDARD") {
+
+        const doughCount =
+            Number(
+                document.getElementById("standardDoughCount").value
+            ) || 1;
+
+        initialWeight.value =
+            recipe.default_total_weight_g * doughCount;
+
+        return;
+
+    }
+
+    // =====================================================
+    // SPECIAL
+    // =====================================================
 
     const flour =
         Number(document.getElementById("flour").value) || 0;
 
     const water =
         Number(document.getElementById("water").value) || 0;
-        
+
     const otherIngredients =
         Number(document.getElementById("otherIngredients").value) || 0;
 
-    document.getElementById("initialWeight").value =
-        flour +
-        water +
-        otherIngredients +
-        (recipe.fixed_extra_weight_g ?? 0);
+    initialWeight.value =
+        flour
+        + water
+        + otherIngredients
+        + (recipe.fixed_extra_weight_g ?? 0);
 
 }

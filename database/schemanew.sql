@@ -1,115 +1,10 @@
-/******************************************************************************
-------------------------------------------------------------------------------
- Project
-------------------------------------------------------------------------------
- EPSM Manager
+CREATE OR REPLACE FUNCTION public.update_production_batch(
 
-------------------------------------------------------------------------------
- Epic
-------------------------------------------------------------------------------
- EPIC 3 - Production Engine
+    p_batch_id uuid,
+    payload jsonb
 
-------------------------------------------------------------------------------
- Task
-------------------------------------------------------------------------------
- 3.5.6 - Production Engine v1
+)
 
-------------------------------------------------------------------------------
- Migration
-------------------------------------------------------------------------------
- 20260716_epic3_task356_production_engine_v1.sql
-
-------------------------------------------------------------------------------
- Function
-------------------------------------------------------------------------------
- public.create_production_batch(payload jsonb)
-
-------------------------------------------------------------------------------
- Purpose
-------------------------------------------------------------------------------
- Creates a complete Production Batch from the approved payload contract.
-
-------------------------------------------------------------------------------
- Responsibilities
-------------------------------------------------------------------------------
- - Read Payload
- - Validate Payload
- - Validate Business Rules
- - Build Production Snapshot
- - Persist Aggregate
- - Return Operation Result
-
-------------------------------------------------------------------------------
- Architectural Principles
-------------------------------------------------------------------------------
- - Business First
- - Database as Single Source of Truth
- - Thin Frontend
- - Historical Data Integrity
- - Future Proof
- - KISS
-
-------------------------------------------------------------------------------
- Payload Contract
-------------------------------------------------------------------------------
- {
-   "production_date": "...",
-   "shift_id": "...",
-
-   "recipe": {
-      "recipe_id": "...",
-      "standard_dough_count": 2,
-      "leftover_added_g": 500,
-      "leftover_remaining_g": 100
-      "flour_g": 24000,
-      "water_g": 13000,
-      "other_ingredients_g": 1000,
-   },
-
-   "operators":[...],
-
-   "production_items":[...],
-
-   "notes":"..."
- }
-
-------------------------------------------------------------------------------
- Return Contract
-------------------------------------------------------------------------------
- Success
-
- {
-    "success": true,
-    "batch_id": "uuid"
- }
-
- Error
-
- {
-    "success": false,
-    "error_code": "...",
-    "message": "...",
-    "details": { ... }
- }
-
-------------------------------------------------------------------------------
- Change Log
-------------------------------------------------------------------------------
- v1.0.3 RC1
- 2026-07-16
- Initial Production Engine implementation.
--------------------------------------------------------------------------------
-------------------------------------------------------------------------------
- Future Work
-------------------------------------------------------------------------------
- - Audit Log
- - Update Production Batch
- - Batch Cancellation
- - Stock Consumption
-------------------------------------------------------------------------------
-******************************************************************************/
-
-CREATE OR REPLACE FUNCTION public.create_production_batch(payload jsonb)
 RETURNS jsonb
 
 LANGUAGE plpgsql
@@ -131,29 +26,30 @@ DECLARE
     v_leftover_added_g integer;
     v_leftover_remaining_g integer;
 
+    v_flour_g integer;
+    v_water_g integer;
+    v_other_ingredients_g integer;
+
     v_operators jsonb;
     v_production_items jsonb;
+
+    --------------------------------------------------------------------------
+    -- Current Batch
+    --------------------------------------------------------------------------
+
+    v_current_batch public.dough_batches%ROWTYPE;
 
     --------------------------------------------------------------------------
     -- Recipe
     --------------------------------------------------------------------------
 
-    v_recipe recipes%ROWTYPE;
+    v_recipe public.recipes%ROWTYPE;
 
     --------------------------------------------------------------------------
     -- Snapshot
     --------------------------------------------------------------------------
 
-    v_flour_g integer;
-    v_water_g integer;
-    v_other_ingredients_g integer;
     v_initial_weight_g integer;
-
-    --------------------------------------------------------------------------
-    -- Persistence
-    --------------------------------------------------------------------------
-
-    v_batch_id uuid;
 
 BEGIN
 
@@ -175,25 +71,25 @@ BEGIN
         (payload -> 'recipe' ->> 'recipe_id')::uuid;
 
     v_standard_dough_count :=
-    COALESCE(
-        (payload -> 'recipe' ->> 'standard_dough_count')::integer,
-        1
-    );
+        COALESCE(
+            (payload -> 'recipe' ->> 'standard_dough_count')::integer,
+            1
+        );
 
     v_flour_g :=
-    (payload -> 'recipe' ->> 'flour_g')::integer;
+        (payload -> 'recipe' ->> 'flour_g')::integer;
 
     v_water_g :=
-    (payload -> 'recipe' ->> 'water_g')::integer;
+        (payload -> 'recipe' ->> 'water_g')::integer;
 
     v_other_ingredients_g :=
-    (payload -> 'recipe' ->> 'other_ingredients_g')::integer;
+        (payload -> 'recipe' ->> 'other_ingredients_g')::integer;
 
     v_leftover_added_g :=
-    COALESCE(
-        (payload -> 'recipe' ->> 'leftover_added_g')::integer,
-        0
-    );
+        COALESCE(
+            (payload -> 'recipe' ->> 'leftover_added_g')::integer,
+            0
+        );
 
     v_leftover_remaining_g :=
         COALESCE(
@@ -319,107 +215,93 @@ BEGIN
         );
 
     END IF;
-
     --------------------------------------------------------------------------
     -- SECTION 3
+    -- Read Current Batch
+    --------------------------------------------------------------------------
+
+    SELECT *
+      INTO v_current_batch
+      FROM public.dough_batches
+     WHERE id = p_batch_id;
+
+    IF NOT FOUND THEN
+
+        RETURN jsonb_build_object(
+
+            'success', false,
+
+            'error_code', 'BATCH_NOT_FOUND',
+
+            'message', 'Production batch not found.',
+
+            'details',
+                jsonb_build_object(
+                    'batch_id', p_batch_id
+                )
+
+        );
+
+    END IF;
+    --------------------------------------------------------------------------
+    -- SECTION 4
     -- Business Validation
     --------------------------------------------------------------------------
+
+    --------------------------------------------------------------------------
+    -- Validate Batch Status
+    --------------------------------------------------------------------------
+
+    IF v_current_batch.status <> 'ACTIVE' THEN
+
+        RETURN jsonb_build_object(
+
+            'success', false,
+
+            'error_code', 'INVALID_BATCH_STATUS',
+
+            'message', 'Only ACTIVE batches can be edited.',
+
+            'details',
+                jsonb_build_object(
+                    'batch_id', p_batch_id,
+                    'status', v_current_batch.status
+                )
+
+        );
+
+    END IF;
 
     --------------------------------------------------------------------------
     -- Validate Shift
     --------------------------------------------------------------------------
 
     IF NOT EXISTS (
+
         SELECT 1
           FROM public.shifts
          WHERE id = v_shift_id
            AND active = true
+
     ) THEN
 
         RETURN jsonb_build_object(
+
             'success', false,
+
             'error_code', 'SHIFT_NOT_FOUND',
+
             'message', 'Shift not found or inactive.',
-            'details', jsonb_build_object(
-                'field', 'shift_id',
-                'shift_id', v_shift_id
-            )
+
+            'details',
+                jsonb_build_object(
+                    'field','shift_id',
+                    'shift_id',v_shift_id
+                )
+
         );
 
     END IF;
-
-    --------------------------------------------------------------------------
-    -- Read Recipe
-    --------------------------------------------------------------------------
-
-    SELECT *
-      INTO v_recipe
-      FROM public.recipes
-     WHERE id = v_recipe_id
-       AND active = true;
-
-    IF NOT FOUND THEN
-
-        RETURN jsonb_build_object(
-            'success', false,
-            'error_code', 'RECIPE_NOT_FOUND',
-            'message', 'Recipe not found or inactive.',
-            'details', jsonb_build_object(
-                'field', 'recipe.recipe_id',
-                'recipe_id', v_recipe_id
-            )
-        );
-
-    END IF;
-
---------------------------------------------------------------------------
--- Validate Special Recipe Payload
---------------------------------------------------------------------------
-
-IF v_recipe.recipe_type = 'SPECIAL' THEN
-
-    IF v_flour_g IS NULL OR v_flour_g <= 0 THEN
-
-        RETURN jsonb_build_object(
-            'success', false,
-            'error_code', 'INVALID_PAYLOAD',
-            'message', 'recipe.flour_g is required.',
-            'details', jsonb_build_object(
-                'field', 'recipe.flour_g'
-            )
-        );
-
-    END IF;
-
-    IF v_water_g IS NULL OR v_water_g <= 0 THEN
-
-        RETURN jsonb_build_object(
-            'success', false,
-            'error_code', 'INVALID_PAYLOAD',
-            'message', 'recipe.water_g is required.',
-            'details', jsonb_build_object(
-                'field', 'recipe.water_g'
-            )
-        );
-
-    END IF;
-
-    IF v_other_ingredients_g IS NULL
-       OR v_other_ingredients_g < 0 THEN
-
-        RETURN jsonb_build_object(
-            'success', false,
-            'error_code', 'INVALID_PAYLOAD',
-            'message', 'recipe.other_ingredients_g is required.',
-            'details', jsonb_build_object(
-                'field', 'recipe.other_ingredients_g'
-            )
-        );
-
-    END IF;
-
-END IF;
-
     --------------------------------------------------------------------------
     -- Validate Duplicate Operators
     --------------------------------------------------------------------------
@@ -646,51 +528,125 @@ END IF;
 
     END IF;
 
---------------------------------------------------------------------------
--- SECTION 4
--- Build Production Snapshot
---------------------------------------------------------------------------
+    --------------------------------------------------------------------------
+    -- SECTION 5
+    -- Read Recipe
+    --------------------------------------------------------------------------
 
-IF v_recipe.recipe_type = 'STANDARD' THEN
+    SELECT *
+      INTO v_recipe
+      FROM public.recipes
+     WHERE id = v_recipe_id
+       AND active = true;
 
-    v_flour_g :=
-        v_recipe.default_flour_g * v_standard_dough_count;
+    IF NOT FOUND THEN
 
-    v_water_g :=
-        v_recipe.default_water_g * v_standard_dough_count;
+        RETURN jsonb_build_object(
 
-    v_other_ingredients_g :=
-        v_recipe.default_other_ingredients_g * v_standard_dough_count;
+            'success', false,
 
-ELSE
+            'error_code', 'RECIPE_NOT_FOUND',
 
-    -- SPECIAL
-    -- Values come directly from payload.
+            'message', 'Recipe not found or inactive.',
+
+            'details',
+
+                jsonb_build_object(
+
+                    'field','recipe.recipe_id',
+                    'recipe_id',v_recipe_id
+
+                )
+
+        );
+
+    END IF;
+
+IF v_recipe.recipe_type = 'SPECIAL' THEN
+
+    IF v_flour_g IS NULL OR v_flour_g <= 0 THEN
+
+        RETURN jsonb_build_object(
+            'success', false,
+            'error_code', 'INVALID_PAYLOAD',
+            'message', 'recipe.flour_g is required.',
+            'details', jsonb_build_object(
+                'field', 'recipe.flour_g'
+            )
+        );
+
+    END IF;
+IF v_water_g IS NULL OR v_water_g <= 0 THEN
+
+        RETURN jsonb_build_object(
+            'success', false,
+            'error_code', 'INVALID_PAYLOAD',
+            'message', 'recipe.water_g is required.',
+            'details', jsonb_build_object(
+                'field', 'recipe.water_g'
+            )
+        );
+
+    END IF;
+
+    IF v_other_ingredients_g IS NULL
+       OR v_other_ingredients_g < 0 THEN
+
+        RETURN jsonb_build_object(
+            'success', false,
+            'error_code', 'INVALID_PAYLOAD',
+            'message', 'recipe.other_ingredients_g is required.',
+            'details', jsonb_build_object(
+                'field', 'recipe.other_ingredients_g'
+            )
+        );
+
+    END IF;
 
 END IF;
 
-v_initial_weight_g :=
-      v_flour_g
-    + v_water_g
-    + v_other_ingredients_g;
-
---------------------------------------------------------------------------
--- total_weight_g is automatically calculated by PostgreSQL
--- as a generated column:
---
--- total_weight_g = initial_weight_g + leftover_added_g
---------------------------------------------------------------------------
-
     --------------------------------------------------------------------------
-    -- SECTION 5
-    -- Persist Aggregate
-    -- (PART 3)
-    --------------------------------------------------------------------------
-    --------------------------------------------------------------------------
-    -- Insert Dough Batch
+    -- SECTION 6
+    -- Build NEW Production Snapshot
     --------------------------------------------------------------------------
 
-    INSERT INTO public.dough_batches (
+    IF v_recipe.recipe_type = 'STANDARD' THEN
+
+        v_flour_g :=
+            v_recipe.default_flour_g
+            * v_standard_dough_count;
+
+        v_water_g :=
+            v_recipe.default_water_g
+            * v_standard_dough_count;
+
+        v_other_ingredients_g :=
+            v_recipe.default_other_ingredients_g
+            * v_standard_dough_count;
+
+    ELSE
+
+        -- SPECIAL
+        -- Values come directly from payload.
+
+    END IF;
+
+    v_initial_weight_g :=
+
+          v_flour_g
+        + v_water_g
+        + v_other_ingredients_g;
+
+    --------------------------------------------------------------------------
+    -- SECTION 7
+    -- Save Previous Version
+    --------------------------------------------------------------------------
+
+    INSERT INTO public.dough_batch_history (
+
+        batch_id,
+
+        revision,
 
         production_date,
         shift_id,
@@ -716,32 +672,79 @@ v_initial_weight_g :=
 
     VALUES (
 
-        v_production_date,
-        v_shift_id,
-        v_recipe.id,
+        v_current_batch.id,
 
-        v_standard_dough_count,
+        v_current_batch.revision,
 
-        v_flour_g,
-        v_water_g,
-        v_other_ingredients_g,
+        v_current_batch.production_date,
+        v_current_batch.shift_id,
+        v_current_batch.recipe_id,
 
-        v_initial_weight_g,
-        v_leftover_added_g,
-        v_leftover_remaining_g,
+        v_current_batch.standard_dough_count,
 
-        v_notes,
+        v_current_batch.flour_g,
+        v_current_batch.water_g,
+        v_current_batch.other_ingredients_g,
 
-        v_recipe.version,
-        v_recipe.display_name,
-        v_recipe.recipe_type
+        v_current_batch.initial_weight_g,
+        v_current_batch.leftover_added_g,
+        v_current_batch.leftover_remaining_g,
 
-    )
+        v_current_batch.notes,
 
-    RETURNING id
-      INTO v_batch_id;
+        v_current_batch.recipe_version,
+        v_current_batch.recipe_display_name,
+        v_current_batch.recipe_type
+
+    );
 
     --------------------------------------------------------------------------
+    -- SECTION 8
+    -- Update Dough Batch
+    --------------------------------------------------------------------------
+
+    UPDATE public.dough_batches
+
+       SET
+
+            production_date = v_production_date,
+
+            shift_id = v_shift_id,
+
+            recipe_id = v_recipe.id,
+
+            standard_dough_count = v_standard_dough_count,
+
+            flour_g = v_flour_g,
+            water_g = v_water_g,
+            other_ingredients_g = v_other_ingredients_g,
+
+            initial_weight_g = v_initial_weight_g,
+
+            leftover_added_g = v_leftover_added_g,
+            leftover_remaining_g = v_leftover_remaining_g,
+
+            notes = v_notes,
+
+            recipe_version = v_recipe.version,
+            recipe_display_name = v_recipe.display_name,
+            recipe_type = v_recipe.recipe_type,
+
+            revision = v_current_batch.revision + 1
+
+     WHERE id = p_batch_id;
+
+    --------------------------------------------------------------------------
+    -- SECTION 9
+    -- Delete Batch Operators
+    --------------------------------------------------------------------------
+
+    DELETE
+      FROM public.batch_operators
+     WHERE batch_id = p_batch_id;
+
+    --------------------------------------------------------------------------
+    -- SECTION 10
     -- Insert Batch Operators
     --------------------------------------------------------------------------
 
@@ -754,18 +757,23 @@ v_initial_weight_g :=
 
     SELECT
 
-        v_batch_id,
+        p_batch_id,
 
         (value ->> 'operator_id')::uuid
 
     FROM jsonb_array_elements(v_operators);
-    
+
     --------------------------------------------------------------------------
-    -- SECTION 6
-    -- Persist Production Items
-    -- (PART 4)
+    -- SECTION 11
+    -- Delete Production Items
     --------------------------------------------------------------------------
+
+    DELETE
+      FROM public.production_items
+     WHERE batch_id = p_batch_id;
+
     --------------------------------------------------------------------------
+    -- SECTION 12
     -- Insert Production Items
     --------------------------------------------------------------------------
 
@@ -780,7 +788,7 @@ v_initial_weight_g :=
 
     SELECT
 
-        v_batch_id,
+        p_batch_id,
 
         p.id,
 
@@ -792,8 +800,8 @@ v_initial_weight_g :=
 
         SELECT
 
-            (value ->> 'product_id')::uuid    AS product_id,
-            (value ->> 'quantity')::integer   AS quantity
+            (value ->> 'product_id')::uuid AS product_id,
+            (value ->> 'quantity')::integer AS quantity
 
         FROM jsonb_array_elements(v_production_items)
 
@@ -803,15 +811,17 @@ v_initial_weight_g :=
             ON p.id = i.product_id;
 
     --------------------------------------------------------------------------
-    -- SECTION 7
-    -- Return Response
+    -- SECTION 13
+    -- Return Success
     --------------------------------------------------------------------------
 
     RETURN jsonb_build_object(
 
         'success', true,
 
-        'batch_id', v_batch_id
+        'batch_id', p_batch_id,
+
+        'revision', v_current_batch.revision + 1
 
     );
 

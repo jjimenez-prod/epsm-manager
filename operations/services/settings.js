@@ -1,3 +1,30 @@
+// ==========================================================================
+// SETTINGS
+// ==========================================================================
+//
+// Loads application settings from Supabase.
+//
+// Database structure:
+//
+// category
+// key
+// value
+// data_type
+//
+// The backend stores categories in UPPERCASE:
+//
+// SYSTEM
+// BONUS
+//
+// The frontend uses camel/lowercase:
+//
+// appSettings.system
+// appSettings.bonus
+//
+// Data types are also normalized from the database
+// before exposing them to the application.
+// ==========================================================================
+
 let appSettings = {};
 
 async function loadSettings() {
@@ -15,33 +42,55 @@ async function loadSettings() {
 
     }
 
-    settings = {};
+    const settings = {};
 
     data.forEach(setting => {
 
-        if (!settings[setting.category]) {
+        // =====================
+        // CATEGORY
+        // =====================
 
-            settings[setting.category] = {};
+        const category =
+            setting.category.toLowerCase();
+
+        if (!settings[category]) {
+
+            settings[category] = {};
 
         }
+
+        // =====================
+        // VALUE
+        // =====================
 
         let value = setting.value;
 
-        switch (setting.data_type) {
+        switch (setting.data_type.toUpperCase()) {
 
-            case "integer":
+            case "INTEGER":
+
                 value = Number(value);
+
                 break;
 
-            case "boolean":
+            case "DECIMAL":
+
+                value = Number(value);
+
+                break;
+
+            case "BOOLEAN":
+
                 value = value === "true";
+
                 break;
 
         }
 
-        settings[setting.category][setting.key] = value;
+        settings[category][setting.key] = value;
 
     });
-    
+
     window.appSettings = settings;
+
 }

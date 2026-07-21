@@ -1,5 +1,17 @@
 let productsCatalog = [];
 
+// =====================
+
+// FORM STATE
+
+// =====================
+
+let isLoadingForm = false;
+
+// =====================
+// GENERIC SELECT
+// =====================
+
 function fillSelect(selectId, data, valueField, textField) {
 
     const select = document.getElementById(selectId);
@@ -13,7 +25,19 @@ function fillSelect(selectId, data, valueField, textField) {
         const option = document.createElement("option");
 
         option.value = item[valueField];
+
         option.textContent = item[textField];
+
+        // =====================
+        // OPTIONAL METADATA
+        // =====================
+
+        if (item.recipe_type) {
+
+            option.dataset.type =
+                item.recipe_type;
+
+        }
 
         select.appendChild(option);
 
@@ -306,6 +330,7 @@ function resetForm() {
     document.getElementById("shift").selectedIndex = -1;
 
     document.getElementById("recipe").selectedIndex = -1;
+    
     document.getElementById("standardDoughCount").value = 1;
 
     document.getElementById("initialWeight").value = "";
@@ -493,6 +518,8 @@ function renderRecentBatches(batches) {
 }
 function fillForm(batch) {
 
+isLoadingForm = true;
+
     // =====================
     // DATOS GENERALES
     // =====================
@@ -509,7 +536,7 @@ function fillForm(batch) {
     document.getElementById("initialWeight").value =
         batch.initialWeight;
         
-if (batch.recipe.standard_dough_count !== undefined) {
+if (batch.recipe.recipe_type === "STANDARD") {
 
     document.getElementById("standardDoughCount").value =
         batch.recipe.standard_dough_count;
@@ -585,5 +612,7 @@ document.getElementById("leftoverAdded").value =
         quantity.value = product.quantity;
 
     });
+    isLoadingForm = false;
 
+    calculateInitialWeight();
 }

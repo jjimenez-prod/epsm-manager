@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await loadSettings();
     console.log(window.appSettings);
+    console.log(window.appSettings.system);
 
     // =====================
     // CARGAR CATÁLOGOS

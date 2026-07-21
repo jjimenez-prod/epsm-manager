@@ -65,44 +65,72 @@ async function getBatch(batchId) {
 
     }
 
-    // =====================
-    // OBJETO DE NEGOCIO
-    // =====================
+// ==========================================================================
+// STEP 4
+// Build Form Payload
+// ==========================================================================
+//
+// Converts database entities into the canonical payload
+// expected by fillForm().
+//
+// The returned object mirrors the same structure used by
+// create_production_batch() and update_production_batch().
+// ==========================================================================
 
-    return {
+return {
 
-        id: batch.id,
+    id: batch.id,
 
-        productionDate: batch.production_date,
+    productionDate: batch.production_date,
 
-        shiftId: batch.shift_id,
+    shiftId: batch.shift_id,
 
-        recipeId: batch.recipe_id,
+    initialWeight: batch.initial_weight_g,
 
-        initialWeight: batch.initial_weight_g,
+recipe: {
 
-        flour: batch.flour_g,
+    recipe_id: batch.recipe_id,
 
-        water: batch.water_g,
-        
-        leftoverAdded: batch.leftover_added_g,
-        
-        otherIngredients: batch.other_ingredients_g,
+    recipe_type:
+        batch.recipe_type,
 
-        notes: batch.notes,
+    standard_dough_count:
+        batch.standard_dough_count,
 
-        operators:
-            operators.map(o => o.operator_id),
+    flour_g:
+        batch.flour_g,
 
-        products:
-            products.map(p => ({
+    water_g:
+        batch.water_g,
 
-                productId: p.product_id,
+    other_ingredients_g:
+        batch.other_ingredients_g,
 
-                quantity: p.quantity
+    leftover_added_g:
+        batch.leftover_added_g,
 
-            }))
+    leftover_remaining_g:
+        batch.leftover_remaining_g
 
-    };
+},
 
+    notes:
+        batch.notes,
+
+    operators:
+        operators.map(o => o.operator_id),
+
+    production_items:
+
+        products.map(p => ({
+
+            product_id:
+                p.product_id,
+
+            quantity:
+                p.quantity
+
+        }))
+
+};
 }
