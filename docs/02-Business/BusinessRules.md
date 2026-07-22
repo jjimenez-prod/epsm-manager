@@ -1,338 +1,460 @@
 # Business Rules
 
-**Project:** EPSM Manager
+Project: EPSM Ecosystem
 
-**Client:** È Pronto Si Mangia
+Primary Product: EPSM Manager OPS
 
-**Version:** 1.0
+Organization: È Pronto Si Mangia
 
-**Status:** Approved
+Version: 2.0
 
-**Last Update:** 2026-07-02
+Status: Approved
+
+Last Updated: July 2026
 
 ---
 
 # 1. Purpose
 
-This document describes the operational business rules of È Pronto Si Mangia.
+This document defines the operational business rules that govern the production process of È Pronto Si Mangia.
 
-The objective is to model the real production process.
+Its purpose is to describe how the business operates independently of any software implementation.
 
-Business rules always take priority over software implementation.
+Business rules represent the operational reality of the organization.
 
----
+Software is expected to implement these rules, not redefine them.
 
-# 2. Production Philosophy
-
-Production is organized around dough batches.
-
-A dough batch is the primary business entity of the production process.
-
-Every production activity starts with a dough batch.
-
-Every product produced belongs to exactly one dough batch.
+Whenever implementation and business rules conflict, business rules always take priority.
 
 ---
 
-# 3. Dough Batch
+# 2. Business Philosophy
 
-Each dough batch represents one preparation.
+EPSM is designed around operational simplicity.
 
-A dough batch contains:
+Operators are responsible for recording operational facts.
+
+The platform is responsible for transforming those facts into reliable business information.
+
+Business calculations are generated automatically.
+
+Operational workflows should require the minimum amount of manual work while preserving complete traceability.
+
+The objective is not simply to collect data.
+
+The objective is to generate reliable operational knowledge capable of supporting future business decisions.
+
+---
+
+# 3. Business Entities
+
+The production process is represented through a small number of business entities.
+
+These entities define the operational language of the EPSM ecosystem.
+
+Current business entities include:
+
+- Dough Batch
+- Recipe
+- Product
+- Production Item
+- Operator
+- Shift
+
+Every business rule defined in this document applies to one or more of these entities.
+
+Operational relationships between entities are described separately within the Data Model documentation.
+
+---
+
+# 4. Business Ownership
+
+Operational responsibilities are clearly separated.
+
+Operators are responsible for:
+
+- Recording production events.
+- Recording operational quantities.
+- Recording observations when required.
+
+The system is responsible for:
+
+- Business calculations.
+- KPI generation.
+- Production evaluation.
+- Production status.
+- Historical consistency.
+- Business reporting.
+
+Manual business calculations are intentionally avoided.
+
+Operational information is entered once and reused throughout the entire platform.
+# 5. Production Model
+
+Production is organized around Dough Batches.
+
+A Dough Batch represents one complete dough preparation performed during a production shift.
+
+Every production activity begins with the creation of a Dough Batch.
+
+Every produced unit belongs to exactly one Dough Batch.
+
+The Dough Batch is the primary operational entity of the production process.
+
+---
+
+# 6. Dough Batch
+
+Each Dough Batch represents one production preparation.
+
+A Dough Batch contains:
 
 - Production date
 - Shift
-- Recipe type
-- Dough weight
+- Recipe
+- Initial dough weight
 - Operators
 - Produced products
 - Remaining dough
 - Observations
 
-A dough batch may produce one or many different products.
+A single Dough Batch may generate one or many different products.
+
+All production information remains associated with its originating Dough Batch throughout its entire lifecycle.
 
 ---
 
-# 4. Recipe Types
+# 7. Recipes
 
-Two recipe types currently exist.
+Recipes define the standard composition of a Dough Batch.
 
-## Standard Recipe
+Recipe parameters are business configurations rather than software constants.
 
-Default recipe.
-
-Uses predefined ingredients.
-
-Current values:
-
-- Flour: 12 kg
-- Water: 6 liters
-
-Operators are not required to enter these values.
-
-The system automatically assigns them.
+Business configuration may evolve without requiring software modifications.
 
 ---
 
-## Special Recipe
+## 7.1 Standard Recipes
 
-Special recipes require manual input.
+Standard Recipes use predefined business parameters.
 
-Operators must provide:
+Operators are not required to manually enter recipe values.
 
-- Flour (kg)
-- Water (liters)
+The system automatically retrieves the corresponding configuration.
 
-The system calculates the total dough weight automatically.
+Business parameters include examples such as:
 
----
+- Flour
+- Water
+- Dough weight
 
-# 5. Dough Weight
-
-Standard recipe default weight is defined by business configuration.
-
-The system stores the actual initial weight for every dough batch.
-
-Business parameters may change over time without requiring software modifications.
+These parameters remain configurable.
 
 ---
 
-# 6. Operators
+## 7.2 Special Recipes
 
-Each dough batch may involve one or more operators.
+Special Recipes require manual operational input.
 
-Operators are selected from the operator catalog.
+Operators provide the values defined by the business.
 
-Operators are business participants.
+The system automatically calculates the resulting Dough Batch characteristics.
+
+Manual input should be limited to operational facts only.
+
+Derived values are always calculated by the platform.
+
+---
+
+# 8. Dough Weight
+
+Every Dough Batch stores its actual initial dough weight.
+
+The recorded weight represents the operational reality of that specific production.
+
+Business reference values may change over time without affecting historical records.
+
+Historical Dough Batch information must always preserve the values originally recorded.
+
+---
+
+# 9. Operators
+
+One or more operators may participate in a Dough Batch.
+
+Operators are selected from the business catalog.
+
+Operators represent production participants.
 
 They are not application users.
 
-Operator information is required for:
+Operator information supports:
 
+- Historical traceability
 - Performance analysis
-- Bonus calculation
-- Historical reporting
+- Operational reporting
+- Bonus eligibility
+
+The number of participating operators is determined by the production process.
 
 ---
 
-# 7. Production Registration
+# 10. Production Registration
 
-Each dough batch may generate multiple products.
+A Dough Batch may produce multiple products.
 
-For every product the operator records:
+For every produced product the operator records:
 
 - Product
-- Quantity produced
+- Quantity
 
-Product weight (grammage) is automatically obtained from the product catalog.
+Product characteristics such as grammage are obtained automatically from the product catalog.
 
-Operators never enter grammage manually.
+Operators should never manually enter information already managed by the system.
 
----
-
-# 8. Expected Production
-
-Expected production is calculated using business formulas.
-
-Operators never calculate expected production.
-
-The system provides all required input data.
+Operational data should only be entered once.
 
 ---
 
-# 9. Waste
+# 11. Remaining Dough
 
-Waste represents the production difference between expected and actual production.
+A Dough Batch may generate remaining dough.
 
-Waste calculations are analytical values.
+Whenever remaining dough exists, it must be recorded.
 
-Operators never enter waste manually.
-
-Current reference value:
-
-Approximately 3%.
-
-This value is configurable.
-
----
-
-# 10. Remaining Dough
-
-A dough batch may leave remaining dough.
-
-Remaining dough must always be weighed.
-
-If remaining dough exists, operators record:
+Operational information includes:
 
 - Remaining weight
 - Destination
 - Optional observations
 
-Remaining dough is part of the production history.
+Remaining Dough becomes part of the permanent production history.
 
-Future versions may manage remaining dough as inventory.
+Future platform versions may manage Remaining Dough through dedicated inventory capabilities without changing the production workflow.
 
 ---
 
-# 11. Shifts
+# 12. Shifts
 
-Current production shifts:
+Production is organized into operational shifts.
+
+Current shifts include:
 
 - Morning
 - Afternoon
 - Night
 
-Every dough batch belongs to one shift.
+Every Dough Batch belongs to exactly one shift.
+
+Shift definitions remain configurable and may evolve according to business needs.
+# 13. Business Calculations
+
+EPSM automatically transforms operational data into business information.
+
+Operators never perform business calculations manually.
+
+Operational facts are entered once and reused throughout the platform to generate business indicators.
+
+Business calculations may evolve over time without modifying operational workflows.
 
 ---
 
-# 12. Editing
+## 13.1 Expected Production
 
-Production records may be edited.
+Expected Production represents the theoretical production capacity of a Dough Batch.
 
-Every edit must register:
+The calculation is performed automatically by the platform.
 
-- Last modification date
-- Operator responsible for the modification
-- Optional reason
-
-Historical traceability must always be preserved.
-
----
-
-# 13. Data Ownership
-
-Operators provide operational data.
-
-Business calculations are generated by the system.
-
-Manual calculations are not allowed.
-
----
-
-# 14. Business Calculations
-
-The platform stores operational inputs.
-
-Business indicators are calculated automatically.
-
-Examples:
-
-- Expected production
-- Waste
-- Performance
-- Bonus eligibility
-- Production KPIs
-
----
-
-# 15. Operational Objectives
-
-The production process should:
-
-- Reduce manual work.
-- Improve traceability.
-- Improve data quality.
-- Produce reliable KPIs.
-- Support operational decision making.
-
----
-
-# 16. Future Evolution
-
-Future business rules may include:
-
-- Dough inventory
-- Recipe management
-- Automatic bonus calculation
-- Cost calculation
-- Predictive production
-
-
-These rules will only be implemented after formal approval.
-
-# 17. Expected Production Formula
-
-Expected production represents the theoretical number of units that can be produced from one dough batch.
-
-The calculation is performed automatically by the system.
-
-Inputs:
+Business inputs include:
 
 - Initial dough weight
 - Product target weight
+- Business configuration
 
-The result is expressed as theoretical units.
+The result is expressed as the theoretical number of units that can be produced.
 
-Operators never calculate this value.
+Operators never calculate this value manually.
 
-The calculation method is configurable and may evolve without changing operational procedures.
+Calculation methods may evolve while preserving historical consistency.
 
-# 18. Production Tolerance
+---
 
-Expected production always includes an acceptable operational tolerance.
+## 13.2 Production Tolerance
 
-Tolerance is defined by business rules.
+Expected Production always includes an acceptable operational tolerance.
 
-Each product may define:
+Tolerance values are defined by business configuration.
+
+Tolerance may vary according to product or future business requirements.
+
+Typical tolerance parameters include:
 
 - Target quantity
 - Lower tolerance
 - Upper tolerance
 
-The system automatically determines whether production is:
+Tolerance evaluation is always performed automatically by the platform.
 
-- Below target
-- Within tolerance
-- Above target
+---
 
-Operators never evaluate production manually.
-
-# 19. Production Status
+## 13.3 Production Status
 
 Every production result receives a business status.
 
-Possible values include:
+Possible statuses include:
 
 - Below Expected
 - Within Target
 - Above Expected
 
-Status is calculated automatically using production tolerance.
+Production Status is generated automatically using business rules.
 
-Production status is used by dashboards and KPI reporting.
+Operators never evaluate production manually.
 
-# 20. KPI Philosophy
+Production Status supports dashboards, KPIs and business reporting.
 
-Operational data is recorded only once.
+---
 
-Every KPI is generated automatically by the platform.
+## 13.4 Waste
 
-KPIs must never require additional manual input.
+Waste represents the operational difference between expected production and actual production.
 
-The same operational data may generate multiple analytical indicators.
+Waste is considered a business indicator rather than operational input.
 
-Business rules always prioritize operational simplicity over manual calculations.
+Operators never record Waste manually.
 
-# 21. Excel Compatibility
+Waste thresholds remain configurable.
 
-EPSM Manager replaces the historical production spreadsheet.
+Historical Waste calculations must remain reproducible.
 
-Core production indicators must remain compatible with the existing operational methodology.
+---
 
-Whenever possible, new analytical capabilities should extend the historical model instead of replacing it.
+## 13.5 Performance
 
-Backward compatibility is considered a business requirement.
+Operator Performance is generated automatically using production information.
 
-# 22. Business Rule Configuration
+Performance calculations are based exclusively on operational data already recorded during production.
 
-Business parameters should be configurable whenever possible.
+Operators never provide performance values manually.
 
-Examples include:
+Performance indicators support:
 
-- Recipe weights
+- Operational analysis
+- Historical reporting
+- Business dashboards
+- Bonus eligibility
+
+Performance calculation methods may evolve independently from the production workflow.
+
+---
+
+## 13.6 Bonus Eligibility
+
+Bonus eligibility is determined automatically using business rules.
+
+Operators never calculate bonus eligibility.
+
+Eligibility criteria are configurable and may evolve over time.
+
+Future business rules may incorporate additional operational indicators without modifying the production registration process.
+
+---
+
+# 14. KPI Philosophy
+
+Operational information should be recorded only once.
+
+Every KPI should be generated automatically from existing operational data.
+
+The platform should never require additional manual input exclusively for reporting purposes.
+
+A single production event should be capable of generating multiple business indicators.
+
+Business reporting should always prioritize:
+
+- Operational simplicity
+- Data consistency
+- Historical integrity
+- Business value
+
+Operational processes should never become more complex solely to satisfy analytical requirements.
+# 15. Business Configuration
+
+Business rules should be configurable whenever reasonably possible.
+
+Operational parameters should be managed through business configuration instead of software modifications.
+
+Typical configurable parameters include:
+
+- Recipe parameters
+- Standard dough weights
 - Production tolerances
 - Waste thresholds
-- Default dough weights
+- Performance thresholds
+- Bonus eligibility rules
 
-Business rule changes should not require software modifications.
+Configuration changes should preserve historical information.
+
+Changes to business parameters must affect only future production unless explicitly defined otherwise.
+
+---
+
+# 16. Future Evolution
+
+The production model has been intentionally designed to support future business capabilities.
+
+Potential future extensions include:
+
+- Dough Inventory Management
+- Recipe Management
+- Automatic Cost Analysis
+- Advanced Bonus Calculation
+- Predictive Production Planning
+- Multi-Location Production
+- Artificial Intelligence Assistance
+- Advanced Business Intelligence
+
+Future capabilities should extend the existing business model without modifying the operational workflow.
+
+Operational simplicity should always remain the primary objective.
+
+---
+
+# 17. Business Rule Governance
+
+Business Rules define how the business operates.
+
+Software implementations must adapt to Business Rules.
+
+Business Rules should never be modified simply to accommodate technical limitations.
+
+Every significant modification to a Business Rule should:
+
+- Be documented.
+- Be reviewed.
+- Be approved before implementation.
+- Preserve historical consistency whenever possible.
+
+Business Rules are considered long-term assets of the EPSM ecosystem.
+
+---
+
+# 18. Final Statement
+
+Business Rules describe the operational reality of È Pronto Si Mangia.
+
+User interfaces may evolve.
+
+Software architecture may evolve.
+
+Programming languages may change.
+
+Infrastructure may change.
+
+However, the business itself should remain consistently represented by these rules.
+
+Every module within the EPSM ecosystem should implement these Business Rules consistently.
+
+The objective of EPSM is not simply to automate production.
+
+The objective is to faithfully represent the business, preserve operational knowledge and provide reliable information for future decision making.

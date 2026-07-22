@@ -1,116 +1,202 @@
 # Vision
 
-**Project:** EPSM Manager
+Project: EPSM Ecosystem
 
-**Client:** È Pronto Si Mangia
+Primary Product: EPSM Manager OPS
 
-**Version:** 1.0
+Organization: È Pronto Si Mangia
 
-**Status:** Approved
+Version: 2.0
 
-**Last Update:** 2026-07-02
+Status: Approved
+
+Last Updated: July 2026
 
 ---
 
 # 1. Purpose
 
-EPSM Manager was created to digitally transform the production process of È Pronto Si Mangia.
+EPSM exists to digitally transform the operational management of È Pronto Si Mangia.
 
-The project aims to replace manual data collection, spreadsheets used for operational input and paper-based notes with a centralized web platform that improves traceability, data quality and operational visibility while keeping the workflow simple for production operators.
+The objective is not simply to replace spreadsheets, but to redesign operational processes around reliable, centralized and business-oriented information.
 
-The system is designed around the real production process rather than around existing spreadsheets.
+Operational data should be collected once, stored correctly and reused throughout the entire business.
+
+Every production event becomes a permanent business asset capable of supporting traceability, analytics and future decision making.
 
 ---
 
 # 2. Mission
 
-Develop a simple, reliable and scalable production management platform that enables operators to register production in less than one minute while automatically generating the information required for business analysis and decision making.
+Build a simple, reliable and scalable operational platform that enables production to be registered quickly while automatically generating trustworthy information for business analysis.
+
+The platform should reduce manual work, improve data quality and preserve historical knowledge without increasing operational complexity.
+
+Operators should spend their time producing, not interacting with software.
 
 ---
 
 # 3. Vision
 
-Become the central operational platform of È Pronto Si Mangia.
+EPSM aims to become the operational backbone of È Pronto Si Mangia.
 
-The platform will gradually replace manual operational processes and eventually eliminate the dependency on Excel as the primary analysis tool by providing dashboards, KPIs and reports directly through the web application.
+The long-term vision is to create a complete ecosystem where operational management, business intelligence and future business capabilities are built upon a shared, reliable and historically consistent data model.
 
-The long-term objective is not to digitalize forms, but to digitalize the business process.
+Rather than digitalizing spreadsheets, EPSM digitalizes the business itself.
 
-EPSM Manager preserves the operational knowledge of the historical Excel while extending it through richer production data and business intelligence
+Every future module should extend this ecosystem while preserving its architectural foundations.
 
 ---
 
-# 4. Project Scope
+# 4. Product Scope
 
-The first versions of EPSM Manager focus on production management.
+EPSM is designed as a modular ecosystem.
 
-Current scope includes:
+Each module has a clear responsibility while sharing the same architectural principles, data model and business philosophy.
+
+The ecosystem grows by adding new capabilities rather than replacing existing ones.
+
+---
+
+## 4.1 Current Module
+
+### EPSM Manager OPS
+
+The operational module responsible for daily production management.
+
+Current capabilities include:
 
 - Production registration
+- Recipe selection
 - Dough management
+- Operator registration
 - Production traceability
-- Operator traceability
-- Production analysis
-- KPI generation
-- Data integration with Excel
+- Historical production records
+- Production editing
+- Production validation
+- Operational settings management
 
-Future modules may include:
+OPS is the single operational data entry point of the ecosystem.
 
-- Inventory
-- Recipes
-- Operator performance
-- Bonus calculation
-- Cost analysis
+---
+
+## 4.2 Upcoming Module
+
+### EPSM Manager Analytics
+
+The business intelligence module.
+
+Analytics is responsible for transforming operational data into business information.
+
+Planned capabilities include:
+
+- Executive dashboards
+- KPI visualization
+- Historical analysis
+- Production trends
+- Operator performance analysis
+- Business insights
+- Production comparisons
+- Decision support
+
+Analytics is intentionally designed as a read-only module.
+
+It never modifies operational data.
+
+---
+
+## 4.3 Future Modules
+
+The architecture has been intentionally designed to support future business capabilities.
+
+Potential future modules include:
+
+- Recipe Management
+- Inventory Management
 - Purchasing
-- Business Intelligence
-- Artificial Intelligence assistance
+- Cost Analysis
+- Bonus Management
+- Multi-Location Management
+- Artificial Intelligence Assistance
+- Advanced Business Intelligence
+
+Future modules should extend the existing architecture without requiring structural redesign.
 
 ---
 
 # 5. Design Philosophy
 
-Every design decision must follow these principles:
+Every feature developed within EPSM should follow the same design philosophy.
 
-- Keep the operator workflow simple.
+The platform should:
+
+- Represent the real business process.
+- Minimize manual work.
 - Minimize manual typing.
-- Automate calculations whenever possible.
+- Preserve historical integrity.
 - Maintain a single source of truth.
-- Design for scalability.
-- Design for long-term maintainability.
-- Digitalize the business process instead of reproducing existing spreadsheets.
+- Prioritize operator simplicity.
+- Prioritize business value over technical complexity.
+- Remain scalable for future business growth.
+- Extend existing capabilities rather than replacing them.
+
+The objective is not to reproduce existing tools.
+
+The objective is to improve the way the business operates.
 
 ---
 
 # 6. Success Criteria
 
-The project will be considered successful when:
+EPSM will be considered successful when it consistently enables the business to operate using reliable, centralized and actionable information.
 
-- Production is fully registered using the web platform.
-- Excel is no longer required for production data entry.
-- Production information is reliable and traceable.
-- KPIs can be generated automatically.
-- The platform can grow without redesigning the database.
-- Operational decisions are based on reliable data.
+Success is measured by business outcomes rather than by software features.
+
+The platform should achieve the following objectives:
+
+- Production is fully managed through EPSM.
+- Operational data is accurate, complete and traceable.
+- Historical information remains reliable over time.
+- Business KPIs are generated automatically.
+- Decision making is supported by operational data.
+- Manual operational work is significantly reduced.
+- New business capabilities can be added without redesigning the platform.
+
+The ultimate measure of success is not the amount of software developed, but the improvement of business operations.
 
 ---
 
 # 7. Non-Goals
 
-The following objectives are intentionally out of scope for the initial releases:
+EPSM is intentionally focused on operational management.
 
-- ERP replacement
+The following areas are outside the scope of the current ecosystem:
+
 - Accounting
 - Payroll
 - Financial management
-- Supplier management
-- Customer management
+- CRM
+- Human Resources
+- ERP replacement
 
-These areas may be evaluated in future versions but are not part of the initial roadmap.
+The project should integrate with specialized systems when appropriate instead of attempting to replace them.
+
+EPSM is not intended to become a generic business management platform.
+
+Its purpose is to excel at production management and business intelligence for È Pronto Si Mangia.
 
 ---
 
-# 8. Product Vision Statement
+# 8. Vision Statement
 
-EPSM Manager is not intended to be another production form.
+EPSM is more than a production registration system.
 
-It is intended to become the digital operational platform of È Pronto Si Mangia, allowing every production decision to be supported by reliable, traceable and centralized information.
+It is a business platform built around reliable operational information.
+
+Every production registered today becomes knowledge that supports tomorrow's business decisions.
+
+The platform is designed to evolve together with the business while preserving simplicity, historical integrity and architectural consistency.
+
+EPSM grows by extending its foundations rather than replacing them.
+
+This vision should guide every future module developed within the EPSM ecosystem.

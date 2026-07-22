@@ -1,452 +1,696 @@
 # Architecture
 
-**Project:** EPSM Manager
+Project: EPSM Ecosystem
 
-**Client:** È Pronto Si Mangia
+Primary Product: EPSM Manager OPS
 
-**Version:** 1.0.3
+Organization: È Pronto Si Mangia
 
-**Status:** Approved
+Version: 2.0
 
-**Last Update:** 2026-07-14
+Status: Approved
+
+Last Updated: July 2026
 
 ---
 
 # 1. Purpose
 
-This document describes the software architecture of EPSM Manager.
+This document defines the software architecture of the EPSM ecosystem.
 
-The architecture has been designed to achieve the following objectives:
+Its objective is to describe how the platform is structured, how its components interact and which architectural decisions guide its long-term evolution.
 
-- Zero operational cost whenever technically possible.
-- High scalability.
-- Long-term maintainability.
-- Cloud-first deployment.
-- Secure by design.
-- Modular evolution.
-- Single Source of Truth.
+Rather than documenting implementation details, this document explains the architectural foundations that allow EPSM to remain scalable, maintainable and future-proof.
+
+Business rules are documented separately.
+
+Database implementation details are documented separately.
+
+This document focuses exclusively on architecture.
 
 ---
 
-# 2. Architectural Principles
+# 2. Architectural Objectives
 
-The architecture follows these principles:
+The architecture has been designed to achieve the following objectives:
 
-- Cloud Native
-- Modular
-- Data Driven
-- API First
-- Security by Design
-- Zero Vendor Lock-in
-- Progressive Evolution
+- Business-first design.
+- Long-term maintainability.
+- Modular evolution.
+- Future-proof architecture.
+- Cloud-native deployment.
+- High data integrity.
+- Low operational cost.
+- Version-controlled infrastructure.
+- Readable and maintainable code.
+- Clear separation of responsibilities.
+
+Every architectural decision should contribute to one or more of these objectives.
 
 ---
 
 # 3. High-Level Architecture
 
-┌─────────────────────────────┐
-│        Web Browser          │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│      GitHub Pages           │
-│     Web Application         │
-└──────────────┬──────────────┘
-               │ HTTPS
-               ▼
-┌─────────────────────────────┐
-│         Supabase            │
-│                             │
-│ Authentication              │
-│ PostgreSQL Database         │
-│ Row Level Security          │
-│ Storage (Future)            │
-└──────────────┬──────────────┘
-               │
-     ┌─────────┴─────────┐
-     ▼                   ▼
+The EPSM ecosystem follows a layered architecture where each layer has a clearly defined responsibility.
 
-Excel (Current)     Web Dashboard (Future)
+```text
+┌──────────────────────────────┐
+│         Web Browser          │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│      GitHub Pages (OPS)      │
+│ Static HTML / CSS / JS       │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│      Supabase JavaScript     │
+│          Client SDK          │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│         Supabase API         │
+│      Authentication          │
+│      PostgreSQL RPC          │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│         PostgreSQL           │
+│                              │
+│ Tables                       │
+│ Constraints                  │
+│ Functions                    │
+│ Views (Future)               │
+│ Policies (Future)            │
+└──────────────────────────────┘
+```
+
+Every business event flows through this architecture.
+
+Operational data is always persisted before becoming available to analytical or reporting modules.
 
 ---
 
-# 4. Component Responsibilities
+# 4. Architectural Philosophy
 
-## GitHub Pages
+EPSM follows a Business-Driven Architecture.
+
+The platform is intentionally designed around business capabilities rather than around technical components.
+
+The architecture follows the principles defined in `PROJECT_PRINCIPLES.md`, particularly:
+
+- Business First
+- Documentation First
+- Database First
+- Thin Frontend
+- Future Proof
+- Single Source of Truth
+- Readability First
+
+Every new module introduced into the ecosystem should preserve these architectural foundations.
+# 5. System Components
+
+The EPSM ecosystem is composed of independent components, each with a clearly defined responsibility.
+
+Every component performs a single role within the architecture.
+
+Business capabilities emerge from the collaboration between components rather than from individual technologies.
+
+---
+
+## 5.1 Web Browser
 
 Responsibilities:
 
-- Host the web application.
+- Execute the user interface.
+- Render HTML, CSS and JavaScript.
+- Capture user interactions.
+- Display operational information.
+
+The browser never stores business information permanently.
+
+---
+
+## 5.2 GitHub Pages
+
+Responsibilities:
+
+- Host the frontend application.
 - Deliver static assets.
-- HTTPS termination.
-- Global content delivery.
+- Provide HTTPS access.
+- Distribute application updates.
 
-GitHub Pages does NOT store business data.
+GitHub Pages never stores operational data.
 
----
-
-## Web Application
-
-Responsibilities:
-
-- User Interface.
-- Form validation.
-- Business workflow.
-- User experience.
-- Communication with Supabase.
-
-The application must never contain business-critical data.
+It is responsible only for application delivery.
 
 ---
 
-## Supabase
+## 5.3 Frontend Application
 
-Supabase is the central platform.
+The frontend represents the presentation layer of EPSM.
 
 Responsibilities:
 
-- PostgreSQL Database.
+- Render the user interface.
+- Guide the operational workflow.
+- Perform basic client-side validation.
+- Build requests.
+- Display responses.
+- Handle user interaction.
+
+The frontend should remain intentionally lightweight.
+
+Business calculations and business rules should not be implemented in the frontend whenever reasonably possible.
+
+---
+
+## 5.4 Supabase Platform
+
+Supabase provides the backend infrastructure of the platform.
+
+Responsibilities:
+
 - Authentication.
 - Authorization.
+- PostgreSQL API.
+- Database connectivity.
+- Business RPC execution.
 - Data persistence.
-- Audit information.
-- API.
 
-Supabase is the Single Source of Truth.
+Supabase acts as the gateway between the frontend and PostgreSQL.
 
 ---
 
-## Excel
+## 5.5 PostgreSQL Database
 
-Current role:
-
-Business Intelligence.
+PostgreSQL is the core of the EPSM architecture.
 
 Responsibilities:
 
-- Dashboard.
-- KPIs.
-- Validation.
-- Historical analysis.
+- Persist operational information.
+- Enforce data integrity.
+- Execute business rules.
+- Preserve historical consistency.
+- Protect relational integrity.
+- Execute business transactions.
 
-Excel is NOT the source of operational data.
+The database is the Single Source of Truth.
 
-Its role is transitional.
-
----
-
-## Future Dashboard
-
-The future dashboard will replace Excel for operational analysis.
-
-It will read directly from Supabase.
-
-No duplicated logic should exist.
+Every operational event must be successfully stored before becoming available to any other module.
 
 ---
 
-# 5. Data Flow
+# 6. Architectural Layers
 
-Production Operator
+EPSM follows a layered architecture.
+
+Each layer communicates only with its adjacent layer.
+
+Business responsibilities remain clearly separated.
+
+```text
+Presentation Layer
 
 ↓
 
-Web Form
+Workflow Layer
 
 ↓
 
-Supabase
+Service Layer
 
 ↓
 
-Business Analysis
+Supabase Client
+
+↓
+
+Business Layer (RPC)
+
+↓
+
+Persistence Layer (PostgreSQL)
+```
+
+---
+
+## 6.1 Presentation Layer
+
+Responsible for visual representation.
+
+Examples:
+
+- HTML
+- CSS
+- UI Components
+- Tables
+- Forms
+- Dashboard Cards
+
+This layer never contains business rules.
+
+---
+
+## 6.2 Workflow Layer
+
+Responsible for user interaction.
+
+Examples:
+
+- Button events
+- Form orchestration
+- Navigation
+- Screen state
+- Loading indicators
+
+This layer coordinates the application.
+
+It does not calculate business results.
+
+---
+
+## 6.3 Service Layer
+
+Responsible for communication with Supabase.
+
+Responsibilities:
+
+- Build requests.
+- Execute queries.
+- Execute RPCs.
+- Handle responses.
+- Handle communication errors.
+
+This layer isolates the frontend from backend implementation details.
+
+---
+
+## 6.4 Business Layer
+
+Implemented primarily through PostgreSQL RPCs.
+
+Responsibilities:
+
+- Business validations.
+- Business calculations.
+- Snapshot generation.
+- Historical consistency.
+- Transaction management.
+
+Business rules belong here.
+
+---
+
+## 6.5 Persistence Layer
+
+Implemented directly in PostgreSQL.
+
+Responsibilities:
+
+- Tables.
+- Constraints.
+- Foreign Keys.
+- Generated Columns.
+- Indexes.
+- Historical records.
+
+This layer guarantees data integrity regardless of which client accesses the system.
+# 7. Data Flow
+
+EPSM follows a unidirectional data flow.
+
+Operational information always moves through the same sequence of architectural layers.
+
+This guarantees consistency, traceability and predictable system behaviour.
+
+Business information is never generated directly inside the user interface.
+
+---
+
+## 7.1 Operational Workflow
+
+Every production event follows the workflow below.
+
+```text
+Operator
+
+↓
+
+Frontend Form
+
+↓
+
+Workflow Layer
+
+↓
+
+Service Layer
+
+↓
+
+Supabase Client
+
+↓
+
+PostgreSQL RPC
+
+↓
+
+Database Transaction
+
+↓
+
+Persistent Storage
+
+↓
+
+Response
+
+↓
+
+Frontend Update
+```
+
+Each layer performs a single responsibility before passing control to the next one.
+
+---
+
+## 7.2 Read Operations
+
+Operational data follows the opposite direction.
+
+```text
+Database
+
+↓
+
+PostgreSQL
+
+↓
+
+RPC / Query
+
+↓
+
+Supabase Client
+
+↓
+
+Service Layer
+
+↓
+
+Workflow Layer
+
+↓
+
+Presentation Layer
+
+↓
+
+User
+```
+
+The frontend never accesses database tables directly for business logic.
+
+Business information should preferably be exposed through dedicated business capabilities.
+
+---
+
+## 7.3 Analytics Workflow
+
+Analytics consumes operational information without modifying it.
+
+```text
+OPS
+
+↓
+
+PostgreSQL
+
+↓
+
+Business Views (Future)
+
+↓
+
+Analytics RPC
 
 ↓
 
 Dashboard
 
-Every business event must first be stored in Supabase before being consumed by any analytical tool.
+↓
+
+Business Decisions
+```
+
+Analytics is intentionally designed as a read-only consumer of operational information.
+
+No analytical component should modify production data.
 
 ---
 
-# 6. Security Architecture
+# 8. Design Patterns
 
-The architecture follows a Zero Trust model.
+The architecture intentionally follows a set of recurring design patterns.
 
-Every request must be authenticated.
-
-Authorization is enforced by Supabase Row Level Security.
-
-The frontend never contains privileged credentials.
+These patterns promote consistency across every module of the EPSM ecosystem.
 
 ---
 
-# 7. Deployment Strategy
+## 8.1 Thin Frontend
 
-Development
+The frontend is responsible only for:
+
+- presentation
+- navigation
+- workflow orchestration
+- user interaction
+
+Business rules should remain outside the presentation layer.
+
+---
+
+## 8.2 Database First
+
+Business rules should be implemented as close as possible to PostgreSQL.
+
+Whenever possible:
+
+- validations
+- calculations
+- transactions
+- historical integrity
+
+should be enforced by the database.
+
+---
+
+## 8.3 Single Source of Truth
+
+Operational information exists only once.
+
+Every component consumes the same information.
+
+Duplicate business logic should never exist across multiple layers.
+
+---
+
+## 8.4 Modular Components
+
+Every module should have a single responsibility.
+
+Modules should evolve independently whenever reasonably possible.
+
+Replacing one module should not require redesigning the rest of the platform.
+
+---
+
+## 8.5 Business Capabilities
+
+The frontend should consume business capabilities instead of low-level database operations.
+
+Examples include:
+
+- Create Production Batch
+- Update Production Batch
+- Load Dashboard
+- Retrieve Historical Production
+
+This approach hides implementation details and promotes long-term maintainability.
+
+---
+
+## 8.6 Future Proof
+
+The preferred strategy for evolution is extension rather than replacement.
+
+New requirements should preferably introduce new capabilities instead of modifying existing ones.
+
+Backward compatibility should be preserved whenever reasonably possible.
+
+---
+
+## 8.7 Documentation Driven Development
+
+Architecture documentation evolves together with the software.
+
+Every significant architectural decision should be reflected in the documentation before becoming part of the platform.
+
+Documentation is considered part of the architecture itself.
+# 9. Architectural Decisions
+
+The following architectural decisions are considered fundamental to the EPSM ecosystem.
+
+These decisions should only change when justified by a genuine business requirement and after an explicit architectural review.
+
+---
+
+## 9.1 Database as Single Source of Truth
+
+Operational information exists only in PostgreSQL.
+
+External tools may consume operational information but must never become independent sources of business data.
+
+---
+
+## 9.2 Business Logic Inside PostgreSQL
+
+Business rules belong to the backend.
+
+Whenever possible, validations, calculations and business transactions should be implemented through PostgreSQL RPCs.
+
+This guarantees consistent behaviour regardless of the client application.
+
+---
+
+## 9.3 Thin Frontend
+
+Frontend applications are responsible for:
+
+- user interaction
+- workflow orchestration
+- presentation
+
+Frontend applications should not implement business calculations.
+
+---
+
+## 9.4 Historical Integrity
+
+Historical information must never lose its meaning.
+
+Business evolution should preserve historical records rather than reinterpret them.
+
+Snapshot strategies, immutable records and versioning exist to guarantee historical consistency.
+
+---
+
+## 9.5 Migration-Based Evolution
+
+Database evolution is managed exclusively through version-controlled migrations.
+
+Every structural database change must be:
+
+- documented
+- version controlled
+- reproducible
+- reviewable
+
+Direct modifications to production databases are not allowed.
+
+---
+
+## 9.6 Backward Compatibility
+
+Whenever reasonably possible, architectural evolution should preserve compatibility with existing modules.
+
+New capabilities should extend existing contracts instead of replacing them.
+
+---
+
+# 10. Evolution Strategy
+
+EPSM is designed as a continuously evolving platform.
+
+Growth should occur by introducing new modules rather than redesigning existing ones.
+
+The preferred evolution strategy is:
+
+```text
+Stable Foundation
 
 ↓
 
-GitHub Repository
+New Business Capability
 
 ↓
 
-GitHub Pages
+New Module
 
 ↓
 
-Production Deployment
+Architecture Extension
 
-Every deployment is version controlled.
+↓
 
-No manual deployments are allowed.
-
----
-
-# 8. Database Lifecycle
-
-Starting with **EPSM Manager v1.0.3**, the project adopts a migration-based database lifecycle using the Supabase CLI.
-
-This guarantees that every structural change to the database is:
-
-- Version controlled
-- Reproducible
-- Auditable
-- Traceable
-- Reviewed before deployment
-
-The database development workflow is:
-
-```text
-Git
-        │
-        ▼
-supabase migration new
-        │
-        ▼
-Implement SQL
-        │
-        ▼
-supabase db push
-        │
-        ▼
-Supabase Cloud
-        │
-        ▼
-Validation
-        │
-        ▼
-supabase db dump
-        │
-        ▼
-database/schema.sql
+No Existing Module Rewrite
 ```
 
-## Source of Truth
+Examples of future evolution include:
 
-The project distinguishes between two database artifacts.
-
-### Database Schema Snapshot
-
-```text
-database/schema.sql
-```
-
-Represents the latest published database schema.
-
-It is generated using:
-
-```bash
-supabase db dump --schema public -f database/schema.sql
-```
-
-It must never be edited manually.
-
----
-
-### Database Migration History
-
-```text
-supabase/migrations/
-```
-
-Contains the complete history of every structural database change.
-
-Each migration:
-
-- represents a single functional responsibility;
-- is immutable once applied;
-- is version controlled through Git.
-
-Migration filenames follow the convention:
-
-```text
-YYYYMMDDHHMMSS_descriptive_name.sql
-```
-
-Example:
-
-```text
-20260714185726_support_recipe_versioning.sql
-```
-
----
-
-## Architectural Rule
-
-Every structural database change must follow this workflow:
-
-1. Create a migration.
-2. Implement the SQL.
-3. Apply the migration using Supabase CLI.
-4. Validate the result.
-5. Update `database/schema.sql`.
-6. Commit both the migration and the updated schema.
-
-Direct modifications to the production schema without a corresponding migration are not allowed.
-
-# 9. Future Evolution
-
-The architecture has been designed to support future modules without redesigning the existing platform.
-
-Possible future modules include:
-
+- Analytics
 - Inventory
-- Recipes
-- Bonus calculation
-- Operator management
-- Cost analysis
 - Purchasing
-- AI Assistant
-- Notifications
-- Mobile application
+- Cost Analysis
+- Multi-Location Support
+- Artificial Intelligence
+- Mobile Applications
+
+Each new module should inherit the same architectural principles described in this document.
 
 ---
 
-# 10. Design Decisions
-
-The architecture intentionally separates:
-
-Presentation
-
-Business Data
-
-Business Intelligence
-
-This separation guarantees scalability and maintainability.
-
----
-
-# 10. Architecture Goals
-
-The EPSM Manager architecture has been designed to provide a robust, scalable and maintainable platform capable of evolving alongside the business without requiring architectural redesign.
-
-The architecture must guarantee:
-
-- Single Source of Truth for all operational data.
-- Cloud-first architecture using managed services whenever possible.
-- Secure by Design with least-privilege principles.
-- Version-controlled infrastructure and database evolution.
-- Modular components with clear separation of responsibilities.
-- Long-term maintainability through standardized development workflows.
-- Reproducible deployments across environments.
-- Auditability of structural database changes.
-- Business data integrity enforced at the database level whenever possible.
-- High availability and low operational cost.
-- Progressive evolution without breaking historical business data.
-- Technology independence, avoiding unnecessary vendor lock-in.
-
----
-
-## Success Criteria
+# 11. Architecture Success Criteria
 
 The architecture is considered successful when:
 
-- Every business event is stored only once.
-- Every database change is traceable through version-controlled migrations.
+- Every business event is stored exactly once.
+- Every business rule is implemented consistently.
+- Historical information remains trustworthy.
+- New modules can be added without redesigning the platform.
+- The frontend remains lightweight.
+- The database preserves business integrity.
 - Every deployment is reproducible.
-- Business rules remain consistent regardless of the client application.
-- Historical information can never be lost due to future business changes.
-- New modules can be incorporated without redesigning the existing architecture.
-- The project remains maintainable as functionality and team size grow.y e
+- Every structural change is version controlled.
+- Documentation remains synchronized with the implemented architecture.
 
-# 12. Current Status
-
-## Current Implementation
-
-### Platform
-
-- ✅ GitHub Pages
-- ✅ HTML / CSS / JavaScript
-- ✅ Supabase
-- ✅ PostgreSQL
-
-### Architecture
-
-- ✅ Cloud-First Architecture
-- ✅ Single Source of Truth
-- ✅ Modular Frontend Architecture
-- ✅ Dynamic Card Pattern
-- ✅ Version-Controlled Database Migrations
-- ✅ Database Schema Snapshot Workflow
-
-### Database
-
-- ✅ Normalized Relational Model
-- ✅ Production Snapshot Architecture
-- ✅ Recipe Versioning Support
-- ✅ CRUD Operations
-- ✅ Audit Logging
-- ✅ Referential Integrity
-- ✅ Database Constraints (CHECK, FK, UNIQUE)
-- ✅ Generated Columns
-
-### Development Workflow
-
-- ✅ Git Version Control
-- ✅ Supabase CLI
-- ✅ Docker Development Environment
-- ✅ Database Migration Workflow
-- ✅ Schema Synchronization (`database/schema.sql`)
-
-### Business
-
-- ✅ Production Registration
-- ✅ Recipe Management
-- ✅ Operator Management
-- ✅ Shift Management
-- ✅ Product Management
-- ✅ Excel Integration
+Long-term maintainability is considered more important than short-term implementation speed.
 
 ---
 
-## Planned Implementation
+# 12. Final Statement
 
-### Security
+The EPSM architecture is intentionally designed around business capabilities rather than technical components.
 
-- ⬜ User Authentication
-- ⬜ Role-Based Access Control (RBAC)
-- ⬜ Row Level Security (RLS) Policies
+Technologies may evolve.
 
-### Analytics
+Programming languages may change.
 
-- ⬜ Native Web Dashboard
-- ⬜ KPI Engine
-- ⬜ Historical Reporting
-- ⬜ Business Intelligence Module
+Infrastructure may be replaced.
 
-### Business Modules
+Business requirements will continue to grow.
 
-- ⬜ Inventory Management
-- ⬜ Purchasing
-- ⬜ Cost Analysis
-- ⬜ Bonus Calculation
+However, the architectural principles defined in this document should remain stable.
 
-### Platform Evolution
+Every future module developed within the EPSM ecosystem should extend these foundations rather than replace them.
 
-- ⬜ File Storage
-- ⬜ Notifications
-- ⬜ Mobile Application
-- ⬜ AI Assistant
+The objective is not simply to build software.
 
+The objective is to build a platform capable of evolving together with the business while preserving simplicity, consistency and long-term maintainability.

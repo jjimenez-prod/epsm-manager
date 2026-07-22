@@ -1,22 +1,47 @@
 # Changelog
 
-**Project:** EPSM Manager
+Project: EPSM Ecosystem
 
-**Client:** È Pronto Si Mangia
+Primary Product: EPSM Manager OPS
 
-This document records the official evolution of the project.
+Organization: È Pronto Si Mangia
 
-The changelog only contains approved changes that have been committed to the repository.
+Versioning: Semantic Versioning
+
+Status: Active
+
+Last Updated: July 2026
+
+---
+
+# Changelog Policy
+
+This document records the official released versions of the EPSM ecosystem.
+
+Only versions that have been:
+
+- Implemented
+- Validated
+- Documented
+- Published
+
+are included in this changelog.
+
+Unreleased work is tracked through the project backlog.
+
+Historical releases are never modified.
+
+Corrections are documented through subsequent releases.
 
 ---
 
 # Version 0.1.0
 
-**Release Date:** 2026-07-02
+Release Date
 
-## Project Foundation
+2026-07-02
 
-### Added
+## Added
 
 - Initial project documentation.
 - Project Vision.
@@ -30,58 +55,253 @@ The changelog only contains approved changes that have been committed to the rep
 - User Experience Guidelines.
 - Product Backlog.
 
-### Established
+## Changed
 
-- Cloud-first architecture.
-- GitHub Pages deployment.
-- Supabase as Single Source of Truth.
-- Zero Cost strategy.
-- Security by Design.
-- Documentation First methodology.
-- Sprint-based development workflow.
+- Established Cloud-First Architecture.
+- Established GitHub Pages deployment.
+- Established Supabase as the Single Source of Truth.
+- Established Zero Cost strategy.
+- Established Security by Design.
+- Established Documentation First methodology.
+- Established Sprint-based development workflow.
 
-### Status
+## Fixed
 
-Project officially initialized.
+None.
 
----
+## Removed
 
-# Versioning Policy
+None.
 
-EPSM Manager follows Semantic Versioning.
+## Deprecated
 
-Format:
+None.
 
-MAJOR.MINOR.PATCH
+## Security
 
-Example:
-
-1.0.0
-
-Where:
-
-- MAJOR → Breaking architectural or functional changes.
-- MINOR → New features.
-- PATCH → Bug fixes and small improvements.
+- Initial security architecture established.
 
 ---
 
-# Release Process
+# Version 1.0.0
 
-Every release must include:
+Release Date
 
-- Approved implementation.
-- Updated documentation.
-- Updated changelog.
-- Successful validation.
-- Git commit history.
+YYYY-MM-DD
+
+## Added
+
+- Initial production-ready release.
+
+## Changed
+
+- Production module becomes operational.
+
+## Fixed
+
+None.
+
+## Removed
+
+None.
+
+## Deprecated
+
+None.
+
+## Security
+
+None.
+
+---
+
+# Version 1.0.1
+
+Release Date
+
+YYYY-MM-DD
+
+## Added
+
+(To be completed.)
+
+## Changed
+
+(To be completed.)
+
+## Fixed
+
+(To be completed.)
+
+## Removed
+
+None.
+
+## Deprecated
+
+None.
+
+## Security
+
+None.
+
+---
+
+# Version 1.0.2
+
+Release Date
+
+YYYY-MM-DD
+
+## Added
+
+(To be completed.)
+
+## Changed
+
+(To be completed.)
+
+## Fixed
+
+(To be completed.)
+
+## Removed
+
+None.
+
+## Deprecated
+
+None.
+
+## Security
+
+None.
+
+---
+
+# Version 1.0.3
+
+Release Date
+
+YYYY-MM-DD
+
+## Added
+
+(To be completed.)
+
+## Changed
+
+(To be completed.)
+
+## Fixed
+
+(To be completed.)
+
+## Removed
+
+None.
+
+## Deprecated
+
+None.
+
+## Security
+
+None.
+
+---
+
+# Version 1.0.4
+
+Release Date
+
+YYYY-MM-DD
+
+## Added
+
+(To be completed.)
+
+## Changed
+
+(To be completed.)
+
+## Fixed
+
+(To be completed.)
+
+## Removed
+
+None.
+
+## Deprecated
+
+None.
+
+## Security
+
+None.
+
+---
+
+# Version 1.0.5
+
+Release Date
+
+2026-07-21
+
+## Added
+
+- Production editing workflow.
+- Production History panel.
+- Automatic History refresh.
+- Edit mode.
+- Update Production workflow.
+- Production retrieval by Batch ID.
+- Form auto-population during editing.
+
+## Changed
+
+- Save button now automatically switches between Create and Update modes.
+- Production workflow supports complete editing.
+- Production lifecycle extended to support updates.
+
+## Fixed
+
+- Various production workflow improvements.
+- UI consistency improvements.
+- Form reset after successful update.
+
+## Removed
+
+None.
+
+## Deprecated
+
+None.
+
+## Security
+
+None.
 
 ---
 
 # Future Releases
 
-Future releases will be appended below following the same format.
+Future versions should always follow the same structure.
 
-The changelog is never rewritten.
+Every release should contain, when applicable:
 
-Only new releases are added.
+- Added
+- Changed
+- Fixed
+- Removed
+- Deprecated
+- Security
+
+The changelog records releases only.
+
+Project planning belongs to the Backlog.
+
+Project history belongs to this document.
+
+Project architecture belongs to the Architecture documentation.
