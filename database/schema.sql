@@ -313,12 +313,12 @@ IF v_recipe.recipe_type = 'SPECIAL' THEN
     END IF;
 
     IF v_other_ingredients_g IS NULL
-       OR v_other_ingredients_g < 0 THEN
+       OR v_other_ingredients_g <= 0 THEN
 
         RETURN jsonb_build_object(
             'success', false,
             'error_code', 'INVALID_PAYLOAD',
-            'message', 'recipe.other_ingredients_g is required.',
+            'message', 'recipe.other_ingredients_g must be greater than zero.',
             'details', jsonb_build_object(
                 'field', 'recipe.other_ingredients_g'
             )
@@ -720,18 +720,10 @@ $$;
 
 ALTER FUNCTION "public"."create_production_batch"("payload" "jsonb") OWNER TO "postgres";
 
-CREATE OR REPLACE FUNCTION public.update_production_batch(
 
-    p_batch_id uuid,
-    payload jsonb
-
-)
-
-RETURNS jsonb
-
-LANGUAGE plpgsql
-
-AS $$
+CREATE OR REPLACE FUNCTION "public"."update_production_batch"("p_batch_id" "uuid", "payload" "jsonb") RETURNS "jsonb"
+    LANGUAGE "plpgsql"
+    AS $$
 
 DECLARE
 
@@ -1312,12 +1304,12 @@ IF v_water_g IS NULL OR v_water_g <= 0 THEN
     END IF;
 
     IF v_other_ingredients_g IS NULL
-       OR v_other_ingredients_g < 0 THEN
+       OR v_other_ingredients_g <= 0 THEN
 
         RETURN jsonb_build_object(
             'success', false,
             'error_code', 'INVALID_PAYLOAD',
-            'message', 'recipe.other_ingredients_g is required.',
+            'message', 'recipe.other_ingredients_g must be greater than zero.',
             'details', jsonb_build_object(
                 'field', 'recipe.other_ingredients_g'
             )
@@ -1551,10 +1543,9 @@ END;
 
 $$;
 
-ALTER FUNCTION "public"."update_production_batch"(
-    "p_batch_id" uuid,
-    "payload" jsonb
-) OWNER TO "postgres";
+
+ALTER FUNCTION "public"."update_production_batch"("p_batch_id" "uuid", "payload" "jsonb") OWNER TO "postgres";
+
 
 CREATE OR REPLACE FUNCTION "public"."update_updated_at_column"() RETURNS "trigger"
     LANGUAGE "plpgsql"
@@ -1606,6 +1597,31 @@ CREATE TABLE IF NOT EXISTS "public"."batch_operators" (
 ALTER TABLE "public"."batch_operators" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."dough_batch_history" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "batch_id" "uuid" NOT NULL,
+    "revision" integer NOT NULL,
+    "production_date" "date" NOT NULL,
+    "shift_id" "uuid" NOT NULL,
+    "recipe_id" "uuid" NOT NULL,
+    "standard_dough_count" integer NOT NULL,
+    "flour_g" integer NOT NULL,
+    "water_g" integer NOT NULL,
+    "other_ingredients_g" integer NOT NULL,
+    "initial_weight_g" integer NOT NULL,
+    "leftover_added_g" integer NOT NULL,
+    "leftover_remaining_g" integer NOT NULL,
+    "notes" "text",
+    "recipe_version" integer,
+    "recipe_display_name" "text",
+    "recipe_type" "text",
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
+);
+
+
+ALTER TABLE "public"."dough_batch_history" OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."dough_batches" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "production_date" "date" NOT NULL,
@@ -1639,38 +1655,6 @@ CREATE TABLE IF NOT EXISTS "public"."dough_batches" (
 
 ALTER TABLE "public"."dough_batches" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS public.dough_batch_history (
-
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-
-    batch_id uuid NOT NULL,
-    revision integer NOT NULL,
-
-    production_date date NOT NULL,
-    shift_id uuid NOT NULL,
-    recipe_id uuid NOT NULL,
-
-    standard_dough_count integer NOT NULL,
-
-    flour_g integer NOT NULL,
-    water_g integer NOT NULL,
-    other_ingredients_g integer NOT NULL,
-
-    initial_weight_g integer NOT NULL,
-    leftover_added_g integer NOT NULL,
-    leftover_remaining_g integer NOT NULL,
-
-    notes text,
-
-    recipe_version integer,
-    recipe_display_name text,
-    recipe_type text,
-
-    created_at timestamptz DEFAULT now() NOT NULL
-
-);
-
-ALTER TABLE public.dough_batch_history OWNER TO postgres;
 
 CREATE TABLE IF NOT EXISTS "public"."operators" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
@@ -1798,6 +1782,11 @@ ALTER TABLE ONLY "public"."batch_operators"
 
 
 
+ALTER TABLE ONLY "public"."dough_batch_history"
+    ADD CONSTRAINT "dough_batch_history_pkey" PRIMARY KEY ("id");
+
+
+
 ALTER TABLE ONLY "public"."dough_batches"
     ADD CONSTRAINT "dough_batches_pkey" PRIMARY KEY ("id");
 
@@ -1882,11 +1871,10 @@ ALTER TABLE ONLY "public"."production_items"
     ADD CONSTRAINT "uq_batch_product" UNIQUE ("batch_id", "product_id");
 
 
-ALTER TABLE ONLY public.dough_batch_history
-    ADD CONSTRAINT dough_batch_history_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.dough_batch_history
-    ADD CONSTRAINT uq_dough_batch_history UNIQUE (batch_id, revision);
+ALTER TABLE ONLY "public"."dough_batch_history"
+    ADD CONSTRAINT "uq_dough_batch_history" UNIQUE ("batch_id", "revision");
+
 
 
 CREATE INDEX "idx_audit_date" ON "public"."audit_log" USING "btree" ("modified_at");
@@ -1917,6 +1905,14 @@ CREATE INDEX "idx_batch_status" ON "public"."dough_batches" USING "btree" ("stat
 
 
 
+CREATE INDEX "idx_history_batch" ON "public"."dough_batch_history" USING "btree" ("batch_id");
+
+
+
+CREATE INDEX "idx_history_revision" ON "public"."dough_batch_history" USING "btree" ("batch_id", "revision");
+
+
+
 CREATE INDEX "idx_operator_active" ON "public"."operators" USING "btree" ("active");
 
 
@@ -1940,11 +1936,6 @@ CREATE INDEX "idx_production_product" ON "public"."production_items" USING "btre
 CREATE INDEX "idx_settings_category" ON "public"."settings" USING "btree" ("category");
 
 
-CREATE INDEX idx_history_batch ON public.dough_batch_history(batch_id);
-
-
-CREATE INDEX idx_history_revision ON public.dough_batch_history(batch_id, revision);
-
 
 CREATE UNIQUE INDEX "ux_recipes_one_active_per_type" ON "public"."recipes" USING "btree" ("recipe_type") WHERE ("active" = true);
 
@@ -1966,6 +1957,11 @@ ALTER TABLE ONLY "public"."batch_operators"
 
 ALTER TABLE ONLY "public"."batch_operators"
     ADD CONSTRAINT "batch_operators_operator_id_fkey" FOREIGN KEY ("operator_id") REFERENCES "public"."operators"("id");
+
+
+
+ALTER TABLE ONLY "public"."dough_batch_history"
+    ADD CONSTRAINT "dough_batch_history_batch_id_fkey" FOREIGN KEY ("batch_id") REFERENCES "public"."dough_batches"("id") ON DELETE CASCADE;
 
 
 
@@ -2007,8 +2003,6 @@ ALTER TABLE ONLY "public"."production_items"
 ALTER TABLE ONLY "public"."production_items"
     ADD CONSTRAINT "production_items_updated_by_fkey" FOREIGN KEY ("updated_by") REFERENCES "public"."operators"("id");
 
-ALTER TABLE ONLY public.dough_batch_history
-    ADD CONSTRAINT dough_batch_history_batch_id_fkey FOREIGN KEY (batch_id) REFERENCES public.dough_batches(id) ON DELETE CASCADE;
 
 
 ALTER TABLE "public"."operators" ENABLE ROW LEVEL SECURITY;
@@ -2066,6 +2060,12 @@ GRANT ALL ON FUNCTION "public"."create_production_batch"("payload" "jsonb") TO "
 
 
 
+GRANT ALL ON FUNCTION "public"."update_production_batch"("p_batch_id" "uuid", "payload" "jsonb") TO "anon";
+GRANT ALL ON FUNCTION "public"."update_production_batch"("p_batch_id" "uuid", "payload" "jsonb") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."update_production_batch"("p_batch_id" "uuid", "payload" "jsonb") TO "service_role";
+
+
+
 GRANT ALL ON FUNCTION "public"."update_updated_at_column"() TO "anon";
 GRANT ALL ON FUNCTION "public"."update_updated_at_column"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."update_updated_at_column"() TO "service_role";
@@ -2081,6 +2081,12 @@ GRANT ALL ON TABLE "public"."audit_log" TO "service_role";
 GRANT ALL ON TABLE "public"."batch_operators" TO "anon";
 GRANT ALL ON TABLE "public"."batch_operators" TO "authenticated";
 GRANT ALL ON TABLE "public"."batch_operators" TO "service_role";
+
+
+
+GRANT ALL ON TABLE "public"."dough_batch_history" TO "anon";
+GRANT ALL ON TABLE "public"."dough_batch_history" TO "authenticated";
+GRANT ALL ON TABLE "public"."dough_batch_history" TO "service_role";
 
 
 
@@ -2129,10 +2135,6 @@ GRANT ALL ON TABLE "public"."settings" TO "service_role";
 GRANT ALL ON TABLE "public"."shifts" TO "anon";
 GRANT ALL ON TABLE "public"."shifts" TO "authenticated";
 GRANT ALL ON TABLE "public"."shifts" TO "service_role";
-
-GRANT ALL ON TABLE public.dough_batch_history TO anon;
-GRANT ALL ON TABLE public.dough_batch_history TO authenticated;
-GRANT ALL ON TABLE public.dough_batch_history TO service_role;
 
 
 

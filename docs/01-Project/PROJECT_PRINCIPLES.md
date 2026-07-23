@@ -8,7 +8,7 @@ Version: 2.0
 
 Status: Approved
 
-Last Updated: July 2026
+Last Updated: July 22, 2026
 
 ---
 

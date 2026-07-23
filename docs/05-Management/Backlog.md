@@ -1,253 +1,186 @@
 # Product Backlog
 
-**Project:** EPSM Manager
+Project: EPSM Ecosystem
 
-**Current Stable Version:** v1.0.0
+Primary Product: EPSM Manager OPS
 
-**Current Sprint:** v1.0.1
+Organization: È Pronto Si Mangia
 
-**Status:** Living Document
+Version: 2.0
 
-**Last Update:** 2026-07-09
+Status: Living Document
 
----
-
-# Vision
-
-EPSM Manager is a lightweight Manufacturing Execution System (MES) specialized in pizza dough production.
-
-The system registers **Production Events**, centralizes operational information and provides reliable data for operational analysis and future KPIs.
-
-The project follows a KISS philosophy, prioritizing maintainability, scalability and a single source of truth.
+Last Updated: July 2026
 
 ---
 
-# Current Sprint - v1.0.1
+# Purpose
 
-## Goal
+The Product Backlog defines the planned business capabilities of the EPSM ecosystem.
 
-Stabilize the first production release before adding new functional modules.
+Unlike the Roadmap, which describes the long-term strategic direction, the Product Backlog contains the approved work that may be implemented in future releases.
 
-### Functional Improvements
+The backlog evolves continuously.
 
-- [x] Rename Happy/Fanta product.
-- [x] Alphabetical product catalog.
-- [x] Increase history from 10 to 20 records.
-- [ ] Improve Products visualization in History.
-- [ ] Review History UX.
-
-### Database
-
-- [x] Remove obsolete tables.
-- [ ] Synchronize schema.sql.
-- [x] Protect catalog tables using RLS.
-- [ ] Review operational table permissions.
-
-### Security
-
-Status: In Progress
-
-- [x] Enable RLS on catalog tables.
-- [ ] Secure operational tables.
-- [ ] Auth Ready architecture.
+Items may be added, removed, reprioritized or postponed according to business needs.
 
 ---
 
-# Technical Backlog
+# Backlog Philosophy
 
-Architecture improvements that do not directly affect end users.
+The Product Backlog is organized around Business Capabilities rather than technical tasks.
 
----
+Every backlog item should:
 
-## BT-001 - Production RPC
+- Deliver measurable business value.
+- Support the long-term vision of EPSM.
+- Respect the architectural principles.
+- Preserve the Business Model.
+- Be compatible with the existing ecosystem.
 
-Priority: High
+Approved backlog items are not implementation commitments.
 
-Replace direct CRUD operations with PostgreSQL RPC functions.
-
-Current
-
-Frontend
-
-↓
-
-Insert / Update / Delete
-
-↓
-
-Tables
-
-Future
-
-Frontend
-
-↓
-
-RPC
-
-↓
-
-Database
-
-Functions
-
-- save_production()
-- update_production()
-
-Benefits
-
-- Smaller attack surface.
-- Centralized business logic.
-- Simpler RLS.
-- Auth Ready.
-- Easier maintenance.
-
-Status
-
-Pending
+Priority may change at any time.
 
 ---
 
-## BT-002 - Database Versioning
+# Current Development
 
-Priority: High
+Current Release
 
-Introduce database migrations.
-
-database/
-
-    schema.sql
-
-    migrations/
-
-        001_initial.sql
-
-        002_cleanup.sql
-
-        003_rls.sql
-
-        ...
-
-Status
-
-Pending
-
----
-
-## BT-003 - Schema Synchronization
-
-Priority: Medium
-
-Keep schema.sql synchronized with the real database after every structural modification.
+Analytics v1.0.7
 
 Status
 
 In Progress
 
----
+Primary Objective
 
-# v1.1.0 - Production Module Evolution
+Deliver the first production-ready Analytics dashboard.
 
-## Goal
+Current Scope
 
-Transform the application into a modular production system.
-
-### Production Module
-
-- Separate Form and History.
-- Navigation between modules.
-- Cleaner interface.
-- Better UX.
-
-### Production Model
-
-Officially adopt the concept of
-
-Production Event
-
-instead of
-
-Dough Batch
-
-One event may contain multiple dough mixes.
-
-Future-ready for production scaling.
+- Executive Dashboard
+- KPI Cards
+- Daily Production Overview
+- Historical Analysis
+- Production Comparison
+- Operator Performance
 
 ---
 
-# v1.2.0 - Analytics
+# High Priority
 
-## Dashboard
+## Analytics
 
-- Daily Production
-- Shift Performance
-- Product Distribution
-- Dough Consumption
-- Waste Indicators
-- Production Trends
+Status
 
----
+In Progress
 
-## KPIs
+Business Capabilities
 
-- Production Events
-- Products Produced
-- Dough Produced
-- Flour Consumption
-- Water Consumption
-- Waste Percentage
-- Operator Productivity
+- Executive Dashboard
+- Historical Analysis
+- KPI Dashboard
+- Production Comparison
+- Operator Performance
+- Dashboard Filters
+- Dashboard Responsiveness
 
 ---
 
-# v1.3.0 - Identity & Security
+## OPS Improvements
 
-## Authentication
+Status
 
-- User Login
-- Session Management
-- Password Recovery
+Maintenance
 
----
+Business Capabilities
 
-## Roles
-
-- Administrator
-- Supervisor
-- Operator
+- UX Improvements
+- Performance Improvements
+- Documentation Updates
+- Database Maintenance
 
 ---
 
-## Audit
+# Medium Priority
 
-- created_by
-- updated_by
-- Activity Log
-- Change History
-- Record Versioning
+## Inventory Management
+
+Status
+
+Planned
+
+Business Capabilities
+
+- Stock Control
+- Ingredient Inventory
+- Consumption Tracking
+- Inventory History
 
 ---
 
-# v2.0
+## Cost Analysis
 
-Future operational modules.
+Status
 
-## Production
+Planned
 
-- Multi-site Production
-- Production Planning
+Business Capabilities
 
-## Business
+- Ingredient Costs
+- Production Costs
+- Cost per Product
+- Margin Analysis
 
-- Inventory
-- Cost Analysis
-- Purchasing
+---
 
-## Intelligence
+# Long-Term Backlog
 
-- Forecasting
-- AI Assisted Recommendations
-- Operational Alerts
+## Artificial Intelligence
+
+Status
+
+Future
+
+Potential Capabilities
+
+- Production Forecasting
+- Intelligent Recommendations
+- Production Optimization
+- Predictive Alerts
+
+---
+
+## Multi-Location
+
+Status
+
+Future
+
+Potential Capabilities
+
+- Multiple Stores
+- Shared Analytics
+- Cross-Store KPIs
+- Centralized Reporting
+
+---
+
+## Integrations
+
+Status
+
+Future
+
+Potential Capabilities
+
+- Mobile Application
+- Barcode Support
+- Label Printing
+- Notifications
+- External Integrations
 
 ---
 
@@ -258,39 +191,65 @@ Ideas intentionally postponed.
 - Dark Mode
 - Excel Export
 - PDF Reports
-- Advanced Filters
-- Dashboard Customization
-- Mobile Version
+- Advanced Dashboard Customization
+- Public API
+- Mobile Dashboard
 - Push Notifications
-- Multi-language
+- Multi-language Support
+
+Items in the Parking Lot have no implementation priority.
 
 ---
 
-# Development Principles
+# Prioritization Rules
 
-The project follows the following principles:
+Backlog priority is determined by business value.
 
-- KISS First.
-- One Source of Truth.
-- Database First.
-- Auth Ready.
-- Event Driven Model.
-- No duplicated business logic.
-- Security by Default.
-- Feature before Optimization.
+The preferred order is:
+
+1. Business Value
+2. Operational Impact
+3. Architectural Consistency
+4. Development Complexity
+
+Technical complexity alone should never determine implementation priority.
 
 ---
 
-# Backlog Rules
+# Definition of Ready
 
-Items should only enter the backlog if they:
+A backlog item is considered ready for implementation when:
 
-- Provide measurable business value.
-- Improve maintainability.
-- Support the long-term product vision.
-- Respect the KISS philosophy.
-- Are compatible with the current architecture.
+- Business need has been validated.
+- Business Rules exist.
+- Architecture is compatible.
+- Documentation has been updated.
+- Scope has been approved.
 
-Items are never implemented directly from the backlog.
+---
 
-Every item must first be prioritized and assigned to a sprint.
+# Definition of Done
+
+A backlog item is considered complete when:
+
+- Implementation is finished.
+- Testing has been completed.
+- Documentation has been updated.
+- Release has been published.
+- Business capability has been validated.
+
+---
+
+# Final Statement
+
+The Product Backlog represents the approved future evolution of the EPSM ecosystem.
+
+It is intentionally dynamic.
+
+Business priorities evolve.
+
+Architecture remains stable.
+
+Business Rules remain stable.
+
+The backlog exists to organize future work while preserving the long-term vision of the platform.
